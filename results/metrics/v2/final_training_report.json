@@ -1,0 +1,264 @@
+{
+  "v1": {
+    "rl": {
+      "scheduler_id": "rl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 19,
+          "epsilon": 0.05,
+          "growth": 19
+        }
+      ],
+      "episodes_run": 1,
+      "final_q_size": 19,
+      "final_epsilon": 0.05
+    },
+    "marl": {
+      "scheduler_id": "marl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 23,
+          "epsilon": 0.67,
+          "growth": 23
+        }
+      ],
+      "episodes_run": 1,
+      "final_q_size": 23,
+      "final_epsilon": 0.67
+    },
+    "risk_aware_marl": {
+      "scheduler_id": "risk_aware_marl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 23,
+          "epsilon": 0.67,
+          "growth": 23
+        }
+      ],
+      "episodes_run": 1,
+      "final_q_size": 23,
+      "final_epsilon": 0.67
+    }
+  },
+  "v2": {
+    "rl": {
+      "scheduler_id": "rl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 445,
+          "epsilon": 0.05,
+          "growth": 445
+        },
+        {
+          "episode": 2,
+          "window": "busiest_hour",
+          "q_table_size": 1598,
+          "epsilon": 0.05,
+          "growth": 1153
+        },
+        {
+          "episode": 3,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 433
+        },
+        {
+          "episode": 4,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 5,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 6,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 7,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 8,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 9,
+          "window": "busiest_hour",
+          "q_table_size": 2031,
+          "epsilon": 0.05,
+          "growth": 0
+        }
+      ],
+      "episodes_run": 9,
+      "final_q_size": 2031,
+      "final_epsilon": 0.05
+    },
+    "marl": {
+      "scheduler_id": "marl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 160,
+          "epsilon": 0.05,
+          "growth": 160
+        },
+        {
+          "episode": 2,
+          "window": "busiest_hour",
+          "q_table_size": 599,
+          "epsilon": 0.05,
+          "growth": 439
+        },
+        {
+          "episode": 3,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 61
+        },
+        {
+          "episode": 4,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 5,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 6,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 7,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 8,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 9,
+          "window": "busiest_hour",
+          "q_table_size": 660,
+          "epsilon": 0.05,
+          "growth": 0
+        }
+      ],
+      "episodes_run": 9,
+      "final_q_size": 660,
+      "final_epsilon": 0.05
+    },
+    "risk_aware_marl": {
+      "scheduler_id": "risk_aware_marl",
+      "curve": [
+        {
+          "episode": 1,
+          "window": "busiest_hour",
+          "q_table_size": 161,
+          "epsilon": 0.05,
+          "growth": 161
+        },
+        {
+          "episode": 2,
+          "window": "busiest_hour",
+          "q_table_size": 630,
+          "epsilon": 0.05,
+          "growth": 469
+        },
+        {
+          "episode": 3,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 71
+        },
+        {
+          "episode": 4,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 5,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 6,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 7,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 8,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        },
+        {
+          "episode": 9,
+          "window": "busiest_hour",
+          "q_table_size": 701,
+          "epsilon": 0.05,
+          "growth": 0
+        }
+      ],
+      "episodes_run": 9,
+      "final_q_size": 701,
+      "final_epsilon": 0.05
+    }
+  }
+}

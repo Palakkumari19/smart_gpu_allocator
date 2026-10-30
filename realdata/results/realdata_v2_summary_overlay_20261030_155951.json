@@ -1,0 +1,75 @@
+{
+  "preregistration_commit": "3a0bcc355d06b75618f8a958ee3eeb53fe2438d7",
+  "config": {
+    "splits": {
+      "train_windows": [
+        "busiest_hour"
+      ],
+      "train_seeds": [
+        1,
+        2,
+        3
+      ],
+      "validation_windows": [
+        "median_hour",
+        "burstiest_window"
+      ],
+      "validation_seeds": [
+        200,
+        201,
+        202
+      ],
+      "test_windows": [
+        "median_hour",
+        "burstiest_window"
+      ],
+      "test_seeds": [
+        100,
+        129
+      ]
+    },
+    "episode_steps": 600,
+    "load_levels": [
+      0.3,
+      1.1,
+      1.4
+    ],
+    "risk_bucket_edges": [
+      0.0614,
+      0.1165,
+      0.3047
+    ],
+    "v1_risk_edges": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "quarantine_thresholds_reported": [
+      0.85,
+      0.6
+    ],
+    "throughput_floor": 0.8,
+    "training": {
+      "episodes": 20,
+      "steps_per_episode": 600,
+      "epsilon_decay_per_step": 0.999,
+      "epsilon_min": 0.05,
+      "learning_rate": 0.01,
+      "stopping_rule": "stop at 20 episodes, or early if Q-growth < 1 for 6 consecutive episodes"
+    },
+    "decision_rule": {
+      "ci": 0.95,
+      "resamples": 2000,
+      "min_win_rate": 0.6
+    },
+    "max_tuning_configs": 20,
+    "conditions": [
+      "v1",
+      "v1_corrected",
+      "v2"
+    ]
+  },
+  "regime": "overlay",
+  "rows": 3240,
+  "timestamp_utc": "20261030_155951"
+}

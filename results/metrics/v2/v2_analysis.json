@@ -1,0 +1,2609 @@
+{
+  "workload": {
+    "regime": "workload",
+    "source": "realdata_v2_runs_workload_20261030_155951.csv",
+    "conditions": {
+      "v1": {
+        "eligibility": {
+          "best_scheduler": "least_loaded",
+          "best_mean_completed": 302.95,
+          "cutoff": 242.36,
+          "means": {
+            "fcfs": 302.85,
+            "least_loaded": 302.95,
+            "marl": 302.78333333333336,
+            "risk_aware_marl": 302.34444444444443,
+            "rl": 130.31666666666666,
+            "round_robin": 301.76666666666665
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.5986,
+            "terminal_efc": 119.7482,
+            "crash_count": 27.6222,
+            "quarantine_time": 0.0,
+            "completed_tasks": 302.85,
+            "mean_risk_over_time": 0.3499,
+            "peak_gpu_risk": 0.6683,
+            "risk_per_completed_task": 0.002,
+            "crashes_per_completed_task": 0.1557,
+            "contested_pct": 0.0,
+            "admitted_pct": 17.4184
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.5987,
+            "terminal_efc": 119.5484,
+            "crash_count": 27.4278,
+            "quarantine_time": 0.0,
+            "completed_tasks": 302.95,
+            "mean_risk_over_time": 0.3505,
+            "peak_gpu_risk": 0.6667,
+            "risk_per_completed_task": 0.002,
+            "crashes_per_completed_task": 0.1555,
+            "contested_pct": 0.0,
+            "admitted_pct": 17.4487
+          },
+          "marl": {
+            "avg_risk_exposure": 0.5999,
+            "terminal_efc": 120.197,
+            "crash_count": 27.5389,
+            "quarantine_time": 0.0,
+            "completed_tasks": 302.7833,
+            "mean_risk_over_time": 0.3519,
+            "peak_gpu_risk": 0.6644,
+            "risk_per_completed_task": 0.002,
+            "crashes_per_completed_task": 0.1558,
+            "contested_pct": 4.7165,
+            "admitted_pct": 17.449
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.6032,
+            "terminal_efc": 120.6666,
+            "crash_count": 27.7222,
+            "quarantine_time": 0.0,
+            "completed_tasks": 302.3444,
+            "mean_risk_over_time": 0.3542,
+            "peak_gpu_risk": 0.6661,
+            "risk_per_completed_task": 0.002,
+            "crashes_per_completed_task": 0.1561,
+            "contested_pct": 4.6596,
+            "admitted_pct": 17.4086
+          },
+          "rl": {
+            "avg_risk_exposure": 0.2236,
+            "terminal_efc": 45.6628,
+            "crash_count": 9.6778,
+            "quarantine_time": 0.0,
+            "completed_tasks": 130.3167,
+            "mean_risk_over_time": 0.1343,
+            "peak_gpu_risk": 0.6622,
+            "risk_per_completed_task": 0.0018,
+            "crashes_per_completed_task": 0.1387,
+            "contested_pct": 0.0,
+            "admitted_pct": 8.7694
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.5959,
+            "terminal_efc": 119.4396,
+            "crash_count": 27.5444,
+            "quarantine_time": 0.0,
+            "completed_tasks": 301.7667,
+            "mean_risk_over_time": 0.351,
+            "peak_gpu_risk": 0.6643,
+            "risk_per_completed_task": 0.002,
+            "crashes_per_completed_task": 0.1558,
+            "contested_pct": 0.0,
+            "admitted_pct": 17.3805
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              302.85,
+              0.3499478182264514
+            ],
+            "least_loaded": [
+              302.95,
+              0.3504596208450056
+            ],
+            "marl": [
+              302.78333333333336,
+              0.35193678035498877
+            ],
+            "risk_aware_marl": [
+              302.34444444444443,
+              0.3541636112326486
+            ],
+            "rl": [
+              130.31666666666666,
+              0.13434690885416667
+            ],
+            "round_robin": [
+              301.76666666666665,
+              0.35098193175146747
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "least_loaded",
+            "rl"
+          ],
+          "dominated_by": {
+            "marl": [
+              "fcfs",
+              "least_loaded"
+            ],
+            "risk_aware_marl": [
+              "fcfs",
+              "least_loaded",
+              "marl"
+            ],
+            "round_robin": [
+              "fcfs",
+              "least_loaded"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 24.58888888888889,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 973,
+            "trigger_share": 0.9009259259259259,
+            "crashes_when_triggered": 26.297019527235353,
+            "crashes_when_not": 9.05607476635514,
+            "crash_delta": 17.24094476088021,
+            "fewer_crashes_when_triggered": false,
+            "testable": true
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "fcfs",
+              "treatment_mean": 0.0020116920301035002,
+              "baseline_mean": 0.0019911166950311848,
+              "mean_diff": -2.0575335072316066e-05,
+              "ci_low": -3.2885530159197556e-05,
+              "ci_high": -8.475436746182537e-06,
+              "win_rate": 0.36666666666666664,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.0020116920301035002,
+              "baseline_mean": 0.0017942670015556445,
+              "mean_diff": -0.0002174250285478554,
+              "ci_low": -0.0002644227629394339,
+              "ci_high": -0.00016953803598338132,
+              "win_rate": 0.21666666666666667,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 0.1560940470667629,
+              "baseline_mean": 0.15545284078171256,
+              "mean_diff": -0.0006412062850503092,
+              "ci_low": -0.001593033688802983,
+              "ci_high": 0.0003588653575924672,
+              "win_rate": 0.38333333333333336,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.1560940470667629,
+              "baseline_mean": 0.13869893285439164,
+              "mean_diff": -0.017395114212371224,
+              "ci_low": -0.020108467669188616,
+              "ci_high": -0.01472639105845075,
+              "win_rate": 0.14444444444444443,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 302.34444444444443,
+              "baseline_mean": 302.95,
+              "mean_diff": -0.6055555555555555,
+              "ci_low": -3.922361111111111,
+              "ci_high": 2.739999999999994,
+              "win_rate": 0.4,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 302.34444444444443,
+              "baseline_mean": 302.95,
+              "mean_diff": -0.6055555555555555,
+              "ci_low": -3.922361111111111,
+              "ci_high": 2.739999999999994,
+              "win_rate": 0.4,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 302.34444444444443,
+            "best_mean_completed": 302.95
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "least_loaded",
+              "rl"
+            ],
+            "treatment_on_frontier": false,
+            "dominated_by": [
+              "fcfs",
+              "least_loaded",
+              "marl"
+            ],
+            "verdict": "REJECTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 24.58888888888889,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 973,
+              "trigger_share": 0.9009259259259259,
+              "crashes_when_triggered": 26.297019527235353,
+              "crashes_when_not": 9.05607476635514,
+              "crash_delta": 17.24094476088021,
+              "fewer_crashes_when_triggered": false,
+              "testable": true
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "REJECTED"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 187.0667,
+            "mean_risk_over_time": 0.2837,
+            "crash_count": 18.15,
+            "risk_per_completed_task": 0.0023,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 187.7667,
+            "mean_risk_over_time": 0.2844,
+            "crash_count": 17.45,
+            "risk_per_completed_task": 0.0023,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 187.9167,
+            "mean_risk_over_time": 0.2874,
+            "crash_count": 17.8833,
+            "risk_per_completed_task": 0.0023,
+            "contested_pct": 13.96
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 187.2667,
+            "mean_risk_over_time": 0.2917,
+            "crash_count": 17.7833,
+            "risk_per_completed_task": 0.0024,
+            "contested_pct": 13.7947
+          },
+          "0.3|rl": {
+            "completed_tasks": 118.1167,
+            "mean_risk_over_time": 0.125,
+            "crash_count": 8.8667,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 187.6667,
+            "mean_risk_over_time": 0.2844,
+            "crash_count": 17.25,
+            "risk_per_completed_task": 0.0023,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 357.7667,
+            "mean_risk_over_time": 0.3801,
+            "crash_count": 32.0333,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 358.0,
+            "mean_risk_over_time": 0.3798,
+            "crash_count": 32.1333,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 356.9667,
+            "mean_risk_over_time": 0.3826,
+            "crash_count": 32.4667,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.1163
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 356.5667,
+            "mean_risk_over_time": 0.3821,
+            "crash_count": 32.6,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.1139
+          },
+          "1.1|rl": {
+            "completed_tasks": 133.8333,
+            "mean_risk_over_time": 0.1386,
+            "crash_count": 10.2333,
+            "risk_per_completed_task": 0.0017,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 353.2167,
+            "mean_risk_over_time": 0.3812,
+            "crash_count": 32.5,
+            "risk_per_completed_task": 0.0019,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 363.7167,
+            "mean_risk_over_time": 0.386,
+            "crash_count": 32.6833,
+            "risk_per_completed_task": 0.0018,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 363.0833,
+            "mean_risk_over_time": 0.3872,
+            "crash_count": 32.7,
+            "risk_per_completed_task": 0.0018,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 363.4667,
+            "mean_risk_over_time": 0.3858,
+            "crash_count": 32.2667,
+            "risk_per_completed_task": 0.0018,
+            "contested_pct": 0.0732
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 363.2,
+            "mean_risk_over_time": 0.3887,
+            "crash_count": 32.7833,
+            "risk_per_completed_task": 0.0018,
+            "contested_pct": 0.0701
+          },
+          "1.4|rl": {
+            "completed_tasks": 139.0,
+            "mean_risk_over_time": 0.1394,
+            "crash_count": 9.9333,
+            "risk_per_completed_task": 0.0017,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 364.4167,
+            "mean_risk_over_time": 0.3873,
+            "crash_count": 32.8833,
+            "risk_per_completed_task": 0.0018,
+            "contested_pct": 0.0
+          }
+        }
+      },
+      "v1_corrected": {
+        "eligibility": {
+          "best_scheduler": "risk_aware_marl",
+          "best_mean_completed": 128.37222222222223,
+          "cutoff": 102.69777777777779,
+          "means": {
+            "fcfs": 127.65555555555555,
+            "least_loaded": 128.3388888888889,
+            "marl": 128.31666666666666,
+            "risk_aware_marl": 128.37222222222223,
+            "rl": 87.6,
+            "round_robin": 128.32222222222222
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.3635,
+            "terminal_efc": 32.9491,
+            "crash_count": 6.8833,
+            "quarantine_time": 0.0,
+            "completed_tasks": 127.6556,
+            "mean_risk_over_time": 0.1504,
+            "peak_gpu_risk": 0.5567,
+            "risk_per_completed_task": 0.003,
+            "crashes_per_completed_task": 0.0847,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.6543
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.3672,
+            "terminal_efc": 31.7697,
+            "crash_count": 6.1389,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3389,
+            "mean_risk_over_time": 0.1513,
+            "peak_gpu_risk": 0.544,
+            "risk_per_completed_task": 0.003,
+            "crashes_per_completed_task": 0.0815,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.9337
+          },
+          "marl": {
+            "avg_risk_exposure": 0.3838,
+            "terminal_efc": 28.9216,
+            "crash_count": 5.7889,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3167,
+            "mean_risk_over_time": 0.1611,
+            "peak_gpu_risk": 0.5062,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.0586,
+            "contested_pct": 23.7644,
+            "admitted_pct": 31.1375
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.3935,
+            "terminal_efc": 28.4376,
+            "crash_count": 5.9,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3722,
+            "mean_risk_over_time": 0.1636,
+            "peak_gpu_risk": 0.4708,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.061,
+            "contested_pct": 23.706,
+            "admitted_pct": 31.0231
+          },
+          "rl": {
+            "avg_risk_exposure": 0.1757,
+            "terminal_efc": 27.2874,
+            "crash_count": 5.3056,
+            "quarantine_time": 0.0,
+            "completed_tasks": 87.6,
+            "mean_risk_over_time": 0.0976,
+            "peak_gpu_risk": 0.605,
+            "risk_per_completed_task": 0.0028,
+            "crashes_per_completed_task": 0.1104,
+            "contested_pct": 0.0,
+            "admitted_pct": 22.4608
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.3776,
+            "terminal_efc": 28.5182,
+            "crash_count": 5.4,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3222,
+            "mean_risk_over_time": 0.1569,
+            "peak_gpu_risk": 0.4901,
+            "risk_per_completed_task": 0.0031,
+            "crashes_per_completed_task": 0.0591,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.9268
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              127.65555555555555,
+              0.15038878987725338
+            ],
+            "least_loaded": [
+              128.3388888888889,
+              0.15131793664444865
+            ],
+            "marl": [
+              128.31666666666666,
+              0.1611299816649958
+            ],
+            "risk_aware_marl": [
+              128.37222222222223,
+              0.16360559779795714
+            ],
+            "rl": [
+              87.6,
+              0.09756697800925927
+            ],
+            "round_robin": [
+              128.32222222222222,
+              0.15690177207624753
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "least_loaded",
+            "risk_aware_marl",
+            "rl"
+          ],
+          "dominated_by": {
+            "marl": [
+              "least_loaded",
+              "round_robin"
+            ],
+            "round_robin": [
+              "least_loaded"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 5.902777777777778,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 278,
+            "trigger_share": 0.2574074074074074,
+            "crashes_when_triggered": 10.741007194244604,
+            "crashes_when_not": 4.22568578553616,
+            "crash_delta": 6.515321408708444,
+            "fewer_crashes_when_triggered": false,
+            "testable": false
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "fcfs",
+              "treatment_mean": 0.00318646699263644,
+              "baseline_mean": 0.0029943364856172276,
+              "mean_diff": -0.00019213050701921233,
+              "ci_low": -0.0002809251028603525,
+              "ci_high": -9.402994276522841e-05,
+              "win_rate": 0.22777777777777777,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.00318646699263644,
+              "baseline_mean": 0.002792643710247596,
+              "mean_diff": -0.0003938232823888439,
+              "ci_low": -0.0005723251758804855,
+              "ci_high": -0.00019261488540351764,
+              "win_rate": 0.14444444444444443,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.060970877071200864,
+              "baseline_mean": 0.058591994303604546,
+              "mean_diff": -0.002378882767596311,
+              "ci_low": -0.004306985260917998,
+              "ci_high": -0.0004309321154501835,
+              "win_rate": 0.2222222222222222,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.060970877071200864,
+              "baseline_mean": 0.058591994303604546,
+              "mean_diff": -0.002378882767596311,
+              "ci_low": -0.004306985260917998,
+              "ci_high": -0.0004309321154501835,
+              "win_rate": 0.2222222222222222,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 128.37222222222223,
+              "baseline_mean": 128.3388888888889,
+              "mean_diff": 0.03333333333333333,
+              "ci_low": -0.23333333333333334,
+              "ci_high": 0.28888888888888886,
+              "win_rate": 0.3277777777777778,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 128.37222222222223,
+              "baseline_mean": 128.3388888888889,
+              "mean_diff": 0.03333333333333333,
+              "ci_low": -0.23333333333333334,
+              "ci_high": 0.28888888888888886,
+              "win_rate": 0.3277777777777778,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 128.37222222222223,
+            "best_mean_completed": 128.37222222222223
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "least_loaded",
+              "risk_aware_marl",
+              "rl"
+            ],
+            "treatment_on_frontier": true,
+            "dominated_by": [],
+            "verdict": "SUPPORTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 5.902777777777778,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 278,
+              "trigger_share": 0.2574074074074074,
+              "crashes_when_triggered": 10.741007194244604,
+              "crashes_when_not": 4.22568578553616,
+              "crash_delta": 6.515321408708444,
+              "fewer_crashes_when_triggered": false,
+              "testable": false
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "INCONCLUSIVE"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 43.35,
+            "mean_risk_over_time": 0.0642,
+            "crash_count": 0.65,
+            "risk_per_completed_task": 0.0037,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 43.7333,
+            "mean_risk_over_time": 0.066,
+            "crash_count": 0.5667,
+            "risk_per_completed_task": 0.0037,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 44.3833,
+            "mean_risk_over_time": 0.0671,
+            "crash_count": 0.0,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 33.1757
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 44.2667,
+            "mean_risk_over_time": 0.0664,
+            "crash_count": 0.0,
+            "risk_per_completed_task": 0.0034,
+            "contested_pct": 32.7174
+          },
+          "0.3|rl": {
+            "completed_tasks": 40.4167,
+            "mean_risk_over_time": 0.0615,
+            "crash_count": 1.55,
+            "risk_per_completed_task": 0.004,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 43.9833,
+            "mean_risk_over_time": 0.0626,
+            "crash_count": 0.05,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 150.7333,
+            "mean_risk_over_time": 0.1736,
+            "crash_count": 8.2333,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 151.1833,
+            "mean_risk_over_time": 0.1737,
+            "crash_count": 7.3167,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 151.05,
+            "mean_risk_over_time": 0.1912,
+            "crash_count": 6.6333,
+            "risk_per_completed_task": 0.0031,
+            "contested_pct": 21.9985
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 151.25,
+            "mean_risk_over_time": 0.193,
+            "crash_count": 6.8667,
+            "risk_per_completed_task": 0.0031,
+            "contested_pct": 22.0287
+          },
+          "1.1|rl": {
+            "completed_tasks": 108.25,
+            "mean_risk_over_time": 0.1091,
+            "crash_count": 6.4667,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 151.2,
+            "mean_risk_over_time": 0.1863,
+            "crash_count": 5.95,
+            "risk_per_completed_task": 0.003,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 188.8833,
+            "mean_risk_over_time": 0.2133,
+            "crash_count": 11.7667,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 190.1,
+            "mean_risk_over_time": 0.2142,
+            "crash_count": 10.5333,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 189.5167,
+            "mean_risk_over_time": 0.225,
+            "crash_count": 10.7333,
+            "risk_per_completed_task": 0.0029,
+            "contested_pct": 16.119
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 189.6,
+            "mean_risk_over_time": 0.2314,
+            "crash_count": 10.8333,
+            "risk_per_completed_task": 0.003,
+            "contested_pct": 16.372
+          },
+          "1.4|rl": {
+            "completed_tasks": 114.1333,
+            "mean_risk_over_time": 0.1221,
+            "crash_count": 7.9,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 189.7833,
+            "mean_risk_over_time": 0.2217,
+            "crash_count": 10.2,
+            "risk_per_completed_task": 0.0029,
+            "contested_pct": 0.0
+          }
+        }
+      },
+      "v2": {
+        "eligibility": {
+          "best_scheduler": "least_loaded",
+          "best_mean_completed": 128.3388888888889,
+          "cutoff": 102.67111111111113,
+          "means": {
+            "fcfs": 127.65555555555555,
+            "least_loaded": 128.3388888888889,
+            "marl": 128.3111111111111,
+            "risk_aware_marl": 128.27777777777777,
+            "rl": 87.70555555555555,
+            "round_robin": 128.32222222222222
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.3635,
+            "terminal_efc": 32.9491,
+            "crash_count": 6.8833,
+            "quarantine_time": 0.0,
+            "completed_tasks": 127.6556,
+            "mean_risk_over_time": 0.1504,
+            "peak_gpu_risk": 0.5567,
+            "risk_per_completed_task": 0.003,
+            "crashes_per_completed_task": 0.0847,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.6543
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.3672,
+            "terminal_efc": 31.7697,
+            "crash_count": 6.1389,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3389,
+            "mean_risk_over_time": 0.1513,
+            "peak_gpu_risk": 0.544,
+            "risk_per_completed_task": 0.003,
+            "crashes_per_completed_task": 0.0815,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.9337
+          },
+          "marl": {
+            "avg_risk_exposure": 0.3818,
+            "terminal_efc": 29.1122,
+            "crash_count": 5.9111,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3111,
+            "mean_risk_over_time": 0.1597,
+            "peak_gpu_risk": 0.5025,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.0615,
+            "contested_pct": 23.7538,
+            "admitted_pct": 31.0657
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.3902,
+            "terminal_efc": 28.3462,
+            "crash_count": 5.8056,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.2778,
+            "mean_risk_over_time": 0.163,
+            "peak_gpu_risk": 0.4694,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.0606,
+            "contested_pct": 23.6298,
+            "admitted_pct": 31.0095
+          },
+          "rl": {
+            "avg_risk_exposure": 0.1762,
+            "terminal_efc": 27.323,
+            "crash_count": 5.3167,
+            "quarantine_time": 0.0,
+            "completed_tasks": 87.7056,
+            "mean_risk_over_time": 0.0977,
+            "peak_gpu_risk": 0.6052,
+            "risk_per_completed_task": 0.0028,
+            "crashes_per_completed_task": 0.1105,
+            "contested_pct": 0.0,
+            "admitted_pct": 22.4811
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.3776,
+            "terminal_efc": 28.5182,
+            "crash_count": 5.4,
+            "quarantine_time": 0.0,
+            "completed_tasks": 128.3222,
+            "mean_risk_over_time": 0.1569,
+            "peak_gpu_risk": 0.4901,
+            "risk_per_completed_task": 0.0031,
+            "crashes_per_completed_task": 0.0591,
+            "contested_pct": 0.0,
+            "admitted_pct": 30.9268
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              127.65555555555555,
+              0.15038878987725338
+            ],
+            "least_loaded": [
+              128.3388888888889,
+              0.15131793664444865
+            ],
+            "marl": [
+              128.3111111111111,
+              0.15972700499212156
+            ],
+            "risk_aware_marl": [
+              128.27777777777777,
+              0.16300968461421939
+            ],
+            "rl": [
+              87.70555555555555,
+              0.0977389837962963
+            ],
+            "round_robin": [
+              128.32222222222222,
+              0.15690177207624753
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "least_loaded",
+            "rl"
+          ],
+          "dominated_by": {
+            "marl": [
+              "least_loaded",
+              "round_robin"
+            ],
+            "risk_aware_marl": [
+              "least_loaded",
+              "marl",
+              "round_robin"
+            ],
+            "round_robin": [
+              "least_loaded"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 5.909259259259259,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 282,
+            "trigger_share": 0.2611111111111111,
+            "crashes_when_triggered": 10.680851063829786,
+            "crashes_when_not": 4.223057644110276,
+            "crash_delta": 6.45779341971951,
+            "fewer_crashes_when_triggered": false,
+            "testable": false
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "fcfs",
+              "treatment_mean": 0.0031891977492171605,
+              "baseline_mean": 0.0029943364856172276,
+              "mean_diff": -0.00019486126359993258,
+              "ci_low": -0.00027407646808125377,
+              "ci_high": -0.00011057569530021518,
+              "win_rate": 0.25555555555555554,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.0031891977492171605,
+              "baseline_mean": 0.0027936463338543863,
+              "mean_diff": -0.0003955514153627738,
+              "ci_low": -0.0005652390967848789,
+              "ci_high": -0.00020497271571211082,
+              "win_rate": 0.16666666666666666,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "round_robin",
+              "treatment_mean": 0.06055740758751041,
+              "baseline_mean": 0.05906724227895892,
+              "mean_diff": -0.0014901653085514976,
+              "ci_low": -0.0036065164600223,
+              "ci_high": 0.0005718323018739856,
+              "win_rate": 0.20555555555555555,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "round_robin",
+              "treatment_mean": 0.06055740758751041,
+              "baseline_mean": 0.05906724227895892,
+              "mean_diff": -0.0014901653085514976,
+              "ci_low": -0.0036065164600223,
+              "ci_high": 0.0005718323018739856,
+              "win_rate": 0.20555555555555555,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 128.27777777777777,
+              "baseline_mean": 128.3388888888889,
+              "mean_diff": -0.06111111111111111,
+              "ci_low": -0.35013888888888883,
+              "ci_high": 0.2111111111111111,
+              "win_rate": 0.2611111111111111,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "least_loaded",
+              "treatment_mean": 128.27777777777777,
+              "baseline_mean": 128.3388888888889,
+              "mean_diff": -0.06111111111111111,
+              "ci_low": -0.35013888888888883,
+              "ci_high": 0.2111111111111111,
+              "win_rate": 0.2611111111111111,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 128.27777777777777,
+            "best_mean_completed": 128.3388888888889
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "least_loaded",
+              "rl"
+            ],
+            "treatment_on_frontier": false,
+            "dominated_by": [
+              "least_loaded",
+              "marl",
+              "round_robin"
+            ],
+            "verdict": "REJECTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 5.909259259259259,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 282,
+              "trigger_share": 0.2611111111111111,
+              "crashes_when_triggered": 10.680851063829786,
+              "crashes_when_not": 4.223057644110276,
+              "crash_delta": 6.45779341971951,
+              "fewer_crashes_when_triggered": false,
+              "testable": false
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "INCONCLUSIVE"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 43.35,
+            "mean_risk_over_time": 0.0642,
+            "crash_count": 0.65,
+            "risk_per_completed_task": 0.0037,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 43.7333,
+            "mean_risk_over_time": 0.066,
+            "crash_count": 0.5667,
+            "risk_per_completed_task": 0.0037,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 44.1833,
+            "mean_risk_over_time": 0.067,
+            "crash_count": 0.1,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 32.9901
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 44.0333,
+            "mean_risk_over_time": 0.0667,
+            "crash_count": 0.05,
+            "risk_per_completed_task": 0.0035,
+            "contested_pct": 32.7835
+          },
+          "0.3|rl": {
+            "completed_tasks": 40.45,
+            "mean_risk_over_time": 0.0616,
+            "crash_count": 1.55,
+            "risk_per_completed_task": 0.004,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 43.9833,
+            "mean_risk_over_time": 0.0626,
+            "crash_count": 0.05,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 150.7333,
+            "mean_risk_over_time": 0.1736,
+            "crash_count": 8.2333,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 151.1833,
+            "mean_risk_over_time": 0.1737,
+            "crash_count": 7.3167,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 151.3,
+            "mean_risk_over_time": 0.1879,
+            "crash_count": 6.6833,
+            "risk_per_completed_task": 0.003,
+            "contested_pct": 22.0647
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 151.2667,
+            "mean_risk_over_time": 0.1916,
+            "crash_count": 6.5833,
+            "risk_per_completed_task": 0.0031,
+            "contested_pct": 21.9573
+          },
+          "1.1|rl": {
+            "completed_tasks": 108.5333,
+            "mean_risk_over_time": 0.1095,
+            "crash_count": 6.5,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 151.2,
+            "mean_risk_over_time": 0.1863,
+            "crash_count": 5.95,
+            "risk_per_completed_task": 0.003,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 188.8833,
+            "mean_risk_over_time": 0.2133,
+            "crash_count": 11.7667,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 190.1,
+            "mean_risk_over_time": 0.2142,
+            "crash_count": 10.5333,
+            "risk_per_completed_task": 0.0027,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 189.45,
+            "mean_risk_over_time": 0.2243,
+            "crash_count": 10.95,
+            "risk_per_completed_task": 0.0029,
+            "contested_pct": 16.2064
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 189.5333,
+            "mean_risk_over_time": 0.2307,
+            "crash_count": 10.7833,
+            "risk_per_completed_task": 0.003,
+            "contested_pct": 16.1486
+          },
+          "1.4|rl": {
+            "completed_tasks": 114.1333,
+            "mean_risk_over_time": 0.1221,
+            "crash_count": 7.9,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 189.7833,
+            "mean_risk_over_time": 0.2217,
+            "crash_count": 10.2,
+            "risk_per_completed_task": 0.0029,
+            "contested_pct": 0.0
+          }
+        }
+      }
+    }
+  },
+  "overlay": {
+    "regime": "overlay",
+    "source": "realdata_v2_runs_overlay_20261030_155951.csv",
+    "conditions": {
+      "v1": {
+        "eligibility": {
+          "best_scheduler": "marl",
+          "best_mean_completed": 275.1722222222222,
+          "cutoff": 220.13777777777779,
+          "means": {
+            "fcfs": 274.31111111111113,
+            "least_loaded": 271.80555555555554,
+            "marl": 275.1722222222222,
+            "risk_aware_marl": 274.06666666666666,
+            "rl": 121.3,
+            "round_robin": 274.5833333333333
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.6513,
+            "terminal_efc": 170.6375,
+            "crash_count": 34.2833,
+            "quarantine_time": 0.0,
+            "completed_tasks": 274.3111,
+            "mean_risk_over_time": 0.4232,
+            "peak_gpu_risk": 0.7161,
+            "risk_per_completed_task": 0.0023,
+            "crashes_per_completed_task": 0.178,
+            "contested_pct": 0.0,
+            "admitted_pct": 18.3122
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.6513,
+            "terminal_efc": 171.3364,
+            "crash_count": 34.2889,
+            "quarantine_time": 0.0,
+            "completed_tasks": 271.8056,
+            "mean_risk_over_time": 0.4236,
+            "peak_gpu_risk": 0.716,
+            "risk_per_completed_task": 0.0023,
+            "crashes_per_completed_task": 0.1785,
+            "contested_pct": 0.0,
+            "admitted_pct": 18.3019
+          },
+          "marl": {
+            "avg_risk_exposure": 0.6483,
+            "terminal_efc": 170.9716,
+            "crash_count": 34.1,
+            "quarantine_time": 0.0,
+            "completed_tasks": 275.1722,
+            "mean_risk_over_time": 0.4239,
+            "peak_gpu_risk": 0.7144,
+            "risk_per_completed_task": 0.0023,
+            "crashes_per_completed_task": 0.1768,
+            "contested_pct": 3.3386,
+            "admitted_pct": 18.367
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.6522,
+            "terminal_efc": 170.7574,
+            "crash_count": 34.1722,
+            "quarantine_time": 0.0,
+            "completed_tasks": 274.0667,
+            "mean_risk_over_time": 0.4328,
+            "peak_gpu_risk": 0.7134,
+            "risk_per_completed_task": 0.0024,
+            "crashes_per_completed_task": 0.1777,
+            "contested_pct": 3.25,
+            "admitted_pct": 18.3633
+          },
+          "rl": {
+            "avg_risk_exposure": 0.3051,
+            "terminal_efc": 63.7805,
+            "crash_count": 12.6111,
+            "quarantine_time": 0.0,
+            "completed_tasks": 121.3,
+            "mean_risk_over_time": 0.1836,
+            "peak_gpu_risk": 0.7104,
+            "risk_per_completed_task": 0.0022,
+            "crashes_per_completed_task": 0.1587,
+            "contested_pct": 0.0,
+            "admitted_pct": 8.9018
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.6494,
+            "terminal_efc": 170.2878,
+            "crash_count": 33.8167,
+            "quarantine_time": 0.0,
+            "completed_tasks": 274.5833,
+            "mean_risk_over_time": 0.4305,
+            "peak_gpu_risk": 0.713,
+            "risk_per_completed_task": 0.0024,
+            "crashes_per_completed_task": 0.1761,
+            "contested_pct": 0.0,
+            "admitted_pct": 18.3353
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              274.31111111111113,
+              0.4231641442286259
+            ],
+            "least_loaded": [
+              271.80555555555554,
+              0.4235889378157083
+            ],
+            "marl": [
+              275.1722222222222,
+              0.423896884051397
+            ],
+            "risk_aware_marl": [
+              274.06666666666666,
+              0.4328278820081877
+            ],
+            "rl": [
+              121.3,
+              0.18360926575256797
+            ],
+            "round_robin": [
+              274.5833333333333,
+              0.4305355689541222
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "marl",
+            "rl"
+          ],
+          "dominated_by": {
+            "least_loaded": [
+              "fcfs"
+            ],
+            "risk_aware_marl": [
+              "fcfs",
+              "marl",
+              "round_robin"
+            ],
+            "round_robin": [
+              "marl"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 30.54537037037037,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 1080,
+            "trigger_share": 1.0,
+            "crashes_when_triggered": 30.54537037037037,
+            "crashes_when_not": null,
+            "testable": true
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.00236505055411177,
+              "baseline_mean": 0.0023368382890839447,
+              "mean_diff": -2.821226502782485e-05,
+              "ci_low": -4.230993446881924e-05,
+              "ci_high": -1.3811723832743142e-05,
+              "win_rate": 0.37777777777777777,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.00236505055411177,
+              "baseline_mean": 0.002239147066503554,
+              "mean_diff": -0.00012590348760821562,
+              "ci_low": -0.00018207676879651756,
+              "ci_high": -6.992283861059825e-05,
+              "win_rate": 0.42777777777777776,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "round_robin",
+              "treatment_mean": 0.17767314381767854,
+              "baseline_mean": 0.17610376140612824,
+              "mean_diff": -0.0015693824115502904,
+              "ci_low": -0.0030955539700541425,
+              "ci_high": -0.0001685759599259867,
+              "win_rate": 0.3888888888888889,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.17767314381767854,
+              "baseline_mean": 0.15867874045411795,
+              "mean_diff": -0.018994403363560546,
+              "ci_low": -0.022269446021206337,
+              "ci_high": -0.015985299552526703,
+              "win_rate": 0.13333333333333333,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "marl",
+              "treatment_mean": 274.06666666666666,
+              "baseline_mean": 275.1722222222222,
+              "mean_diff": -1.1055555555555556,
+              "ci_low": -4.6,
+              "ci_high": 2.3334722222222215,
+              "win_rate": 0.4222222222222222,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "marl",
+              "treatment_mean": 274.06666666666666,
+              "baseline_mean": 275.1722222222222,
+              "mean_diff": -1.1055555555555556,
+              "ci_low": -4.6,
+              "ci_high": 2.3334722222222215,
+              "win_rate": 0.4222222222222222,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 274.06666666666666,
+            "best_mean_completed": 275.1722222222222
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "marl",
+              "rl"
+            ],
+            "treatment_on_frontier": false,
+            "dominated_by": [
+              "fcfs",
+              "marl",
+              "round_robin"
+            ],
+            "verdict": "REJECTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 30.54537037037037,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 1080,
+              "trigger_share": 1.0,
+              "crashes_when_triggered": 30.54537037037037,
+              "crashes_when_not": null,
+              "testable": true
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "REJECTED"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 185.1833,
+            "mean_risk_over_time": 0.3696,
+            "crash_count": 24.2667,
+            "risk_per_completed_task": 0.0028,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 185.6,
+            "mean_risk_over_time": 0.3697,
+            "crash_count": 23.8833,
+            "risk_per_completed_task": 0.0028,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 185.25,
+            "mean_risk_over_time": 0.37,
+            "crash_count": 23.8667,
+            "risk_per_completed_task": 0.0028,
+            "contested_pct": 9.8648
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 185.05,
+            "mean_risk_over_time": 0.3752,
+            "crash_count": 24.2,
+            "risk_per_completed_task": 0.0028,
+            "contested_pct": 9.6037
+          },
+          "0.3|rl": {
+            "completed_tasks": 104.8833,
+            "mean_risk_over_time": 0.1681,
+            "crash_count": 11.5667,
+            "risk_per_completed_task": 0.0024,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 185.6333,
+            "mean_risk_over_time": 0.3711,
+            "crash_count": 23.3,
+            "risk_per_completed_task": 0.0028,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 312.5833,
+            "mean_risk_over_time": 0.4454,
+            "crash_count": 38.8833,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 306.3333,
+            "mean_risk_over_time": 0.4468,
+            "crash_count": 39.4833,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 315.8167,
+            "mean_risk_over_time": 0.4456,
+            "crash_count": 38.95,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0911
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 314.7,
+            "mean_risk_over_time": 0.4565,
+            "crash_count": 39.0667,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0872
+          },
+          "1.1|rl": {
+            "completed_tasks": 130.4667,
+            "mean_risk_over_time": 0.1866,
+            "crash_count": 13.25,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 311.3667,
+            "mean_risk_over_time": 0.4553,
+            "crash_count": 38.7333,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 325.1667,
+            "mean_risk_over_time": 0.4545,
+            "crash_count": 39.7,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 323.4833,
+            "mean_risk_over_time": 0.4543,
+            "crash_count": 39.5,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 324.45,
+            "mean_risk_over_time": 0.456,
+            "crash_count": 39.4833,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0601
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 322.45,
+            "mean_risk_over_time": 0.4669,
+            "crash_count": 39.25,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0591
+          },
+          "1.4|rl": {
+            "completed_tasks": 128.55,
+            "mean_risk_over_time": 0.1962,
+            "crash_count": 13.0167,
+            "risk_per_completed_task": 0.0022,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 326.75,
+            "mean_risk_over_time": 0.4652,
+            "crash_count": 39.4167,
+            "risk_per_completed_task": 0.0021,
+            "contested_pct": 0.0
+          }
+        }
+      },
+      "v1_corrected": {
+        "eligibility": {
+          "best_scheduler": "marl",
+          "best_mean_completed": 126.45,
+          "cutoff": 101.16000000000001,
+          "means": {
+            "fcfs": 126.05555555555556,
+            "least_loaded": 126.00555555555556,
+            "marl": 126.45,
+            "risk_aware_marl": 125.85,
+            "rl": 82.79444444444445,
+            "round_robin": 126.20555555555555
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.4499,
+            "terminal_efc": 64.1302,
+            "crash_count": 11.5056,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.0556,
+            "mean_risk_over_time": 0.2155,
+            "peak_gpu_risk": 0.6155,
+            "risk_per_completed_task": 0.0036,
+            "crashes_per_completed_task": 0.1072,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.7833
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.456,
+            "terminal_efc": 63.1844,
+            "crash_count": 10.95,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.0056,
+            "mean_risk_over_time": 0.2189,
+            "peak_gpu_risk": 0.6102,
+            "risk_per_completed_task": 0.0037,
+            "crashes_per_completed_task": 0.1047,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.9991
+          },
+          "marl": {
+            "avg_risk_exposure": 0.4855,
+            "terminal_efc": 60.8677,
+            "crash_count": 10.2222,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.45,
+            "mean_risk_over_time": 0.2353,
+            "peak_gpu_risk": 0.5779,
+            "risk_per_completed_task": 0.004,
+            "crashes_per_completed_task": 0.0792,
+            "contested_pct": 21.4638,
+            "admitted_pct": 34.0862
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.4958,
+            "terminal_efc": 60.392,
+            "crash_count": 10.3,
+            "quarantine_time": 0.0,
+            "completed_tasks": 125.85,
+            "mean_risk_over_time": 0.2436,
+            "peak_gpu_risk": 0.5636,
+            "risk_per_completed_task": 0.0042,
+            "crashes_per_completed_task": 0.0821,
+            "contested_pct": 21.2803,
+            "admitted_pct": 34.0684
+          },
+          "rl": {
+            "avg_risk_exposure": 0.2457,
+            "terminal_efc": 38.8751,
+            "crash_count": 7.3167,
+            "quarantine_time": 0.0,
+            "completed_tasks": 82.7944,
+            "mean_risk_over_time": 0.1312,
+            "peak_gpu_risk": 0.6491,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.1275,
+            "contested_pct": 0.0,
+            "admitted_pct": 23.7212
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.4794,
+            "terminal_efc": 60.4346,
+            "crash_count": 10.1556,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.2056,
+            "mean_risk_over_time": 0.2353,
+            "peak_gpu_risk": 0.571,
+            "risk_per_completed_task": 0.004,
+            "crashes_per_completed_task": 0.0817,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.9538
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              126.05555555555556,
+              0.2155226323061528
+            ],
+            "least_loaded": [
+              126.00555555555556,
+              0.21891248336761693
+            ],
+            "marl": [
+              126.45,
+              0.2352891132467277
+            ],
+            "risk_aware_marl": [
+              125.85,
+              0.24361042376145095
+            ],
+            "rl": [
+              82.79444444444445,
+              0.13120959665316015
+            ],
+            "round_robin": [
+              126.20555555555555,
+              0.23527396139547452
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "marl",
+            "rl",
+            "round_robin"
+          ],
+          "dominated_by": {
+            "least_loaded": [
+              "fcfs"
+            ],
+            "risk_aware_marl": [
+              "fcfs",
+              "least_loaded",
+              "marl",
+              "round_robin"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 10.075,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 562,
+            "trigger_share": 0.5203703703703704,
+            "crashes_when_triggered": 16.290035587188612,
+            "crashes_when_not": 3.332046332046332,
+            "crash_delta": 12.95798925514228,
+            "fewer_crashes_when_triggered": false,
+            "testable": true
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "fcfs",
+              "treatment_mean": 0.004217211799550472,
+              "baseline_mean": 0.0036203545417805853,
+              "mean_diff": -0.0005968572577698856,
+              "ci_low": -0.0007503544792393299,
+              "ci_high": -0.00045122683893101227,
+              "win_rate": 0.2111111111111111,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.004217211799550472,
+              "baseline_mean": 0.0032349866191245073,
+              "mean_diff": -0.0009822251804259636,
+              "ci_low": -0.0012377714054566849,
+              "ci_high": -0.000713707944591159,
+              "win_rate": 0.12222222222222222,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.08211093189162663,
+              "baseline_mean": 0.07915121758835245,
+              "mean_diff": -0.0029597143032741692,
+              "ci_low": -0.0054820358929083424,
+              "ci_high": -0.0005758761516605579,
+              "win_rate": 0.28888888888888886,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.08211093189162663,
+              "baseline_mean": 0.07915121758835245,
+              "mean_diff": -0.0029597143032741692,
+              "ci_low": -0.0054820358929083424,
+              "ci_high": -0.0005758761516605579,
+              "win_rate": 0.28888888888888886,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "marl",
+              "treatment_mean": 125.85,
+              "baseline_mean": 126.45,
+              "mean_diff": -0.6,
+              "ci_low": -1.038888888888889,
+              "ci_high": -0.18888888888888888,
+              "win_rate": 0.28888888888888886,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "marl",
+              "treatment_mean": 125.85,
+              "baseline_mean": 126.45,
+              "mean_diff": -0.6,
+              "ci_low": -1.038888888888889,
+              "ci_high": -0.18888888888888888,
+              "win_rate": 0.28888888888888886,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 125.85,
+            "best_mean_completed": 126.45
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "marl",
+              "rl",
+              "round_robin"
+            ],
+            "treatment_on_frontier": false,
+            "dominated_by": [
+              "fcfs",
+              "least_loaded",
+              "marl",
+              "round_robin"
+            ],
+            "verdict": "REJECTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 10.075,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 562,
+              "trigger_share": 0.5203703703703704,
+              "crashes_when_triggered": 16.290035587188612,
+              "crashes_when_not": 3.332046332046332,
+              "crash_delta": 12.95798925514228,
+              "fewer_crashes_when_triggered": false,
+              "testable": true
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "REJECTED"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 43.3167,
+            "mean_risk_over_time": 0.1056,
+            "crash_count": 2.0,
+            "risk_per_completed_task": 0.0043,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 43.3667,
+            "mean_risk_over_time": 0.1174,
+            "crash_count": 1.9833,
+            "risk_per_completed_task": 0.0045,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 43.5667,
+            "mean_risk_over_time": 0.1254,
+            "crash_count": 1.1833,
+            "risk_per_completed_task": 0.0045,
+            "contested_pct": 34.2685
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 43.45,
+            "mean_risk_over_time": 0.1362,
+            "crash_count": 1.15,
+            "risk_per_completed_task": 0.0048,
+            "contested_pct": 34.3324
+          },
+          "0.3|rl": {
+            "completed_tasks": 39.7667,
+            "mean_risk_over_time": 0.0833,
+            "crash_count": 2.6667,
+            "risk_per_completed_task": 0.0046,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 43.4833,
+            "mean_risk_over_time": 0.1288,
+            "crash_count": 1.2,
+            "risk_per_completed_task": 0.0045,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 149.6167,
+            "mean_risk_over_time": 0.249,
+            "crash_count": 13.9833,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 149.25,
+            "mean_risk_over_time": 0.2474,
+            "crash_count": 12.8333,
+            "risk_per_completed_task": 0.0032,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 149.7667,
+            "mean_risk_over_time": 0.2749,
+            "crash_count": 12.4167,
+            "risk_per_completed_task": 0.004,
+            "contested_pct": 18.1491
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 149.4167,
+            "mean_risk_over_time": 0.2777,
+            "crash_count": 12.0833,
+            "risk_per_completed_task": 0.004,
+            "contested_pct": 17.8037
+          },
+          "1.1|rl": {
+            "completed_tasks": 101.8333,
+            "mean_risk_over_time": 0.147,
+            "crash_count": 8.9167,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 149.8833,
+            "mean_risk_over_time": 0.2697,
+            "crash_count": 11.9667,
+            "risk_per_completed_task": 0.0038,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 185.2333,
+            "mean_risk_over_time": 0.292,
+            "crash_count": 18.5333,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 185.4,
+            "mean_risk_over_time": 0.292,
+            "crash_count": 18.0333,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 186.0167,
+            "mean_risk_over_time": 0.3056,
+            "crash_count": 17.0667,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 11.9737
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 184.6833,
+            "mean_risk_over_time": 0.317,
+            "crash_count": 17.6667,
+            "risk_per_completed_task": 0.0038,
+            "contested_pct": 11.7049
+          },
+          "1.4|rl": {
+            "completed_tasks": 106.7833,
+            "mean_risk_over_time": 0.1633,
+            "crash_count": 10.3667,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 185.25,
+            "mean_risk_over_time": 0.3073,
+            "crash_count": 17.3,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 0.0
+          }
+        }
+      },
+      "v2": {
+        "eligibility": {
+          "best_scheduler": "round_robin",
+          "best_mean_completed": 126.20555555555555,
+          "cutoff": 100.96444444444444,
+          "means": {
+            "fcfs": 126.05555555555556,
+            "least_loaded": 126.00555555555556,
+            "marl": 126.04444444444445,
+            "risk_aware_marl": 126.2,
+            "rl": 82.78888888888889,
+            "round_robin": 126.20555555555555
+          },
+          "eligible": [
+            "fcfs",
+            "least_loaded",
+            "marl",
+            "risk_aware_marl",
+            "round_robin"
+          ],
+          "infeasible": [
+            "rl"
+          ]
+        },
+        "table": {
+          "fcfs": {
+            "avg_risk_exposure": 0.4499,
+            "terminal_efc": 64.1302,
+            "crash_count": 11.5056,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.0556,
+            "mean_risk_over_time": 0.2155,
+            "peak_gpu_risk": 0.6155,
+            "risk_per_completed_task": 0.0036,
+            "crashes_per_completed_task": 0.1072,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.7833
+          },
+          "least_loaded": {
+            "avg_risk_exposure": 0.456,
+            "terminal_efc": 63.1844,
+            "crash_count": 10.95,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.0056,
+            "mean_risk_over_time": 0.2189,
+            "peak_gpu_risk": 0.6102,
+            "risk_per_completed_task": 0.0037,
+            "crashes_per_completed_task": 0.1047,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.9991
+          },
+          "marl": {
+            "avg_risk_exposure": 0.4864,
+            "terminal_efc": 61.598,
+            "crash_count": 10.2611,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.0444,
+            "mean_risk_over_time": 0.2385,
+            "peak_gpu_risk": 0.5834,
+            "risk_per_completed_task": 0.0041,
+            "crashes_per_completed_task": 0.0804,
+            "contested_pct": 21.3313,
+            "admitted_pct": 34.072
+          },
+          "risk_aware_marl": {
+            "avg_risk_exposure": 0.4947,
+            "terminal_efc": 61.2745,
+            "crash_count": 10.4167,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.2,
+            "mean_risk_over_time": 0.2429,
+            "peak_gpu_risk": 0.5656,
+            "risk_per_completed_task": 0.0042,
+            "crashes_per_completed_task": 0.0823,
+            "contested_pct": 21.1009,
+            "admitted_pct": 34.1237
+          },
+          "rl": {
+            "avg_risk_exposure": 0.2456,
+            "terminal_efc": 38.8816,
+            "crash_count": 7.3111,
+            "quarantine_time": 0.0,
+            "completed_tasks": 82.7889,
+            "mean_risk_over_time": 0.1312,
+            "peak_gpu_risk": 0.6493,
+            "risk_per_completed_task": 0.0032,
+            "crashes_per_completed_task": 0.1274,
+            "contested_pct": 0.0,
+            "admitted_pct": 23.7234
+          },
+          "round_robin": {
+            "avg_risk_exposure": 0.4794,
+            "terminal_efc": 60.4346,
+            "crash_count": 10.1556,
+            "quarantine_time": 0.0,
+            "completed_tasks": 126.2056,
+            "mean_risk_over_time": 0.2353,
+            "peak_gpu_risk": 0.571,
+            "risk_per_completed_task": 0.004,
+            "crashes_per_completed_task": 0.0817,
+            "contested_pct": 0.0,
+            "admitted_pct": 33.9538
+          }
+        },
+        "pareto": {
+          "points": {
+            "fcfs": [
+              126.05555555555556,
+              0.2155226323061528
+            ],
+            "least_loaded": [
+              126.00555555555556,
+              0.21891248336761693
+            ],
+            "marl": [
+              126.04444444444445,
+              0.23847860568567925
+            ],
+            "risk_aware_marl": [
+              126.2,
+              0.24285365051803048
+            ],
+            "rl": [
+              82.78888888888889,
+              0.13120015857502224
+            ],
+            "round_robin": [
+              126.20555555555555,
+              0.23527396139547452
+            ]
+          },
+          "frontier": [
+            "fcfs",
+            "rl",
+            "round_robin"
+          ],
+          "dominated_by": {
+            "least_loaded": [
+              "fcfs"
+            ],
+            "marl": [
+              "fcfs",
+              "round_robin"
+            ],
+            "risk_aware_marl": [
+              "round_robin"
+            ]
+          }
+        },
+        "quarantine": {
+          "0.85": {
+            "threshold": 0.85,
+            "episodes": 1080,
+            "episodes_triggered": 0,
+            "trigger_share": 0.0,
+            "crashes_when_triggered": null,
+            "crashes_when_not": 10.1,
+            "testable": false
+          },
+          "0.6": {
+            "threshold": 0.6,
+            "episodes": 1080,
+            "episodes_triggered": 571,
+            "trigger_share": 0.5287037037037037,
+            "crashes_when_triggered": 16.103327495621716,
+            "crashes_when_not": 3.3654223968565815,
+            "crash_delta": 12.737905098765134,
+            "fewer_crashes_when_triggered": false,
+            "testable": true
+          }
+        },
+        "verdicts": {
+          "V2-H1": {
+            "with_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "fcfs",
+              "treatment_mean": 0.00422022528627615,
+              "baseline_mean": 0.0036203545417805853,
+              "mean_diff": -0.000599870744495564,
+              "ci_low": -0.0007496315050748779,
+              "ci_high": -0.0004624272494879221,
+              "win_rate": 0.2222222222222222,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "risk_per_completed_task",
+              "strongest_baseline": "rl",
+              "treatment_mean": 0.00422022528627615,
+              "baseline_mean": 0.0032351006169215745,
+              "mean_diff": -0.000985124669354575,
+              "ci_low": -0.0012282795356246274,
+              "ci_high": -0.0007332629616877233,
+              "win_rate": 0.12777777777777777,
+              "significant_better": false,
+              "significant_worse": true,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H2": {
+            "with_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.08230750778620474,
+              "baseline_mean": 0.08036734919671767,
+              "mean_diff": -0.0019401585894870787,
+              "ci_low": -0.004058569346488337,
+              "ci_high": 0.0002715248470873869,
+              "win_rate": 0.3333333333333333,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "crashes_per_completed_task",
+              "strongest_baseline": "marl",
+              "treatment_mean": 0.08230750778620474,
+              "baseline_mean": 0.08036734919671767,
+              "mean_diff": -0.0019401585894870787,
+              "ci_low": -0.004058569346488337,
+              "ci_high": 0.0002715248470873869,
+              "win_rate": 0.3333333333333333,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            }
+          },
+          "V2-H5": {
+            "with_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "round_robin",
+              "treatment_mean": 126.2,
+              "baseline_mean": 126.20555555555555,
+              "mean_diff": -0.005555555555555556,
+              "ci_low": -0.3779166666666666,
+              "ci_high": 0.39444444444444443,
+              "win_rate": 0.3388888888888889,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "without_floor": {
+              "metric": "completed_tasks",
+              "strongest_baseline": "round_robin",
+              "treatment_mean": 126.2,
+              "baseline_mean": 126.20555555555555,
+              "mean_diff": -0.005555555555555556,
+              "ci_low": -0.3779166666666666,
+              "ci_high": 0.39444444444444443,
+              "win_rate": 0.3388888888888889,
+              "significant_better": false,
+              "significant_worse": false,
+              "n_pairs": 180,
+              "verdict": "REJECTED"
+            },
+            "within_5pct_of_best": true,
+            "treatment_mean_completed": 126.2,
+            "best_mean_completed": 126.20555555555555
+          },
+          "V2-H3": {
+            "frontier": [
+              "fcfs",
+              "rl",
+              "round_robin"
+            ],
+            "treatment_on_frontier": false,
+            "dominated_by": [
+              "round_robin"
+            ],
+            "verdict": "REJECTED"
+          },
+          "V2-H4": {
+            "shipped": {
+              "threshold": 0.85,
+              "episodes": 1080,
+              "episodes_triggered": 0,
+              "trigger_share": 0.0,
+              "crashes_when_triggered": null,
+              "crashes_when_not": 10.1,
+              "testable": false
+            },
+            "exploratory": {
+              "threshold": 0.6,
+              "episodes": 1080,
+              "episodes_triggered": 571,
+              "trigger_share": 0.5287037037037037,
+              "crashes_when_triggered": 16.103327495621716,
+              "crashes_when_not": 3.3654223968565815,
+              "crash_delta": 12.737905098765134,
+              "fewer_crashes_when_triggered": false,
+              "testable": true
+            },
+            "shipped_verdict": "INCONCLUSIVE (untestable at shipped threshold)",
+            "exploratory_verdict": "REJECTED"
+          }
+        },
+        "by_load": {
+          "0.3|fcfs": {
+            "completed_tasks": 43.3167,
+            "mean_risk_over_time": 0.1056,
+            "crash_count": 2.0,
+            "risk_per_completed_task": 0.0043,
+            "contested_pct": 0.0
+          },
+          "0.3|least_loaded": {
+            "completed_tasks": 43.3667,
+            "mean_risk_over_time": 0.1174,
+            "crash_count": 1.9833,
+            "risk_per_completed_task": 0.0045,
+            "contested_pct": 0.0
+          },
+          "0.3|marl": {
+            "completed_tasks": 43.3667,
+            "mean_risk_over_time": 0.1335,
+            "crash_count": 1.2833,
+            "risk_per_completed_task": 0.0049,
+            "contested_pct": 34.1805
+          },
+          "0.3|risk_aware_marl": {
+            "completed_tasks": 43.4667,
+            "mean_risk_over_time": 0.1373,
+            "crash_count": 1.1833,
+            "risk_per_completed_task": 0.0049,
+            "contested_pct": 34.1361
+          },
+          "0.3|rl": {
+            "completed_tasks": 39.75,
+            "mean_risk_over_time": 0.0833,
+            "crash_count": 2.65,
+            "risk_per_completed_task": 0.0046,
+            "contested_pct": 0.0
+          },
+          "0.3|round_robin": {
+            "completed_tasks": 43.4833,
+            "mean_risk_over_time": 0.1288,
+            "crash_count": 1.2,
+            "risk_per_completed_task": 0.0045,
+            "contested_pct": 0.0
+          },
+          "1.1|fcfs": {
+            "completed_tasks": 149.6167,
+            "mean_risk_over_time": 0.249,
+            "crash_count": 13.9833,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.1|least_loaded": {
+            "completed_tasks": 149.25,
+            "mean_risk_over_time": 0.2474,
+            "crash_count": 12.8333,
+            "risk_per_completed_task": 0.0032,
+            "contested_pct": 0.0
+          },
+          "1.1|marl": {
+            "completed_tasks": 149.9167,
+            "mean_risk_over_time": 0.2729,
+            "crash_count": 12.1333,
+            "risk_per_completed_task": 0.0039,
+            "contested_pct": 18.2909
+          },
+          "1.1|risk_aware_marl": {
+            "completed_tasks": 149.55,
+            "mean_risk_over_time": 0.2758,
+            "crash_count": 12.3667,
+            "risk_per_completed_task": 0.004,
+            "contested_pct": 17.7847
+          },
+          "1.1|rl": {
+            "completed_tasks": 101.8333,
+            "mean_risk_over_time": 0.147,
+            "crash_count": 8.9167,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.1|round_robin": {
+            "completed_tasks": 149.8833,
+            "mean_risk_over_time": 0.2697,
+            "crash_count": 11.9667,
+            "risk_per_completed_task": 0.0038,
+            "contested_pct": 0.0
+          },
+          "1.4|fcfs": {
+            "completed_tasks": 185.2333,
+            "mean_risk_over_time": 0.292,
+            "crash_count": 18.5333,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.4|least_loaded": {
+            "completed_tasks": 185.4,
+            "mean_risk_over_time": 0.292,
+            "crash_count": 18.0333,
+            "risk_per_completed_task": 0.0033,
+            "contested_pct": 0.0
+          },
+          "1.4|marl": {
+            "completed_tasks": 184.85,
+            "mean_risk_over_time": 0.3091,
+            "crash_count": 17.3667,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 11.5226
+          },
+          "1.4|risk_aware_marl": {
+            "completed_tasks": 185.5833,
+            "mean_risk_over_time": 0.3154,
+            "crash_count": 17.7,
+            "risk_per_completed_task": 0.0038,
+            "contested_pct": 11.3818
+          },
+          "1.4|rl": {
+            "completed_tasks": 106.7833,
+            "mean_risk_over_time": 0.1633,
+            "crash_count": 10.3667,
+            "risk_per_completed_task": 0.0026,
+            "contested_pct": 0.0
+          },
+          "1.4|round_robin": {
+            "completed_tasks": 185.25,
+            "mean_risk_over_time": 0.3073,
+            "crash_count": 17.3,
+            "risk_per_completed_task": 0.0036,
+            "contested_pct": 0.0
+          }
+        }
+      }
+    }
+  }
+}

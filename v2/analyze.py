@@ -197,9 +197,12 @@ def analyze_regime(regime: str) -> Dict[str, Any]:
             "pareto": par,
             "quarantine": q,
             "verdicts": verdicts,
-            "by_load": d.groupby(["target_rho", "scheduler"])[
-                ["completed_tasks", "mean_risk_over_time", "crash_count",
-                 "risk_per_completed_task", "contested_pct"]].mean().round(4).to_dict(orient="index"),
+            # keys are (rho, scheduler) tuples; JSON needs strings
+            "by_load": {f"{k[0]}|{k[1]}": v for k, v in
+                        d.groupby(["target_rho", "scheduler"])[
+                            ["completed_tasks", "mean_risk_over_time", "crash_count",
+                             "risk_per_completed_task", "contested_pct"]
+                        ].mean().round(4).to_dict(orient="index").items()},
         }
     return out
 
