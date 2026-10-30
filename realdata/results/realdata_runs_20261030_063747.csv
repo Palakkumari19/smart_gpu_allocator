@@ -1,0 +1,13 @@
+condition_id,window,target_utilization,load_scale,seed,scheduler,trace_tasks,avg_risk_exposure,terminal_efc,crash_count,quarantine_time,completed_tasks,latency,total_preemptions,avg_memory_usage,avg_temperature,avg_fragmentation
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,fcfs,216,0.11275,0.23084926550000004,0.0,0.0,8.0,41.0,0.0,72.625,37.75,0.0
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,round_robin,216,0.112125,0.19985912056250002,0.0,0.0,7.0,37.0,0.0,72.75,37.625,0.0
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,least_loaded,216,0.11843750000000001,0.2262627215625,0.0,0.0,5.0,23.0,0.0,82.3125,36.25,0.0
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,rl,216,0.050812500000000003,0.23084926550000004,0.0,0.0,3.0,22.0,0.0,18.3125,34.875,0.0
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,marl,216,0.11496875000000001,0.44974746744375005,0.0,0.0,7.0,35.0,0.0,75.84375,37.375,0.0
+burstiest_window_rho90_s42,burstiest_window,0.9,0.012735,42,risk_aware_marl,216,0.11684375,0.34955167655625,0.0,0.0,7.0,41.0,0.0,75.96875,38.625,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,fcfs,216,0.115,0.35270799086249993,0.0,0.0,6.0,32.0,0.0,77.5,36.5,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,round_robin,216,0.115,0.12060389355,0.0,0.0,6.0,32.0,0.0,77.5,36.5,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,least_loaded,216,0.115,0.35270799086249993,0.0,0.0,6.0,32.0,0.0,77.5,36.5,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,rl,216,0.049093750000000005,0.35270799086249993,0.0,0.0,1.0,2.0,0.0,22.59375,31.375,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,marl,216,0.11090625000000001,0.44871632819999996,0.0,0.0,7.0,32.0,0.0,74.15625,35.625,0.0
+burstiest_window_rho90_s43,burstiest_window,0.9,0.012735,43,risk_aware_marl,216,0.11090625000000001,0.21661223088749998,0.0,0.0,7.0,32.0,0.0,74.15625,35.625,0.0

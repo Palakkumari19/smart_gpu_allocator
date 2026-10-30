@@ -1,0 +1,102 @@
+{
+  "timestamp_utc": "20261030_063747",
+  "smoke_test": true,
+  "elapsed_seconds": 0.56,
+  "total_episodes": 12,
+  "windows_evaluated": [
+    "burstiest_window"
+  ],
+  "load_presets": [
+    0.9
+  ],
+  "seeds": [
+    42,
+    43
+  ],
+  "eval_steps_per_episode": 20,
+  "schedulers_evaluated": [
+    "fcfs",
+    "round_robin",
+    "least_loaded",
+    "rl",
+    "marl",
+    "risk_aware_marl"
+  ],
+  "comparisons_vs_strongest_baseline": {
+    "avg_risk_exposure": {
+      "mean_diff": -0.06392187499999999,
+      "ci_low": -0.06603124999999999,
+      "ci_high": -0.061812500000000006,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 0,
+      "losses": 2,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "rl",
+      "treatment_mean": 0.113875,
+      "baseline_mean": 0.049953125
+    },
+    "terminal_efc": {
+      "mean_diff": -0.122850446665625,
+      "ci_low": -0.14969255599375,
+      "ci_high": -0.09600833733749999,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 0,
+      "losses": 2,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "round_robin",
+      "treatment_mean": 0.283081953721875,
+      "baseline_mean": 0.16023150705625
+    },
+    "crash_count": {
+      "mean_diff": -0.0,
+      "ci_low": -0.0,
+      "ci_high": -0.0,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 2,
+      "losses": 0,
+      "significant_better": false,
+      "significant_worse": false,
+      "ci_excludes_zero": false,
+      "strongest_baseline": "fcfs",
+      "treatment_mean": 0.0,
+      "baseline_mean": 0.0
+    },
+    "quarantine_time": {
+      "mean_diff": -0.0,
+      "ci_low": -0.0,
+      "ci_high": -0.0,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 2,
+      "losses": 0,
+      "significant_better": false,
+      "significant_worse": false,
+      "ci_excludes_zero": false,
+      "strongest_baseline": "fcfs",
+      "treatment_mean": 0.0,
+      "baseline_mean": 0.0
+    },
+    "completed_tasks": {
+      "mean_diff": 0.0,
+      "ci_low": -1.0,
+      "ci_high": 1.0,
+      "win_rate": 0.5,
+      "wins": 1,
+      "ties": 0,
+      "losses": 1,
+      "significant_better": false,
+      "significant_worse": false,
+      "ci_excludes_zero": false,
+      "strongest_baseline": "fcfs",
+      "treatment_mean": 7.0,
+      "baseline_mean": 7.0
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "train_hours_range": [
+    0,
+    732
+  ],
+  "eval_hours_range": [
+    733,
+    1463
+  ],
+  "train_windows": {
+    "median_hour": {
+      "window_id": "median_hour",
+      "partition": "train",
+      "hour": 21,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 75600.0,
+      "end_timestamp": 79200.0,
+      "request_count": 193,
+      "failed_request_count": 14,
+      "failure_rate_pct": 7.25,
+      "arrival_mean_per_sec": 0.0536,
+      "arrival_variance": 0.0541,
+      "dispersion_index": 1.0086,
+      "models_breakdown": {
+        "ChatGPT": 149,
+        "GPT-4": 44
+      }
+    },
+    "busiest_hour": {
+      "window_id": "busiest_hour",
+      "partition": "train",
+      "hour": 235,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 846000.0,
+      "end_timestamp": 849600.0,
+      "request_count": 33344,
+      "failed_request_count": 39,
+      "failure_rate_pct": 0.12,
+      "arrival_mean_per_sec": 9.2622,
+      "arrival_variance": 7.6596,
+      "dispersion_index": 0.827,
+      "models_breakdown": {
+        "ChatGPT": 33292,
+        "GPT-4": 52
+      }
+    },
+    "burstiest_window": {
+      "window_id": "burstiest_window",
+      "partition": "train",
+      "hour": 531,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 1911600.0,
+      "end_timestamp": 1915200.0,
+      "request_count": 567,
+      "failed_request_count": 1,
+      "failure_rate_pct": 0.18,
+      "arrival_mean_per_sec": 0.1575,
+      "arrival_variance": 2.2577,
+      "dispersion_index": 14.3346,
+      "models_breakdown": {
+        "GPT-4": 561,
+        "ChatGPT": 6
+      }
+    }
+  },
+  "eval_windows": {
+    "median_hour": {
+      "window_id": "median_hour",
+      "partition": "eval",
+      "hour": 904,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 3254400.0,
+      "end_timestamp": 3258000.0,
+      "request_count": 263,
+      "failed_request_count": 10,
+      "failure_rate_pct": 3.8,
+      "arrival_mean_per_sec": 0.0731,
+      "arrival_variance": 0.0727,
+      "dispersion_index": 0.9954,
+      "models_breakdown": {
+        "ChatGPT": 178,
+        "GPT-4": 85
+      }
+    },
+    "busiest_hour": {
+      "window_id": "busiest_hour",
+      "partition": "eval",
+      "hour": 1236,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 4449600.0,
+      "end_timestamp": 4453200.0,
+      "request_count": 16902,
+      "failed_request_count": 10493,
+      "failure_rate_pct": 62.08,
+      "arrival_mean_per_sec": 4.695,
+      "arrival_variance": 118.8648,
+      "dispersion_index": 25.3173,
+      "models_breakdown": {
+        "ChatGPT": 16811,
+        "GPT-4": 91
+      }
+    },
+    "burstiest_window": {
+      "window_id": "burstiest_window",
+      "partition": "eval",
+      "hour": 1236,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 4449600.0,
+      "end_timestamp": 4453200.0,
+      "request_count": 16902,
+      "failed_request_count": 10493,
+      "failure_rate_pct": 62.08,
+      "arrival_mean_per_sec": 4.695,
+      "arrival_variance": 118.8648,
+      "dispersion_index": 25.3173,
+      "models_breakdown": {
+        "ChatGPT": 16811,
+        "GPT-4": 91
+      }
+    }
+  },
+  "full_windows": {
+    "median_hour": {
+      "window_id": "median_hour",
+      "partition": "full",
+      "hour": 405,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 1458000.0,
+      "end_timestamp": 1461600.0,
+      "request_count": 217,
+      "failed_request_count": 19,
+      "failure_rate_pct": 8.76,
+      "arrival_mean_per_sec": 0.0603,
+      "arrival_variance": 0.0772,
+      "dispersion_index": 1.2807,
+      "models_breakdown": {
+        "GPT-4": 110,
+        "ChatGPT": 107
+      }
+    },
+    "busiest_hour": {
+      "window_id": "busiest_hour",
+      "partition": "full",
+      "hour": 235,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 846000.0,
+      "end_timestamp": 849600.0,
+      "request_count": 33344,
+      "failed_request_count": 39,
+      "failure_rate_pct": 0.12,
+      "arrival_mean_per_sec": 9.2622,
+      "arrival_variance": 7.6596,
+      "dispersion_index": 0.827,
+      "models_breakdown": {
+        "ChatGPT": 33292,
+        "GPT-4": 52
+      }
+    },
+    "burstiest_window": {
+      "window_id": "burstiest_window",
+      "partition": "full",
+      "hour": 1236,
+      "duration_seconds": 3600.0,
+      "start_timestamp": 4449600.0,
+      "end_timestamp": 4453200.0,
+      "request_count": 16902,
+      "failed_request_count": 10493,
+      "failure_rate_pct": 62.08,
+      "arrival_mean_per_sec": 4.695,
+      "arrival_variance": 118.8648,
+      "dispersion_index": 25.3173,
+      "models_breakdown": {
+        "ChatGPT": 16811,
+        "GPT-4": 91
+      }
+    }
+  }
+}
