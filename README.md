@@ -35,15 +35,21 @@ not be reframed afterwards.
 
 ---
 
-## Headline findings (measured 30 October 2026)
+## Headline findings (measured 30–31 October 2026)
 
 This section reports what the code actually produces. It replaces earlier performance claims in this
 file, which today's runs do not reproduce.
 
+> **Read this first.** The v1 experiment (October 30) **could not answer its own question**. A load
+> calibration defect delivered **30× the intended workload**, so **99.28 %** of its scheduling
+> decisions had no eligible GPU to choose from and every scheduler was forced into identical
+> behaviour. The v2 re-test (October 31) fixes this and re-runs under a pre-registration committed
+> before the run. **Both results are reported below; neither replaces the other.**
+
 ### ✅ The engineering works
 
-- **121 of 123 runnable tests pass.** The 2 failures are a missing optional package (`httpx2`), not a
-  defect. 47 further tests in 5 files could not be loaded for the same reason — see *Known issues*.
+- **181 tests pass, 0 skipped** (127 original + 54 new v2 tests). At the time of the v1 run 2 tests
+  failed and 5 files would not load; as of 31 October the whole suite collects and passes.
 - **Zero concurrency violations** under 8 threads of deliberate contention: 902 operations at
   356 ops/sec, 6 double-completions correctly blocked, memory never negative and never above 8 GB.
 - **Zero capacity violations** across every benchmark run.
@@ -63,6 +69,54 @@ Across **360 episodes** of real-trace replay, under pre-registered decision rule
 
 Against schedulers that actually dispatch work, Risk-Aware MARL achieves **parity, not superiority**.
 
+> ⚠️ **v2 correction.** This v1 table could not have detected a difference either way — see the
+> diagnosis below. The properly calibrated re-test rejects the hypothesis *more* sharply.
+
+### 🔬 v2: the re-test (31 October 2026)
+
+**6,480 episodes**, fresh test seeds 100–129, pre-registered at commit
+[`3a0bcc3`](realdata/PREREGISTRATION_V2.md), **run exactly once**.
+
+First, evidence the re-test is valid where v1 was not:
+
+| intended load ρ | delivered ρ, v1 | delivered ρ, v2 | decisions with a real choice, v1 | …v2 |
+|---|---|---|---|---|
+| 0.3 | 2.18 | **0.299** | 13.79 % | **32.78 %** |
+| 1.1 | 7.98 | **1.101** | 0.11 % | **21.96 %** |
+| 1.4 | 10.18 | **1.399** | 0.07 % | **16.15 %** |
+
+**The pre-registered primary test — the only confirmatory one — is REJECTED.**
+Risk per completed task at ρ = 1.1, Risk-Aware MARL **0.003095** vs Least Loaded **0.002666**;
+win rate **6/60 = 10 %** against a required 60 %; 95 % CI [−0.00055, −0.00032] excludes zero.
+Risk-Aware MARL is not merely unsupported here — it is **significantly worse**.
+
+| v2 hypothesis | Verdict |
+|---|---|
+| **V2-H1 (primary)** — lower risk per completed task | ❌ **Rejected** (significantly worse) |
+| V2-H2 — fewer crashes per completed task | ❌ Rejected (Round Robin better) |
+| V2-H3 — on the throughput/risk Pareto frontier | ❌ Rejected at ρ = 1.1 and 1.4 |
+| V2-H4 — quarantine reduces crashes | ⚠️ **Untestable** — fired in **0 of 3,240** episodes |
+| V2-H5 — throughput within 5 % of best | ✅ **Supported** (99.98 %) |
+
+**What it does win, as an exploratory result.** Risk-Aware MARL has the **lowest peak GPU risk**
+(0.5217) and **lowest terminal failure cost** (32.70) of all six schedulers, at the **highest
+throughput**, beating every baseline including its own risk-blind ablation (win rates 0.67–0.97).
+
+The reason it loses anyway: the risk-aware bidder **spreads** work so no single GPU overheats, leaving
+all four moderately warm. FCFS **concentrates** work — some GPUs cold, some burning. Averaged over
+GPUs, "four warm" scores worse than "two cold, two burning", even though only the latter destroys
+hardware. **The pre-registered primary metric rewards the failure mode the system was built to
+prevent.** That is reported as a finding, not used to justify changing the metric after the fact.
+
+Two honest caveats: those peak-risk wins are **exploratory** (≈72 uncorrected secondary tests, so
+3–4 false positives are expected by chance), and **Round Robin beats Risk-Aware MARL on crashes**
+(5.95 vs 6.58) with no risk model at all — so most of the benefit comes from *spreading*, not from
+*risk awareness*.
+
+**Which fix actually mattered?** Almost entirely the load fix. The v1+load-fix and full-v2 conditions
+are nearly identical (mean risk 0.164 vs 0.163; crashes 5.90 vs 5.81). The risk-bucket change and the
+larger training budget moved results by well under 1 %.
+
 ### 🔍 The two results that are genuinely valuable
 
 1. **Burstiness drives real failures.** Measured from 1,429,737 real requests: when traffic arrives
@@ -75,6 +129,9 @@ Against schedulers that actually dispatch work, Risk-Aware MARL achieves **parit
    is a methodological warning for anyone benchmarking safety-aware schedulers.
 
 > Full numbers, tables and caveats: **[`docs/05_results_and_findings.md`](docs/05_results_and_findings.md)**
+> — Part I (§1–§10) is v1, Part II (§11–§16) is the v2 diagnosis and re-test.
+> Figures: **[`docs/06_graph_explanations.md`](docs/06_graph_explanations.md)**.
+> Pre-registration: **[`realdata/PREREGISTRATION_V2.md`](realdata/PREREGISTRATION_V2.md)**.
 
 ---
 
@@ -383,6 +440,39 @@ A 30-second smoke test instead of the full 7-minute run:
 ```bash
 PYTHONPATH=. .venv/bin/python realdata/run_realdata_benchmark.py --smoke
 ```
+
+### Reproducing the v2 investigation
+
+The v2 work lives on branch `v2-improvements` and is independent of the v1 commands above —
+it adds new modules and does **not** modify `realdata/trace_builder.py` or any scheduler.
+
+```bash
+# Phase 1 — diagnose why v1 came out the way it did (~6 min)
+PYTHONPATH=. .venv/bin/python v2/diagnose.py
+PYTHONPATH=. .venv/bin/python v2/make_diagnosis_graphs.py
+
+# Verify the corrected load calibration (11 regression tests)
+.venv/bin/python -m pytest tests/v2/test_load_scale_v2.py -v
+
+# Phase 4 — design selection and tuning on VALIDATION data only (~40 min)
+PYTHONPATH=. .venv/bin/python v2/design_select.py
+PYTHONPATH=. .venv/bin/python v2/tune.py          # 12 configurations
+PYTHONPATH=. .venv/bin/python v2/tune_stage2.py   # 8 more; all 20 logged
+PYTHONPATH=. .venv/bin/python v2/freeze_config.py # mechanical selection + bootstrap SE
+
+# Phase 5 — THE FINAL TEST. Runs once. ~3.3 hours.
+# Refuses to start unless PREREGISTRATION_V2.md and config_v2.py are committed and clean.
+caffeinate -i env PYTHONPATH=. .venv/bin/python v2/final_test.py \
+    --regimes workload overlay --conditions v1 v1_corrected v2
+
+# Analysis and figures (reads only the CSVs the final test produced)
+PYTHONPATH=. .venv/bin/python v2/analyze.py
+PYTHONPATH=. .venv/bin/python v2/make_results_graphs.py
+```
+
+Outputs land in `realdata/results/realdata_v2_runs_*.csv`, `results/metrics/v2/` and
+`results/graphs/v2/`. Every configuration tried during tuning — including the ones that failed —
+is in [`logs/v2_tuning_log.csv`](logs/v2_tuning_log.csv).
 
 ### Live dashboard (optional)
 

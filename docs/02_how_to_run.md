@@ -321,3 +321,101 @@ Then open the URL that Vite prints (usually `http://localhost:5173`).
 | `KeyError: 'llm_tasks_generated'` | Pre-existing bug at the end of `main_marl_demo.py` | Harmless — the demo already printed its results. Use `verify_phase3.py` instead |
 | `python main.py` prints nothing | It is a superseded file with no entry point | Use `backend/server.py` for the server |
 | Real-data scripts fail with a missing-file error | Datasets not downloaded yet | Run §3 first |
+
+---
+
+## The v2 investigation (branch `v2-improvements`)
+
+The v2 work asks *why* v1 produced the result it did, fixes what was genuinely broken, and re-tests
+under a pre-registration written before the run. It lives in new files and **does not modify any
+existing scheduler, the simulator, or `realdata/trace_builder.py`** — so every v1 command above still
+behaves exactly as before.
+
+Run these from the repository root with the datasets already downloaded (§3).
+
+### Step 1 — Diagnose (about 6 minutes)
+
+```bash
+PYTHONPATH=. .venv/bin/python v2/diagnose.py
+PYTHONPATH=. .venv/bin/python v2/make_diagnosis_graphs.py
+```
+
+Writes `results/metrics/v2/d1_*`…`d6_*` and six figures `v2_01`…`v2_06`. The one to look at is
+`v2_01_choice_availability.png`: it shows that 99.28 % of v1's scheduling decisions had **no eligible
+GPU**, which is why every scheduler behaved identically. Written up in `docs/07_diagnosis.md`.
+
+### Step 2 — Verify the corrected load calibration (seconds)
+
+```bash
+.venv/bin/python -m pytest tests/v2/test_load_scale_v2.py -v
+```
+
+11 tests. They assert that delivered utilisation matches the intended value, that the old v1 path
+still reproduces its ~30× defect, and that the calibration scales monotonically.
+
+### Step 3 — Design selection and tuning (about 40 minutes)
+
+```bash
+PYTHONPATH=. .venv/bin/python v2/design_select.py
+PYTHONPATH=. .venv/bin/python v2/tune.py          # 12 configurations
+PYTHONPATH=. .venv/bin/python v2/tune_stage2.py   # 8 more
+PYTHONPATH=. .venv/bin/python v2/freeze_config.py # mechanical selection + bootstrap SE
+```
+
+**All tuning uses VALIDATION windows and seeds only — never test data.** Every configuration tried,
+including the failures, is appended to `logs/v2_tuning_log.csv`. `freeze_config.py` applies the
+selection rules mechanically (95 % throughput floor → best score → 1 % tie band → cheapest tie-break)
+and writes `results/metrics/v2/frozen_training.json`.
+
+Expect an honest negative: 20 configurations produce only **4 distinct scores**, and the bootstrap
+standard error (4.19 %) is wider than the tie band. The chosen configuration is a deterministic
+tie-break, not a demonstrated optimum.
+
+### Step 4 — The final test (about 3.3 hours, runs once)
+
+```bash
+caffeinate -i env PYTHONPATH=. .venv/bin/python -u v2/final_test.py \
+    --regimes workload overlay --conditions v1 v1_corrected v2 \
+    > logs/v2/final_test.log 2>&1
+```
+
+- `caffeinate -i` stops macOS sleeping mid-run. On Linux, drop it.
+- The script **refuses to start** unless `realdata/PREREGISTRATION_V2.md`, `realdata/config_v2.py` and
+  `results/metrics/v2/frozen_training.json` are all committed and clean, and it records the
+  pre-registration's commit hash in every output file.
+- 6,480 episodes: 3 conditions × 2 regimes × 2 windows × 3 loads × 30 seeds × 6 schedulers.
+- Progress estimates in the log are unreliable in the first half — the `v1` condition is ~80× slower
+  per episode because its broken load scale genuinely simulates ~30× more work.
+
+**This is intended to be run once.** Re-running it after seeing the results would break the
+pre-registration.
+
+### Step 5 — Analyse and draw (about 1 minute)
+
+```bash
+PYTHONPATH=. .venv/bin/python v2/analyze.py
+PYTHONPATH=. .venv/bin/python v2/make_results_graphs.py
+```
+
+Reads only the CSVs the final test produced. Writes `results/metrics/v2/v2_analysis.json` and figures
+`v2_07`…`v2_13`.
+
+### Where the v2 outputs go
+
+| Path | Contents |
+|---|---|
+| `realdata/results/realdata_v2_runs_{workload,overlay}_*.csv` | every episode, one row each |
+| `realdata/results/realdata_v2_summary_*.json` | config + pre-registration commit hash |
+| `results/metrics/v2/` | diagnosis metrics, tuning summaries, frozen config, final analysis |
+| `results/graphs/v2/` | 13 figures (`v2_01`–`v2_13`) |
+| `logs/v2_tuning_log.csv` | all 20 tuning configurations, failures included |
+| `logs/v2/final_test.log` | console output of the final run |
+
+### v2 troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `... is not committed. Commit it before the final test.` | The pre-registration guard is doing its job | Commit the named file, or pass `--allow-dirty-prereg` only for a dry run you will not report |
+| Final test seems stuck early on | The `v1` condition simulates ~30× more work per episode | Expected; the second half runs far faster |
+| `FileNotFoundError: no v2 results for regime 'overlay'` | `analyze.py` run before the final test finished | Wait for `FINAL TEST COMPLETE` in the log |
+| Figures look empty or stale | Analysis not re-run after a new final test | Re-run `v2/analyze.py` before `v2/make_results_graphs.py` |
