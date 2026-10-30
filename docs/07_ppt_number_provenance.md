@@ -271,8 +271,82 @@ downloaded today **from the exact URLs in `realdata/config.py`** have different 
 | `BurstGPT_1.csv` | `46fc948011c342f2…` | `46fc9480ef0b748e…` |
 | `transcoding_mesurment.tsv` | `243aa3a758782a20…` | `243aa3a554444a61…` |
 
+**Resolved 31 Oct 2026.** `REAL_DATA_REPORT.md` §2.3 now carries the measured values and keeps the
+superseded ones on the record. Note each pair shares its first 8 and 7 hex digits — impossible by
+chance between two different files, which indicates the recorded strings were built from a real
+hash's prefix rather than computed from a file.
+
 However, **every calibration figure reproduced exactly** — 1,429,737 requests, 25,443 failures,
 26.25 % peak hazard, hour 904 with 263 requests, hour 1236 with 16,902 requests and 62.08 % failures.
 So the data itself is correct; it is the recorded hashes that do not match. If asked, say the datasets
 were re-downloaded and re-verified by reproducing the published statistics, and that the checksums in
 the older report could not be confirmed.
+
+
+---
+
+# Part II — the v2 deck (`project_updated_v2.pptx`)
+
+Built by `results/build_ppt_v2.py`, which opens the v1 deck and inserts 14 new slides. **Every number
+on those slides is read from a result file at build time; none is typed by hand.**
+
+`/Users/palakkumari/Downloads/project_updated.pptx` and the original `mp.pptx` are **not modified**.
+
+**Run date for all v2 results: 31 October 2026.** Pre-registration commit: `3a0bcc3`.
+
+## v2 source files
+
+| Short name | Full path |
+|---|---|
+| **V2-WORKLOAD-CSV** | `realdata/results/realdata_v2_runs_workload_20261030_155951.csv` (3,240 rows) |
+| **V2-OVERLAY-CSV** | `realdata/results/realdata_v2_runs_overlay_20261030_155951.csv` (3,240 rows) |
+| **V2-SUMMARY** | `realdata/results/realdata_v2_summary_{workload,overlay}_20261030_155951.json` |
+| **V2-ANALYSIS** | `results/metrics/v2/v2_analysis.json` |
+| **FROZEN** | `results/metrics/v2/frozen_training.json` |
+| **DIAG** | `results/metrics/v2/diagnosis_summary.json`, `d1_*`–`d6_*` |
+| **TUNING-LOG** | `logs/v2_tuning_log.csv` (all 20 configurations) |
+
+## Slide-by-slide
+
+| Slide | Number quoted | Source |
+|---|---|---|
+| 24 Diagnosis | 3,600 vs 120 steps; **30×** over-delivery | `realdata/trace_builder.py:77` vs `:187`; DIAG |
+| 24 | **11.5×–64.5×** capacity; **1.19 %** admitted; **99.28 %** of 65,271 decisions | `d6_offered_load_pressure.csv`, `d1_divergence_summary.json` |
+| 25 Binding constraint | eligible-GPU histogram | `d1_divergence_summary.json` |
+| 26 Load fix | delivered ρ **7.98 → 1.101**; contested **0.11 % → 21.96 %** | V2-WORKLOAD-CSV, columns `delivered_rho`, `contested_pct` |
+| 27 What changed | **37.74 %** bid divergence | `d1_divergence_summary.json` |
+| 28 Pre-registration | commit `3a0bcc3`; **20** configs; SE **4.19 %**; **6,480** episodes | V2-SUMMARY, TUNING-LOG, FROZEN, row counts |
+| 29 Primary test | **0.003095** vs **0.002666**; **6 / 60** wins | V2-WORKLOAD-CSV, `risk_per_completed_task`, recomputed in `build_ppt_v2.load_facts()` |
+| 30 Mean vs peak | mean **0.1916**, peak **0.5217** | V2-WORKLOAD-CSV, condition `v2`, ρ = 1.1 |
+| 31 Pareto | completed vs mean risk, all loads | V2-WORKLOAD-CSV |
+| 32 Quarantine | **0** of 3,240 at 0.85; **47.3 % / 68.3 %** at 0.60 | V2-WORKLOAD-CSV + V2-OVERLAY-CSV, `quarantine_triggered_at_*` |
+| 33 Which fix mattered | mean risk **0.164 vs 0.163**; crashes **5.90 vs 5.81** | V2-WORKLOAD-CSV grouped by `condition` |
+| 34 Verdicts | win rates **0.67–0.97**; Round Robin **5.95** vs **6.58** | V2-ANALYSIS + paired tests over V2-WORKLOAD-CSV |
+| 35 Results table | all six schedulers at ρ = 1.1 | V2-WORKLOAD-CSV |
+| 37 Comparison | peak **0.5217 vs 0.5492**; EFC **32.70 vs 33.72** | V2-WORKLOAD-CSV |
+| 38 Limitations | **181 passed, 0 skipped**; **11** load tests | `pytest tests/`; `tests/v2/test_load_scale_v2.py` |
+| 39 Conclusion | **26.25 %** burstiness failure rate (from v1) | `realdata/reports/REAL_DATA_REPORT.md` |
+
+## Figures used
+
+| Slide | Image |
+|---|---|
+| 25 | `results/graphs/v2/v2_01_choice_availability.png` |
+| 26 | `results/graphs/v2/v2_07_load_fix_validity.png` |
+| 29 | `results/graphs/v2/v2_08_primary_hypothesis.png` |
+| 30 | `results/graphs/v2/v2_09_mean_vs_peak.png` |
+| 31 | `results/graphs/v2/v2_10_pareto.png` |
+| 32 | `results/graphs/v2/v2_12_quarantine.png` |
+| 33 | `results/graphs/v2/v2_11_v1_vs_v2.png` |
+
+## Two numbers you must not misstate
+
+1. **The primary hypothesis was REJECTED**, and Risk-Aware MARL is *significantly worse*, not tied.
+2. The **peak-risk and EFC wins are exploratory**, from ~72 uncorrected tests. Do not present them as
+   confirmatory. If asked, say roughly 3–4 of those 72 would be expected to pass by chance alone.
+
+## Rebuild the v2 deck
+
+```bash
+cd results && PYTHONPATH=.:.. ../.venv/bin/python build_ppt_v2.py
+```
