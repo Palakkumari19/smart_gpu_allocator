@@ -8,7 +8,7 @@ it actually prevents the code from running on this machine.**
 
 ## Summary
 
-**One source file was changed. One line of behaviour was added as a fallback.**
+**Two files were changed: one code fallback, and the README (rewritten on request).**
 No scheduler logic, no simulator physics, no reward function, no metric calculation and no test was
 touched. No results were altered by this change.
 
@@ -57,6 +57,43 @@ except OSError:
   directory); after the fallback both copies simply land in the same place.
 - **No plotting code, no data loading, no axis, no number and no colour was modified.** Only the
   destination folder of the duplicate copy changed.
+
+---
+
+## Change 2 — `README.md` (rewritten on request)
+
+### Why
+
+The user explicitly asked for the README to be updated and finalised after the measurement pass.
+
+### What was wrong with the original
+
+1. **Performance claims that today's runs do not reproduce.** It stated "36% improvement in learning
+   performance", "MARL consistently outperforms traditional methods" and "+1-5% improvement over
+   traditional methods". The measured results show parity, and the pre-registered hypotheses H1-H3
+   were rejected.
+2. **Seven broken links** of the form `file:///d:/BMSIT/7th%20sem%20-%20proj/...` — absolute Windows
+   paths from the original author's machine.
+3. **Incorrect run instructions.** It listed `python main.py` as "Basic Demo"; that file has no
+   `__main__` block and produces no output.
+4. **Incomplete install instructions** (`pip install numpy` only, versus the seven packages in
+   `requirements.txt`).
+5. **No mention** of `realdata/`, `benchmarking/`, `evaluation/` or `execution/` in the project
+   structure, despite `realdata/` being the scientifically strongest part of the project.
+
+### What the rewrite does
+
+- Reports the **measured** results from 30 October 2026, with source tables for both real-data regimes,
+  the seven-scenario benchmark and the ablation study.
+- States the pre-registered verdicts plainly (H1-H3 rejected, H4 inconclusive, H5 partial).
+- Keeps and corrects the detailed concurrency / locking documentation, which was accurate.
+- Fixes all broken links to repository-relative paths.
+- Adds a "Known issues and limitations" section listing the items above.
+- Adds a documentation index pointing at `docs/01`-`07`.
+- Flags that `MARL_SUPERIORITY_REPORT.md`, `MARL_IMPROVEMENTS_IMPLEMENTED.md` and
+  `AETHERGRID_IMPLEMENTATION_REPORT.md` contain unreproduced claims.
+
+**No code behaviour is affected by this change** — `README.md` is documentation only.
 
 ---
 

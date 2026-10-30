@@ -1,454 +1,601 @@
-# AETHERGRID - Advanced GPU Scheduling with Multi-Agent Reinforcement Learning
+# SmartGPU Allocator
 
-## Current Project Status
+**An Autonomous Multi-Agent Reinforcement Learning Framework for Crash-Aware GPU Orchestration in AI-Native Cloud Systems**
 
-✅ GPU simulator complete
-✅ Traditional, RL, and MARL schedulers implemented
-✅ Live FastAPI backend and WebSocket streaming available
-✅ React/Vite dashboard connected to the live simulator state
-✅ Benchmark comparison panel uses backend values when available
-✅ Dashboard presents simulator metrics separately from MARL-only metrics
-✅ Phase 5: Locks, Data Consistency, and Race-Condition Handling implemented & verified (38/38 pytest tests passed, stress test CLI available)
-✅ Bit 6: Risk-Aware RL + MARL implemented & verified (61/61 pytest tests passed, 7-scenario scientific benchmark available)
+*Internal codename used throughout the source: **AetherGrid***
 
-A sophisticated GPU scheduling simulator that demonstrates the superiority of Multi-Agent Reinforcement Learning (MARL) over traditional scheduling algorithms through comprehensive training, adaptive learning, and real-time performance comparison.
+Department of Computer Science & Business Systems
+BMS Institute of Technology and Management, Bengaluru — 2026–27
 
-## 🎯 Project Overview
+| Team | USN |
+|---|---|
+| Amisha Verma | 1BY23CB003 |
+| Chitrbhanu B | 1BY23CB011 |
+| Palak Kumari | 1BY23CB038 |
+| Payal A Bhavesh | 1BY23CB039 |
 
-AETHERGRID is a research-grade GPU scheduling system that simulates a cluster of GPUs with advanced features like memory fragmentation, preemption, cooldown periods, and various workload patterns. The system implements and compares multiple scheduling approaches:
+**Guide:** Dr. Pradeep Kumar G M, Professor
 
-- **Traditional Schedulers**: FCFS, Round Robin, Least Loaded, Random, Best Fit, Priority
-- **Single-Agent RL**: Q-learning based scheduler
-- **Multi-Agent RL (MARL)**: Separate Q-learning agents for each GPU with coordination
-- **Risk-Aware MARL (Bit 6)**: Cooperative multi-agent reinforcement learning integrating dynamic GPU risk scores, empirical failure rates, and expected failure cost (EFC) into bidding, state representations, and bounded reward functions.
+---
 
-## ✨ Key Features
+## What this project is
 
-### Phase 1: GPU Simulator
-- **8GB Memory per GPU** with realistic memory management
-- **Parallel Task Execution** with concurrency simulation
-- **Crash Conditions** based on temperature thresholds (85°C)
-- **Temperature Simulation** with thermal management
-- **Task Queue Management** with priority handling
+A **simulator** of a 4-GPU cluster (8 GB each) plus **nine scheduling algorithms**, built to answer one
+question:
 
-### Phase 2: Advanced Features
-- **Memory Fragmentation**: Realistic memory allocation challenges
-- **Task Preemption**: Ability to interrupt and reschedule tasks
-- **Cooldown Periods**: GPU recovery after crashes
-- **Task Generator**: Multiple workload types (LLM, Image, Video)
-- **Traffic Patterns**: Light, Heavy, Burst, Peak/Off-Peak scenarios
+> Does a scheduler in which **each GPU has its own reinforcement-learning agent** — and in which those
+> agents bid for work using both expected performance **and** how likely that GPU is to crash — actually
+> produce fewer crashes than simple traditional rules, without destroying throughput?
 
-### Phase 3: MARL System
-- **Multi-Agent Architecture**: Separate Q-learning agents per GPU
-- **Enhanced State Representation**: Memory, temperature, queue, fragmentation
-- **Improved Reward Function**: Comprehensive incentive structure
-- **Adaptive Exploration**: Multi-phase exploration schedule
-- **Agent Coordination**: Performance-based parameter tuning
-- **Model Persistence**: Save and load trained models
+The answer is tested against **real production data** (1.4 million recorded AI inference requests and
+168k video-transcoding measurements), with the hypotheses **registered in advance** so the result could
+not be reframed afterwards.
 
-### Phase 4: Dynamic Task Queue & Video Execution
-- **Dynamic Queue Lifecycle**: Priority-based scheduling, retry queues, real-time status transitions
-- **Video Workload Execution**: Light, Medium, Heavy, and Extreme parallel video rendering pipelines
-- **Full Cluster Visibility**: Comprehensive status and telemetry tracking across all 4 GPUs
+**No physical GPU is required.** The GPUs are simulated; everything runs on an ordinary laptop.
 
-### Phase 5: Locks, Data Consistency, and Race-Condition Handling
-- **Thread-Safe Synchronization**: Reentrant mutexes (`threading.RLock`) protecting all shared GPU, queue, risk, fault, and MARL states
-- **Deadlock-Free Lock Hierarchy**: Global acquisition ordering (`_step_lock` -> `task_queue._lock` -> `gpu._lock` -> `_stats_lock`)
-- **Transactional Resource Updates**: Atomic allocation with automatic rollback on assignment failure
-- **Atomic Compare-And-Swap (CAS)**: Double-completion and double-allocation prevention
-- **Concurrency Testing**: 11 deterministic test scenarios and configurable high-contention stress test runner
+---
 
-### Bit 6: Risk-Aware RL + Multi-Agent Reinforcement Learning (MARL)
-- **16-Element Discrete Risk State**: Deterministic bucketing of memory pressure, load, thermals, dynamic risk score, failure rate, status, task dimensions, and cluster contention
-- **Expected Failure Cost (EFC)**: Proactive pre-placement penalty $EFC = P(\text{failure}) \times I(\text{task}) \times C(\text{recovery})$
-- **Risk-Aware Cooperative Bidding**: Agent bid scores incorporate Q-values, headroom, risk penalties, and EFC penalties; strictly excludes quarantined or capacity-violating GPUs ($-\infty$)
-- **Configurable Bounded Reward**: `RiskAwareRewardConfig` balances throughput and reliability while clamping rewards to $[-20.0, 12.0]$
-- **Full Backend & Dashboard Observability**: Real-time broadcast of MARL decision score, risk score, EFC, reward, and per-GPU bid breakdowns
-- **Scientific 7-Scenario Benchmark**: Evaluates MARL against traditional baselines (Round Robin, FCFS, Least Loaded) across normal, elevated risk, high recovery cost, dynamic fault/quarantine, mixed priority, heavy burst, and concurrent workloads
+## Headline findings (measured 30 October 2026)
 
-### Training & Evaluation
-- **Multi-Dataset Training**: Different workload scenarios
-- **Progressive Curriculum**: Easy to advanced training
-- **Target-Based Training**: Specific success rate goals
-- **Performance Tracking**: Comprehensive metrics and analysis
-- **Traditional Comparison**: Direct benchmarking against baseline methods
+This section reports what the code actually produces. It replaces earlier performance claims in this
+file, which today's runs do not reproduce.
 
-## 🚀 Quick Start
+### ✅ The engineering works
 
-### Prerequisites
-- Python 3.7+
-- Required packages (install via pip):
-  ```bash
-  pip install numpy
+- **121 of 123 runnable tests pass.** The 2 failures are a missing optional package (`httpx2`), not a
+  defect. 47 further tests in 5 files could not be loaded for the same reason — see *Known issues*.
+- **Zero concurrency violations** under 8 threads of deliberate contention: 902 operations at
+  356 ops/sec, 6 double-completions correctly blocked, memory never negative and never above 8 GB.
+- **Zero capacity violations** across every benchmark run.
+- The full real-data pipeline reruns end to end and **reproduces its published calibration exactly**.
+
+### ❌ The main research hypothesis was not supported
+
+Across **360 episodes** of real-trace replay, under pre-registered decision rules:
+
+| Hypothesis | Metric | Verdict |
+|---|---|---|
+| H1 | Risk exposure | **Rejected** |
+| H2 | Expected Failure Cost | **Rejected** |
+| H3 | Crash count | **Rejected** |
+| H4 | Quarantine prevention | **Inconclusive** (quarantine never triggered) |
+| H5 | Throughput preserved | **Partially supported** |
+
+Against schedulers that actually dispatch work, Risk-Aware MARL achieves **parity, not superiority**.
+
+### 🔍 The two results that are genuinely valuable
+
+1. **Burstiness drives real failures.** Measured from 1,429,737 real requests: when traffic arrives
+   smoothly, ~**1 %** of requests fail; when it arrives in extreme bursts, **26.25 %** fail — a 26-fold
+   jump, 95 % CI [25.82 %, 26.68 %].
+
+2. **The starvation trap.** Single-agent RL scored the *best* on every safety metric — by refusing to
+   work. It completed **6.3 tasks** where every other scheduler completed **~19**. Idle GPUs stay cool
+   and never crash, so a safety metric with no throughput guard rail can be won by doing nothing. This
+   is a methodological warning for anyone benchmarking safety-aware schedulers.
+
+> Full numbers, tables and caveats: **[`docs/05_results_and_findings.md`](docs/05_results_and_findings.md)**
+
+---
+
+## Quick start
+
+```bash
+# 1. Environment
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/pip install -r requirements.txt pytest
+
+# 2. Optional, but needed for the full test suite
+.venv/bin/pip install httpx2 torch
+
+# 3. Verify
+PYTHONPATH=. .venv/bin/python -m pytest tests/ -q
+
+# 4. See it work
+PYTHONPATH=. .venv/bin/python verify_phase3.py
+PYTHONPATH=. .venv/bin/python benchmarking/run_experiments.py
+```
+
+> `PYTHONPATH=.` is required in front of every command, and commands must be run from the repository
+> root. Without it you will see `ModuleNotFoundError: No module named 'environment'`.
+
+**Requirements:** Python 3.9+ (verified on 3.14.6), CPU only, ~200 MB disk.
+Node.js is needed only for the optional React dashboard.
+
+**Full step-by-step instructions, expected output and troubleshooting:**
+**[`docs/02_how_to_run.md`](docs/02_how_to_run.md)**
+
+---
+
+## Repository structure
+
+```
+smart_gpu_allocator/
+├── Core simulator
+│   ├── environment.py              # The clock: scheduling loop, transactional placement, metrics
+│   ├── gpu.py                      # One simulated GPU: memory, heat, crash at 85 °C, cooldown
+│   ├── task.py                     # Simple task object (legacy demos)
+│   └── dynamic_queue.py            # Thread-safe task lifecycle + retries
+│
+├── Schedulers
+│   ├── schedulers/traditional.py   # FCFS, Round Robin, Least Loaded, Random, Best Fit, Priority
+│   ├── agent.py                    # Single-agent Q-learning
+│   └── marl_agent.py               # Per-GPU agents, bidding auction, EFC, reward config
+│
+├── Safety
+│   ├── risk_engine.py              # 8-signal risk score, quarantine at 0.85
+│   └── fault_injection.py          # Injected faults, failure impact, EFC calculators
+│
+├── Workload
+│   └── workload/                   # task_generator.py, traffic_patterns.py
+│
+├── Measurement
+│   ├── benchmarking/               # Experiment harness, metrics, ablation, results store
+│   │   └── run_experiments.py      #   → entry point
+│   └── evaluation/                 # Bootstrap CIs, paired stats, scientific benchmark
+│
+├── Real-data pipeline              # ← the scientifically strongest part
+│   └── realdata/
+│       ├── fetch_data.py           # Downloads BurstGPT + UCI datasets
+│       ├── profile_data.py         # Statistical profile of both datasets
+│       ├── windows.py              # TRAIN/EVAL temporal split (no leakage)
+│       ├── llm_mapper.py           # Percentile mapping: real tokens → task size
+│       ├── video_mapper.py         # Percentile mapping: real transcoding → task size
+│       ├── hazard.py               # Measures real failure rate vs burstiness
+│       ├── trace_builder.py        # Builds the replay trace
+│       ├── risk_overlay.py         # Applies empirical failure rates non-invasively
+│       ├── run_realdata_benchmark.py  # → THE MAIN EXPERIMENT
+│       ├── generate_visualizations.py
+│       ├── PREREGISTRATION.md      # Hypotheses fixed BEFORE results
+│       └── NOTES.md                # Known quirks deliberately left unfixed
+│
+├── Live demo
+│   ├── backend/server.py           # FastAPI + WebSocket streaming
+│   ├── execution/                  # Optional real-GPU execution via PyTorch
+│   └── frontend/                   # React 19 + Vite + Tailwind + Recharts
+│
+├── Demos & benchmarks (standalone scripts)
+│   ├── main_workload_demo.py, main_traffic_demo.py, main_baseline_demo.py
+│   ├── verify_phase3.py, verify_all_features.py
+│   ├── benchmark_schedulers.py, benchmark_risk_aware_marl.py
+│   ├── marl_vs_traditional.py, marl_performance_analysis.py
+│   ├── simple_marl_training.py, marl_training_system.py
+│   ├── phase4_execution_demo.py, phase4_real_video_demo.py
+│   └── concurrency_stress_test.py
+│
+├── tests/                          # 17 suites + tests/realdata/ (9 more)
+├── docs/                           # Full documentation — start here
+├── results/graphs/, results/metrics/
+└── logs/                           # Console output of every run
+```
+
+---
+
+## Architecture
+
+Six layers. Jobs enter at the top, a scheduler picks a GPU, the simulated hardware runs the job, and
+two feedback loops carry risk and reward back into the decision.
+
+```
+Layer 1  Job source      synthetic generator  |  real trace replay
+Layer 2  Decision        FCFS · RR · LeastLoaded · RL · MARL · Risk-Aware MARL
+Layer 3  Hardware        environment.py clock → gpu.py × 4 → dynamic_queue.py
+Layer 4  Safety          risk_engine.py · fault_injection.py · EFC     ──┐
+Layer 5  Measurement     metrics · bootstrap CIs · CSV/JSON/figures      │ feeds the bid
+Layer 6  Live demo       FastAPI + WebSocket → React dashboard         ──┘
+```
+
+Each simulation step: collect arrivals → ask the scheduler → place transactionally (roll back on
+failure) → advance every GPU → update risk → pay rewards → record statistics.
+
+**Diagram and full component walkthrough:** [`docs/03_architecture.md`](docs/03_architecture.md)
+**Rendered image:** `results/graphs/00_architecture.png`
+
+---
+
+## Scheduling algorithms
+
+| Algorithm | How it decides |
+|---|---|
+| **FCFS** | First feasible GPU |
+| **Round Robin** | Cycles through GPUs |
+| **Least Loaded** | Most free memory wins |
+| **Random** | Random feasible GPU |
+| **Best Fit** | Minimises leftover memory |
+| **Priority** | Important tasks first |
+| **Single-Agent RL** | One Q-learning brain for the whole cluster |
+| **Risk-Blind MARL** | Per-GPU agents bid on Q-value + headroom |
+| **Risk-Aware MARL** | Same auction, bid also subtracts risk and EFC |
+
+**The risk-aware bid:**
+
+```
+bid = Q-value + free headroom − (w_risk × risk_score) − (w_efc × EFC)
+```
+
+Two cases bid **−∞** and can never win: the GPU is quarantined, or the task does not fit.
+
+---
+
+## The risk model
+
+**Risk score** (`risk_engine.py`) — eight weighted signals, clamped to [0, 1]. History is weighted more
+heavily than instantaneous readings:
+
+| Signal | Weight | | Signal | Weight |
+|---|---|---|---|---|
+| Past anomalies | 0.25 | | Memory pressure | 0.10 |
+| Past task failures | 0.20 | | Fragmentation | 0.05 |
+| Temperature | 0.15 | | Performance degradation | 0.05 |
+| Crash history | 0.15 | | Utilisation | 0.05 |
+
+Bands: healthy < 0.25 · low risk < 0.50 · suspicious < 0.75 · high risk ≥ 0.75 · **quarantine ≥ 0.85**
+
+**Expected Failure Cost** (`marl_agent.py`) — what a placement would cost if it goes wrong:
+
+```
+EFC = failure_probability × failure_impact × recovery_cost          (clamped to [0, 20])
+
+failure_probability = 0.70 × risk_score + 0.30 × observed_failure_rate
+failure_impact      = 0.60 × severity   + 0.40 × resource_intensity
+recovery_cost       = max(1, 0.3 × runtime + 0.1 × memory) + cooldown_remaining
+```
+
+The MARL reward is bounded to **[−20.0, +12.0]** so one catastrophic step cannot erase the learned
+table.
+
+---
+
+## The real-data pipeline
+
+Two public, permissively licensed production datasets are replayed through the simulator.
+
+| Dataset | Size | Contents | Licence |
+|---|---|---|---|
+| **BurstGPT** (EuroSys '24) | 48.5 MB | 1,429,737 LLM inference requests over 61 days | CC-BY-4.0 |
+| **UCI Online Video Transcoding** (ID 335) | 8.5 MB | 168,286 video transcoding measurements | CC-BY-4.0 |
+
+**Method:**
+- **Percentile mapping** converts real measurements to simulator task sizes, preserving the shape of the
+  real distribution instead of applying an arbitrary linear scale.
+- **80 % LLM / 20 % video** mix, rescaled to three offered-load levels (ρ = 0.6, 0.9, 1.2).
+- **Disjoint temporal split:** agents train on days 0–30, are tested on days 31–61 with exploration off
+  (`set_eval_mode()`, ε = 0). No data leakage.
+- **Empirical hazard overlay** applies the measured real-world failure probability on top of the
+  simulation without modifying simulator code.
+- **Pre-registration** (`realdata/PREREGISTRATION.md`) fixes hypotheses and pass/fail rules in advance.
+
+**Scale:** 6 schedulers × 2 time windows × 3 load levels × 5 seeds = **180 episodes per regime**,
+360 in total, 120 steps each.
+
+### Measured hazard curve
+
+| Burstiness (variance ÷ mean) | Requests | Failures | **Failure rate** | 95 % Wilson CI |
+|---|---|---|---|---|
+| 0.0 – 1.0 | 491,806 | 4,924 | 1.00 % | [0.97 %, 1.03 %] |
+| 1.0 – 2.0 | 541,820 | 5,086 | 0.94 % | [0.91 %, 0.96 %] |
+| 2.0 – 5.0 | 238,484 | 2,945 | 1.23 % | [1.19 %, 1.28 %] |
+| 5.0 – 10.0 | 117,432 | 1,936 | 1.65 % | [1.58 %, 1.72 %] |
+| **10.0 – 50.0** | 40,195 | 10,552 | **26.25 %** | [25.82 %, 26.68 %] |
+
+---
+
+## Results
+
+### Real-data benchmark — workload replay (180 episodes)
+
+| Scheduler | Risk ↓ | Terminal EFC ↓ | Crashes ↓ | Quarantine ↓ | Tasks ↑ |
+|---|---|---|---|---|---|
+| FCFS | 0.2582 | 7.380 | 0.73 | 0.00 | 18.80 |
+| Round Robin | 0.2581 | 7.134 | 0.87 | 0.00 | 18.73 |
+| Least Loaded | **0.2546** | 7.248 | 0.80 | 0.00 | 18.70 |
+| Single-Agent RL | **0.1011** | **3.266** | **0.20** | 0.00 | **6.33** ← starving |
+| Risk-Blind MARL | 0.2564 | 7.405 | 0.97 | 0.00 | **19.00** |
+| Risk-Aware MARL | 0.2617 | **7.208** | 0.90 | 0.00 | 18.77 |
+
+### With the empirical hazard overlay (180 episodes)
+
+| Scheduler | Risk ↓ | Terminal EFC ↓ | Crashes ↓ | Quarantine ↓ | Tasks ↑ |
+|---|---|---|---|---|---|
+| FCFS | 0.3284 | 10.255 | 0.90 | 0.00 | 18.30 |
+| Round Robin | 0.3794 | 9.870 | 0.97 | 0.00 | 18.03 |
+| Least Loaded | 0.3260 | 10.033 | 0.90 | 0.00 | 18.30 |
+| Single-Agent RL | **0.1202** | **4.027** | **0.27** | 0.00 | **6.13** ← starving |
+| Risk-Blind MARL | 0.3626 | **9.808** | 1.07 | 0.00 | **18.60** |
+| Risk-Aware MARL | 0.3854 | 9.868 | 1.07 | 0.00 | 18.17 |
+
+Applying realistic failure rates makes every scheduler measurably more dangerous, while the **ranking
+between schedulers is unchanged** — a useful robustness result.
+
+### Seven-scenario stress benchmark (completion rate, 3 seeds)
+
+| Scenario | Risk-Aware MARL | Least Loaded | Round Robin | FCFS |
+|---|---|---|---|---|
+| 1. Normal workload | 53.0 % | 55.3 % | 52.2 % | 54.8 % |
+| 2. Elevated risk on one GPU | 46.9 % | 50.0 % | 48.8 % | 52.1 % |
+| 3. High recovery cost | 49.2 % | 52.6 % | 51.5 % | 52.8 % |
+| 4. Dynamic fault & quarantine | 46.5 % | 46.8 % | 47.4 % | 51.2 % |
+| 5. Mixed task sizes | 22.4 % | 23.7 % | 22.8 % | 23.5 % |
+| 6. Heavy burst | 35.1 % | 33.6 % | 34.3 % | 36.2 % |
+| **7. Concurrent scheduling** | **96.7 %** | 92.5 % | 90.0 % | 91.7 % |
+
+MARL wins decisively in **one of seven** scenarios — concurrent arrivals from multiple threads, where
+the per-GPU auction resolves contention better than a single global rule. Elsewhere the four are
+statistically tied. **Capacity violations: 0 everywhere.**
+
+### Ablation study — an unexpected result
+
+| Variant | Avg risk ↓ | Avg EFC ↓ | Throughput |
+|---|---|---|---|
+| Full Risk-Aware MARL | **0.0847** | 0.0324 | 5,190 |
+| MARL, no risk penalty | 0.0556 | 0.0213 | 5,253 |
+| MARL, no EFC penalty | **0.0390** | 0.0149 | 5,267 |
+| Standard risk-blind MARL | 0.0556 | 0.0212 | 5,223 |
+
+Turning the safety penalties **off** produced **lower** measured risk. One plausible explanation is
+that the penalties spread work across all four GPUs, raising the *average* risk even while lowering the
+peak on any one GPU — but **this was not tested** and is reported as interpretation, not a finding.
+
+> ⚠️ **On "throughput" in the synthetic benchmarks.** `throughput_tasks_per_sec` is
+> `completed_tasks ÷ elapsed_seconds` where `elapsed_seconds` is **wall-clock CPU time** (~5 ms per
+> episode). It measures **scheduler overhead**, not cluster throughput. MARL appears slower purely
+> because it runs a four-agent auction per task. Do not cite it as a performance result.
+
+**Figures:** `results/graphs/` (12 charts) · **Raw metrics:** `results/metrics/`
+**Full analysis:** [`docs/05_results_and_findings.md`](docs/05_results_and_findings.md)
+**Every figure explained:** [`docs/06_graph_explanations.md`](docs/06_graph_explanations.md)
+
+---
+
+## Reproducing the results
+
+Run in this order. Total time ≈ 25 minutes, almost all of it in steps 6 and 7.
+
+```bash
+# Download the datasets (~57 MB)
+PYTHONPATH=. .venv/bin/python realdata/fetch_data.py
+
+# Calibration pipeline
+PYTHONPATH=. .venv/bin/python realdata/profile_data.py     # 1. profile both datasets
+PYTHONPATH=. .venv/bin/python realdata/windows.py          # 2. TRAIN/EVAL split
+PYTHONPATH=. .venv/bin/python realdata/video_mapper.py     # 3. percentile mapping
+PYTHONPATH=. .venv/bin/python realdata/llm_mapper.py       # 4. percentile mapping
+PYTHONPATH=. .venv/bin/python realdata/hazard.py           # 5. empirical hazard curve
+PYTHONPATH=. .venv/bin/python realdata/trace_builder.py    # 6. build replay trace
+
+# The main experiment (~7 minutes each)
+PYTHONPATH=. .venv/bin/python realdata/run_realdata_benchmark.py
+PYTHONPATH=. .venv/bin/python realdata/run_realdata_benchmark.py --with-hazard-overlay
+
+# Figures
+PYTHONPATH=. .venv/bin/python realdata/generate_visualizations.py
+PYTHONPATH=. .venv/bin/python results/make_graphs.py
+
+# Supporting benchmarks
+PYTHONPATH=. .venv/bin/python benchmarking/run_experiments.py
+PYTHONPATH=. .venv/bin/python benchmark_risk_aware_marl.py
+PYTHONPATH=. .venv/bin/python concurrency_stress_test.py --workers 8 --duration 2.5 --scheduler marl
+```
+
+A 30-second smoke test instead of the full 7-minute run:
+
+```bash
+PYTHONPATH=. .venv/bin/python realdata/run_realdata_benchmark.py --smoke
+```
+
+### Live dashboard (optional)
+
+```bash
+# Terminal 1
+PYTHONPATH=. .venv/bin/uvicorn backend.server:app --reload --port 8000
+
+# Terminal 2
+cd frontend && npm install && npm run dev
+```
+
+---
+
+## Concurrency, locking and data consistency
+
+Every mutable shared resource is guarded by a reentrant lock, and all multi-lock paths follow one
+global acquisition order.
+
+### Shared state and its lock
+
+| Component | File | Primitive | Protected state |
+|---|---|---|---|
+| GPU model | `gpu.py` | `self._lock` (`RLock`) | `current_memory`, `memory_fragments`, `running_tasks`, `task_queue`, `preempted_tasks`, `crashed`, `crash_cooldown_timer`, `temperature`, `utilization`, `total_latency` |
+| Dynamic task queue | `dynamic_queue.py` | `self._lock` | `task_registry`, `task_to_gpu`, status dictionaries, lifecycle event log |
+| Risk engine | `risk_engine.py` | `self._lock` | `reliability_history`, risk scores, quarantine state, anomaly records |
+| Fault injector | `fault_injection.py` | `self._lock` | `event_log`, `event_counter`, RNG state, custom probabilities |
+| MARL manager & agents | `marl_agent.py` | `self._lock` | Per-agent Q-tables, epsilon schedules, decision telemetry |
+| Environment | `environment.py` | `_step_lock`, `_stats_lock` | Step transitions, task registration, history, cumulative stats |
+| Backend server | `backend/server.py` | `server_lock` | `video_queue`, task counter, upload cache, scheduler selection, WebSocket clients |
+
+### Why these mechanisms
+
+- **Reentrant locks (`threading.RLock`).** Scheduling frequently calls one locked method from inside
+  another on the same thread (e.g. `_try_assign` holding the queue lock while calling
+  `task_queue.schedule_task()`). A plain mutex would self-deadlock.
+- **Global lock hierarchy.** To prevent AB-BA deadlock, every multi-lock path acquires in this order:
+
+  ```
+  _step_lock  →  task_queue._lock  →  gpu._lock (ordered by GPU id)  →  _stats_lock
   ```
 
-### Installation
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd gpu-rl-scheduler-main
-```
+- **Atomic compare-and-swap lifecycle transitions.** `complete_task(task_id)` verifies the task is
+  `SCHEDULED` or `RUNNING` before moving it to `COMPLETED`. A concurrent duplicate returns `False`,
+  eliminating double memory deallocation and double counter increments.
+- **Transactional allocation with rollback.** `_try_assign()` registers the task, acquires the GPU lock,
+  and allocates. If any later step fails, a rollback handler frees the memory, removes the task from
+  the GPU's queues, and restores consistent state.
+- **Single centralised simulation loop.** Stepping happens in one synchronised background worker;
+  WebSocket clients only read point-in-time snapshots via `get_dashboard_state()`.
 
-### Running the Project
+### Invariants verified by the tests
 
-#### 1. Basic Demo
-```bash
-python main.py
-```
-Demonstrates the basic GPU simulator with default scheduler.
+- `gpu.current_memory >= 0.0` — memory is never negative
+- `gpu.current_memory <= gpu.memory_capacity` (8.0 GB) — capacity is never exceeded
+- `gpu.get_available_memory() + gpu.current_memory == gpu.memory_capacity` — arithmetic stays consistent
+- `sum(task_counts.values()) == len(task_registry)` — queue state stays coherent
+- `complete_task()` returns `False` on an already-completed task — no duplicate transitions
+- No thread timeouts or deadlocks under barrier-synchronised contention
 
-#### 2. MARL Scheduler Demo
-```bash
-python main_marl_demo.py
-```
-Shows MARL scheduler with learning capabilities and agent statistics.
+### Race conditions covered
 
-#### 3. Traditional Baseline Demo
-```bash
-python main_baseline_demo.py
-```
-Demonstrates traditional schedulers (FCFS, Round Robin, Least Loaded).
+Concurrent allocation on one GPU · across multiple GPUs · allocation racing deallocation · concurrent
+queue updates · duplicate completion · preemption near completion · GPU failure during allocation ·
+recovery during allocation · multi-agent Q-table updates · API requests during stepping ·
+high-contention interleaved stress.
 
-#### 4. Improved MARL Learning
-```bash
-python marl_improvements_summary.py
-```
-Shows enhanced reward function and learning parameters with performance analysis.
-
-#### 5. MARL Training System
-```bash
-python simple_marl_training.py
-```
-Simple MARL training demonstration with scenario-based training.
-
-#### 6. System Verification
-```bash
-python verify_phase3.py
-```
-Comprehensive verification of all features and schedulers.
-
-#### 7. Benchmark All Schedulers
-```bash
-python benchmark_schedulers.py
-```
-Compare all schedulers (MARL vs Traditional) with detailed performance metrics.
-
-#### 8. Run the Live Dashboard
-```bash
-# Start the simulator backend
-uvicorn backend.server:app --reload
-
-# In a second terminal, start the frontend
-cd frontend
-npm install
-npm run dev
-```
-The dashboard now streams live state from the backend instead of relying on mock data.
-
-#### 9. Run Concurrency & Race-Condition Tests
-```bash
-python -m pytest tests/test_concurrency_locks.py -v
-```
-Runs the full 11-scenario concurrency suite verifying thread safety, atomic CAS guards, memory invariants, and deadlock freedom.
-
-#### 10. Run Concurrency Stress Testing & Observability Tool
-```bash
-python concurrency_stress_test.py --workers 8 --duration 2.5 --scheduler marl
-```
-Runs a multi-threaded stress test evaluating concurrency throughput (ops/sec), legitimate rejections vs race violations, and cluster state consistency.
-
-## 📁 Project Structure
+### Measured result
 
 ```
-gpu-rl-scheduler-main/
-├── agent.py                          # Single-agent RL implementation
-├── environment.py                     # GPU environment and simulator
-├── gpu.py                            # GPU class with advanced features
-├── main.py                           # Basic demo
-├── main_marl_demo.py                 # MARL demonstration
-├── main_baseline_demo.py             # Traditional schedulers demo
-├── benchmark_schedulers.py           # Scheduler benchmarking
-├── verify_phase3.py                  # System verification
-├── marl_agent.py                     # Multi-agent RL implementation
-├── marl_improvements_summary.py      # Enhanced MARL demonstration
-├── simple_marl_training.py           # MARL training demo
-├── marl_training_system.py           # Advanced training system
-├── workload/
-│   ├── __init__.py
-│   ├── task_generator.py             # Task generation system
-│   └── traffic_patterns.py           # Traffic pattern management
-├── schedulers/
-│   ├── __init__.py
-│   └── traditional.py                # Traditional scheduler implementations
-├── AETHERGRID_IMPLEMENTATION_REPORT.md
-├── MARL_IMPLEMENTATION_SUMMARY.md
-├── MARL_SUPERIORITY_REPORT.md
-├── MARL_TRAINING_GUIDE.md
-└── MARL_IMPROVEMENTS_IMPLEMENTED.md
-```
+PYTHONPATH=. .venv/bin/python concurrency_stress_test.py --workers 8 --duration 2.5 --scheduler marl
 
-## 🎯 Usage Examples
-
-### Train MARL on Specific Scenario
-```python
-from marl_training_system import MARLTrainingSystem
-
-trainer = MARLTrainingSystem()
-result = trainer.train_marl_on_scenario('peak_hours', {
-    'traffic_pattern': 'peak',
-    'duration': 50,
-    'target_success_rate': 0.70
-})
-```
-
-### Compare Schedulers
-```python
-from environment import GPUEnvironment
-
-# Test MARL
-env_marl = GPUEnvironment(scheduler="marl")
-env_marl.set_traffic_pattern("mixed", duration=100)
-for _ in range(100):
-    env_marl.step()
-
-# Test Traditional
-env_trad = GPUEnvironment(scheduler="traditional_least_loaded")
-env_trad.set_traffic_pattern("mixed", duration=100)
-for _ in range(100):
-    env_trad.step()
-```
-
-### Custom Workload Generation
-```python
-from workload.task_generator import TaskGenerator
-
-generator = TaskGenerator()
-task = generator.generate_task("LLM", memory_required=4, duration=10)
-```
-
-## 📊 Performance Results
-
-### MARL Superiority Demonstrated
-- **Enhanced Learning**: 36% improvement in learning performance
-- **Target Achievement**: 60% success rate on complex scenarios
-- **Traditional Comparison**: MARL consistently outperforms traditional methods
-- **Adaptive Behavior**: Responds to changing workload conditions
-- **Multi-Agent Intelligence**: Coordinated decision making
-
-### Key Metrics
-- **Success Rate**: Up to 60% on complex scenarios
-- **Learning Improvement**: 36% over baseline
-- **Traditional Comparison**: +1-5% improvement over traditional methods
-- **Adaptive Performance**: Consistent improvement over training iterations
-
-## 🔧 Configuration
-
-### GPU Parameters
-- **Memory Capacity**: 8GB per GPU
-- **Crash Temperature**: 85°C
-- **Cooldown Duration**: 5 steps
-- **Preemption Threshold**: Memory > 90%
-
-### MARL Parameters
-- **Learning Rate**: 0.002 (adaptive)
-- **Epsilon Start**: 1.0 (maximum exploration)
-- **Epsilon Min**: 0.05 (continued exploration)
-- **Epsilon Decay**: 0.997 (slower decay)
-- **Coordination Frequency**: Every 5 steps
-
-### Traffic Patterns
-- **Light**: 0.3-0.5 task probability
-- **Heavy**: 0.7-0.9 task probability
-- **Burst**: Alternating light/heavy periods
-- **Peak**: 0.8-1.0 task probability
-- **Off-Peak**: 0.1-0.3 task probability
-
-## 📈 Research Applications
-
-### Academic Research
-- **Multi-Agent Reinforcement Learning**: Study coordination and learning
-- **Resource Scheduling**: GPU cluster optimization
-- **Adaptive Systems**: Dynamic parameter tuning
-- **Comparative Analysis**: Traditional vs RL approaches
-
-### Industrial Applications
-- **Cloud Computing**: GPU resource allocation
-- **Data Centers**: Efficient scheduling
-- **ML Training**: Optimized model training
-- **High-Performance Computing**: Resource management
-
-## 🔒 Phase 5: Locks, Data Consistency, and Race-Condition Handling
-
-AETHERGRID Bit 5 introduces comprehensive synchronization, atomic compare-and-swap (CAS) transitions, transactional resource allocations with automatic rollback, and deadlock-free lock hierarchies across all simulator components, MARL agents, and web backend endpoints.
-
-### 1. Shared Resources Protected by Locks
-
-Every mutable shared resource across the simulation, queue, risk engine, fault injection, and API server is guarded by dedicated reentrant locks:
-
-| Component | File | Synchronization Primitive | Protected Mutable State |
-|---|---|---|---|
-| **GPU Model** | [`gpu.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/gpu.py) | `self._lock = threading.RLock()` | `current_memory`, `memory_fragments`, `running_tasks`, `task_queue`, `preempted_tasks`, `crashed`, `crash_cooldown_timer`, `temperature`, `utilization`, `total_latency` |
-| **Dynamic Task Queue** | [`dynamic_queue.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/dynamic_queue.py) | `self._lock = threading.RLock()` | `task_registry`, `task_to_gpu`, status dictionaries (`QUEUED`, `SCHEDULED`, `RUNNING`, `COMPLETED`, `FAILED`, `CANCELLED`), lifecycle events log |
-| **GPU Risk Engine** | [`risk_engine.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/risk_engine.py) | `self._lock = threading.RLock()` | `reliability_history`, dynamic risk scores, quarantine states, historical anomaly records |
-| **Fault Injector** | [`fault_injection.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/fault_injection.py) | `self._lock = threading.RLock()` | `event_log`, `event_counter`, pseudo-random generator state (`rng`), custom anomaly probabilities |
-| **MARL Manager & Agents** | [`marl_agent.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/marl_agent.py) | `self._lock = threading.RLock()` | Per-agent Q-tables, epsilon decay schedules, coordinated parameter updates, decision telemetry |
-| **GPU Environment** | [`environment.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/environment.py) | `self._step_lock`, `self._stats_lock` | Simulation step transitions, task registration, event logs, history time-series, cumulative statistics |
-| **FastAPI Backend Server** | [`backend/server.py`](file:///d:/BMSIT/7th%20sem%20-%20proj/first%20phase%20%281-4%29/gpu-draft--main/gpu-draft--main/backend/server.py) | `server_lock = threading.RLock()` | `video_queue`, `video_task_counter`, `uploaded_video_cache`, active scheduler selection, WebSocket client broadcast list |
-
----
-
-### 2. Synchronization Mechanisms Selected & Why
-
-- **Reentrant Locks (`threading.RLock`)**:
-  Chosen for in-process multithreaded synchronization. Reentrancy is essential because scheduling and task assignment frequently execute nested helper methods on the same thread (e.g., `_try_assign` holding `task_queue._lock` while calling `task_queue.schedule_task()`, or `GPUEnvironment.step()` inspecting GPU states). Standard mutexes would produce self-deadlock.
-- **Global Deadlock-Free Lock Hierarchy**:
-  To prevent classic AB-BA circular deadlocks when multiple components must be locked simultaneously, a strict universal lock acquisition order is enforced throughout the codebase:
-  $$\text{Level 1: } \texttt{\_step\_lock} \longrightarrow \text{Level 2: } \texttt{task\_queue.\_lock} \longrightarrow \text{Level 3: } \texttt{gpu.\_lock (ordered by GPU ID)} \longrightarrow \text{Level 4: } \texttt{\_stats\_lock}$$
-  Every method requiring multiple locks (such as `_try_assign`, `step()`, and `get_dashboard_state()`) strictly adheres to this hierarchy.
-- **Atomic Compare-And-Swap (CAS) Lifecycle Transitions**:
-  Task status transitions are protected by atomic condition checks under `task_queue._lock`. For example, `complete_task(task_id)` verifies that the task is in `SCHEDULED` or `RUNNING` status before transitioning to `COMPLETED`. If a concurrent worker attempts a duplicate completion, the atomic check fails and returns `False`, eliminating duplicate memory deallocations or counter double-increments.
-- **Transactional Resource Updates with Automatic Rollback**:
-  In `_try_assign()`, task assignment and GPU memory allocation are executed as a single transaction:
-  1. The task is checked for eligibility and registered in the queue under `task_queue._lock`.
-  2. The target GPU lock is acquired (`gpu._lock`).
-  3. Memory and queue allocation are attempted on the GPU (`gpu.assign_task(task)`).
-  4. If any subsequent step or queue transition fails, a rollback handler catches the exception, frees the allocated GPU memory, removes the task from the GPU's queues, and restores consistent state.
-- **Single Centralized Background Simulation Loop**:
-  FastAPI's WebSocket broadcast loop previously allowed multiple clients to concurrently step the environment. In Phase 5, simulation stepping is decoupled into a single synchronized background worker task, while WebSocket clients safely read non-blocking point-in-time state snapshots via `get_dashboard_state()`.
-
----
-
-### 3. Atomicity & Resource-Accounting Guarantees
-
-1. **Non-Negative Memory Invariant**: GPU memory usage is mathematically guaranteed never to drop below `0.0 GB`:
-   $$\forall g \in \text{GPUs}, \quad \text{gpu.current\_memory} \ge 0.0$$
-2. **Physical Capacity Invariant**: Task allocation strictly enforces the physical GPU capacity boundary ($8.0\text{ GB}$). A task is accepted if and only if `current_memory + task.memory_required <= memory_capacity`:
-   $$\forall g \in \text{GPUs}, \quad \text{gpu.current\_memory} \le \text{gpu.memory\_capacity} = 8.0\text{ GB}$$
-   Requests exceeding $8.0\text{ GB}$ are cleanly rejected as legitimate capacity rejections. If an anomalous request severely exceeds the hardware crash threshold ($8.0 \times 1.2 = 9.6\text{ GB}$), the GPU triggers an emergency crash (`_enter_crash()`) into cooldown.
-3. **Single Assignment Invariant**: A task can only be assigned to exactly one GPU at any point in time. Concurrent allocation attempts across multiple GPUs or duplicate queue scheduling are rejected.
-4. **Single Completion Guarantee**: A task's resources are freed once and only once upon completion, regardless of concurrent worker attempts to execute or complete it.
-5. **No Resource Leaks on Failure/Quarantine**: When a GPU crashes or enters quarantine during an allocation attempt, partially allocated resources are immediately rolled back and released.
-
----
-
-### 4. Race Conditions Considered & Addressed
-
-1. **Concurrent Allocations on a Single GPU**: High-volume parallel allocation requests competing for memory on the same GPU. Synchronized via `gpu._lock`; requests exceeding available memory are cleanly rejected without exceeding capacity.
-2. **Concurrent Allocations Across Multiple GPUs**: Multiple threads allocating across distinct GPUs concurrently without cross-GPU interference or deadlock.
-3. **Concurrent Allocation and Deallocation**: Interleaved memory allocations and task completions occurring in parallel without memory corruption, double-free, or negative memory.
-4. **Concurrent Queue Updates**: Parallel workers enqueuing, re-prioritizing, and querying tasks simultaneously without corrupted registry states.
-5. **Duplicate Task Completion Races**: Two workers racing to complete the same task. Prevented by atomic CAS state guards in `complete_task()`.
-6. **Preemption Near Completion**: Preemption racing against normal task completion. Handled cleanly without leaving orphan task entries or leaking VRAM.
-7. **GPU Failure / Quarantine During Allocation**: Fault injection crashing a GPU while allocation requests are in-flight. Crashed GPU cleanly rejects incoming requests with zero partial updates.
-8. **GPU Recovery Concurrent with Allocation**: Recovery triggers interleaved with allocation attempts without race conditions or memory overshoot.
-9. **MARL Multi-Agent Coordination Concurrency**: Multiple agents updating Q-tables and coordinating exploration schedules simultaneously. Synchronized via `MARLManager._lock`.
-10. **Concurrent API Requests & Simulation Stepping**: FastAPI HTTP endpoints (`/start`, `/pause`, `/reset`, `/set-scheduler`, `/analyze-video`) called concurrently with active background stepping loops.
-11. **High-Contention Interleaved Stress**: Simultaneous task admission, stepping, telemetry reading, and anomaly injection across 8 worker threads without deadlocks.
-
----
-
-### 5. Concurrency Testing & Observability
-
-A dedicated test suite and a standalone CLI stress utility are provided:
-
-#### Running the Concurrency Unit Tests
-```bash
-python -m pytest tests/test_concurrency_locks.py -v
-```
-Runs all 11 deterministic scenarios with barriers, concurrent thread pools, and invariant assertions.
-
-#### Running the Complete Test Suite
-```bash
-python -m pytest tests/ -v
-```
-Executes all 38 test cases across the entire project (Phases 1–5).
-
-#### Running the Concurrency Stress Testing & Observability CLI
-```bash
-python concurrency_stress_test.py --workers 8 --duration 2.5 --scheduler marl
-```
-**Sample Output:**
-```text
-============================================================
-          CONCURRENCY STRESS TEST RESULTS
-============================================================
-Duration               : 2.541s
-Operations Attempted   : 780 (307.0 ops/sec)
-Allocations Succeeded  : 182
-Capacity Rejections    : 245 (Legitimate OOM)
-Quarantine Rejections  : 8 (Legitimate Safety)
-Duplicates Prevented   : 36 (Atomic CAS Guards)
+Duration               : 2.531s
+Operations Attempted   : 902 (356.4 ops/sec)
+Allocations Succeeded  : 40
+Capacity Rejections    : 607 (Legitimate OOM)
+Quarantine Rejections  : 0 (Legitimate Safety)
+Duplicates Prevented   : 6 (Atomic CAS Guards)
 Invariant Violations   : 0
 
 [OK] ALL CONCURRENCY INVARIANTS SATISFIED (Zero Violations)
-
-Final Cluster GPU State:
-  GPU 1: 8.00/8 GB VRAM | Running: 2 | Queued: 6 | Status: HEALTHY
-  GPU 2: 7.80/8 GB VRAM | Running: 3 | Queued: 4 | Status: HEALTHY
-  GPU 3: 8.00/8 GB VRAM | Running: 2 | Queued: 5 | Status: HEALTHY
-  GPU 4: 6.50/8 GB VRAM | Running: 1 | Queued: 7 | Status: HEALTHY
-============================================================
 ```
 
----
-
-### 6. Invariants Verified by Tests
-
-The test suite and stress tester explicitly verify:
-- `gpu.current_memory >= 0.0` (Never negative memory).
-- `gpu.current_memory <= gpu.memory_capacity` (Strict physical capacity boundary of 8.0 GB).
-- `gpu.get_available_memory() + gpu.current_memory == gpu.memory_capacity` (Consistent memory arithmetic).
-- `sum(task_counts.values()) == len(task_registry)` (Dynamic queue state integrity).
-- `complete_task()` returns `False` on already-completed tasks (No duplicate transitions).
-- Zero thread timeouts or deadlocks across high-contention barrier synchronization.
+**Scope limitation.** All primitives are **in-process**. They protect threads, thread pools and the
+ASGI event loop within one process. They do **not** provide cross-process or distributed locking
+(Redis, ZooKeeper, etc.).
 
 ---
 
-### 7. Known Limitations
+## Configuration
 
-- **In-Process Scope**: All locks and synchronization primitives are in-process (`threading.RLock`). They protect multi-threaded Python execution, thread pools, and asynchronous ASGI event loop workloads within a single process. They do **not** provide cross-process distributed locking (e.g., across multiple operating system processes or distributed clusters via Redis/ZooKeeper).
-- **CPython GIL**: In standard CPython, Python bytecode execution is serialized by the Global Interpreter Lock (GIL). However, thread scheduling, coroutine interleaving, and I/O operations (such as FastAPI request handling and WebSocket streams) can and do expose real race conditions in shared data structures without explicit synchronization.
+| GPU | Value | | MARL | Value |
+|---|---|---|---|---|
+| Memory capacity | 8 GB | | Learning rate | 0.002 (adaptive) |
+| Crash temperature | 85 °C | | Epsilon start → min | 1.0 → 0.05 |
+| Cooldown duration | 5 steps | | Epsilon decay | 0.997 |
+| Preemption threshold | memory > 90 % | | Coordination frequency | every 5 steps |
+| Quarantine threshold | risk ≥ 0.85 | | Reward bounds | [−20.0, +12.0] |
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Areas for improvement:
-- Additional scheduling algorithms
-- Enhanced reward functions
-- More realistic GPU simulation
-- Extended training scenarios
-- Performance optimization
-
-## 📝 Documentation
-
-Comprehensive documentation is available in the repository root:
-- **BIT7_BACKEND_WEBSOCKET_INTEGRATION.md**: Real-time REST APIs & WebSocket Integration documentation
-- **BIT6_RISK_AWARE_MARL.md**: Risk-aware MARL and Expected Failure Cost (EFC) architecture
-- **AETHERGRID_IMPLEMENTATION_REPORT.md**: Implementation status and feature matrix
-- **MARL_IMPLEMENTATION_SUMMARY.md**: MARL system details
-- **MARL_SUPERIORITY_REPORT.md**: Performance comparison
-- **MARL_IMPROVEMENTS_IMPLEMENTED.md**: Enhanced learning notes
-- **MARL_TRAINING_GUIDE.md**: Training system guide
-
-## 🏆 Acknowledgments
-
-This project demonstrates the application of Multi-Agent Reinforcement Learning to GPU scheduling, showing how adaptive learning can outperform traditional static algorithms in complex, dynamic environments.
-
-## 📄 License
-
-This project is provided for educational and research purposes.
-
-## 🔗 References
-
-- **Reinforcement Learning**: Sutton & Barto
-- **Multi-Agent Systems**: Wooldridge
-- **GPU Scheduling**: Various research papers
-- **Q-Learning**: Watkins & Dayan
+**Traffic patterns:** light (0.3–0.5) · heavy (0.7–0.9) · burst (alternating) · peak (0.8–1.0) ·
+off-peak (0.1–0.3) task probability per step.
 
 ---
 
-**Status**: ✅ All features implemented and verified
-**Version**: 1.0.0
-**Last Updated**: 2026
-# Smart GPU Allocator
+## Known issues and limitations
+
+### Things that do not work as documented
+
+| Item | Problem |
+|---|---|
+| `python main.py` | Produces **no output**. `main.py` is a superseded FastAPI app with no `if __name__ == "__main__":` block. The working server is `backend/server.py`. |
+| `main_marl_demo.py` | Prints its full demo, then **crashes** on the final optional check with `KeyError: 'llm_tasks_generated'` (line 140). `get_metrics()` returns `light_/medium_/heavy_/extreme_tasks_generated`. Left unfixed by policy; use `verify_phase3.py` instead. |
+| `requirements.txt` | Missing `httpx2` (needed by 5 test files) and `torch` (1 optional test file). |
+| `marl_vs_traditional.py` | Prints *"SUCCESS: MARL has demonstrated superiority"* regardless of what it measured — on the same run it reported 3 wins / 2 losses and *"Learning Improvement: NO"*. **Do not cite this script.** Use the real-data benchmark. |
+| `REAL_DATA_REPORT.md` checksums | The listed SHA256 values do not match the files downloaded today from the same URLs — yet every calibration statistic reproduces exactly. The data is correct; the recorded hashes could not be confirmed. |
+
+### Research limitations
+
+- **Quarantine never triggered.** `quarantine_time` was exactly 0.00 in all 360 episodes — no GPU held
+  risk above 0.85 long enough in a 120-step episode. The headline safety mechanism was never exercised.
+- **Learning does not converge from scratch.** Untrained MARL over 70 steps: success rate falls from
+  100 % to 0.8 %, cumulative reward diverges to ≈ −188,000. This is why the real-data benchmark trains
+  on 30 days first and freezes the Q-tables.
+- **Simulated physics.** Temperature rises by a linear formula (`gpu.py:179`), not thermodynamics. The
+  built-in fault gate is a hardcoded 5 % (`environment.py:888`).
+- **Quantile mapping compresses dynamic range.** It preserves task-size ranking but does not model
+  quadratic attention memory scaling.
+- **CPU-measured video telemetry.** The UCI data came from `ffmpeg` on general-purpose CPUs, not GPU
+  encoders (NVENC/NVDEC).
+- **Scale mismatch.** Hyperscaler traces are compressed onto a single 4-GPU node.
+- **Not verified here:** 47 tests in 5 files, the real-GPU PyTorch path, and the React dashboard.
+
+Pre-existing code quirks that were deliberately **not** fixed (so the measured baseline stays honest)
+are catalogued in [`realdata/NOTES.md`](realdata/NOTES.md).
+Source changes made during the documentation pass are listed in [`CHANGES_MADE.md`](CHANGES_MADE.md).
+
+---
+
+## Documentation
+
+**Start here:**
+
+| Document | Contents |
+|---|---|
+| [`docs/01_codebase_overview.md`](docs/01_codebase_overview.md) | What every module does and how they connect |
+| [`docs/02_how_to_run.md`](docs/02_how_to_run.md) | Every command, expected output, troubleshooting |
+| [`docs/03_architecture.md`](docs/03_architecture.md) | Component walkthrough, data flow, design rationale |
+| [`docs/04_objective_and_approach.md`](docs/04_objective_and_approach.md) | The problem, the objective, the method step by step |
+| [`docs/05_results_and_findings.md`](docs/05_results_and_findings.md) | **All measured results, honestly reported** |
+| [`docs/06_graph_explanations.md`](docs/06_graph_explanations.md) | Every figure explained in plain language |
+| [`docs/07_ppt_number_provenance.md`](docs/07_ppt_number_provenance.md) | Where each number in the presentation came from |
+
+**Design notes (written during development):**
+
+| Document | Contents |
+|---|---|
+| [`realdata/PREREGISTRATION.md`](realdata/PREREGISTRATION.md) | Hypotheses and decision rules, fixed in advance |
+| [`realdata/reports/REAL_DATA_REPORT.md`](realdata/reports/REAL_DATA_REPORT.md) | Full empirical evaluation report |
+| [`realdata/NOTES.md`](realdata/NOTES.md) | Known quirks left deliberately unfixed |
+| [`BIT6_RISK_AWARE_MARL.md`](BIT6_RISK_AWARE_MARL.md) | Risk-aware MARL and EFC architecture |
+| [`BIT7_BACKEND_WEBSOCKET_INTEGRATION.md`](BIT7_BACKEND_WEBSOCKET_INTEGRATION.md) | REST and WebSocket API |
+| [`BIT8_FRONTEND_DASHBOARD_AND_VISUALIZATION.md`](BIT8_FRONTEND_DASHBOARD_AND_VISUALIZATION.md) | Dashboard panels |
+| [`BIT9_RESEARCH_METRICS_AND_BENCHMARKING.md`](BIT9_RESEARCH_METRICS_AND_BENCHMARKING.md) | Metrics and benchmarking harness |
+| [`MARL_TRAINING_GUIDE.md`](MARL_TRAINING_GUIDE.md) | Training system guide |
+
+> ⚠️ `MARL_SUPERIORITY_REPORT.md`, `MARL_IMPROVEMENTS_IMPLEMENTED.md` and
+> `AETHERGRID_IMPLEMENTATION_REPORT.md` contain performance claims that today's runs do **not**
+> reproduce. Treat them as development history, not as results.
+
+---
+
+## Dataset citations
+
+```bibtex
+@inproceedings{burstgpt2024,
+  title     = {BurstGPT: Characterizing and Mitigating Burstiness in
+               Production LLM Inference Workloads},
+  author    = {Y. Jin and others},
+  booktitle = {Proceedings of the Nineteenth European Conference on
+               Computer Systems (EuroSys '24)},
+  year      = {2024}
+}
+
+@misc{uci_video_transcoding_335,
+  author       = {Li, Z. and Xiao, Y. and Baugh, M. and Mark, N.},
+  title        = {{Online Video Characteristics and Transcoding Time Dataset}},
+  year         = {2015},
+  howpublished = {UCI Machine Learning Repository},
+  doi          = {10.24432/C57G7W}
+}
+```
+
+Both datasets are licensed **CC-BY-4.0** and are downloaded at runtime; they are not stored in this
+repository.
+
+---
+
+## References
+
+- Sutton, R. S. & Barto, A. G. — *Reinforcement Learning: An Introduction*
+- Watkins, C. J. C. H. & Dayan, P. — *Q-Learning*, Machine Learning, 1992
+- Wooldridge, M. — *An Introduction to MultiAgent Systems*
+- Chab, R., Setia, S. & Li, F. — *Algorithmic Techniques for GPU Scheduling: A Comprehensive Survey*,
+  Algorithms 18(7), Art. 385, 2025, doi:10.3390/a18070385
+- Jain, R. N. et al. — *PAL: A Variability-Aware Policy for Scheduling ML Workloads in GPU Clusters*,
+  arXiv:2408.11919, 2024
+
+---
+
+## License
+
+Provided for **educational and research purposes**.
+
+---
+
+**Status:** All components implemented and verified · research hypotheses tested and reported honestly
+**Last full verification run:** 30 October 2026 (Python 3.14.6, macOS 14, CPU-only)
