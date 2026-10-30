@@ -202,12 +202,11 @@ def build():
     # ───────────────────────────── 6. Primary result
     add_graph_slide(prs, layout, chrome, "V2 RESULT — THE PRIMARY TEST IS REJECTED",
                     G2 / "v2_08_primary_hypothesis.png", [
-        f"Pre-registered primary metric at rho=1.1: Risk-Aware MARL {p['treat']:.6f} vs "
-        f"{p['base_name']} {p['base']:.6f} (lower is better).",
-        f"Risk-Aware MARL was better in only {p['wins']} of {p['n']} paired episodes; the "
-        "threshold was 60%. The 95% CI excludes zero.",
-        f"Not merely unsupported - significantly WORSE. {', '.join(p['infeasible'])} is hatched: "
-        "excluded by the throughput floor.",
+        f"Primary metric, rho=1.1: Risk-Aware MARL {p['treat']:.6f} vs {p['base_name']} "
+        f"{p['base']:.6f} (lower is better).",
+        f"Better in only {p['wins']} of {p['n']} paired episodes; 60% required. CI excludes zero.",
+        f"Not just unsupported - significantly WORSE. Hatched = {', '.join(p['infeasible'])}, "
+        "below the throughput floor.",
     ], notes=(
         "This is the one confirmatory test in the whole programme and it is rejected. "
         "Say that plainly. Also explain the hatching: single-agent RL scores best but "
@@ -217,10 +216,10 @@ def build():
     # ───────────────────────────── 7. The mechanism
     add_graph_slide(prs, layout, chrome, "V2 RESULT — WHY IT LOSES, AND WHAT IT WINS",
                     G2 / "v2_09_mean_vs_peak.png", [
-        f"Risk-Aware MARL is WORST on mean risk ({t11.loc[TREAT].mean_risk_over_time:.4f}) and "
-        f"BEST on peak GPU risk ({t11.loc[TREAT].peak_gpu_risk:.4f}) - of all six schedulers.",
-        "It spreads work so no GPU overheats, leaving four warm GPUs. FCFS concentrates: two cold, two burning.",
-        "Averaging across GPUs prefers 'two cold, two burning' - but that is what actually destroys hardware.",
+        f"WORST on mean risk ({t11.loc[TREAT].mean_risk_over_time:.4f}), BEST on peak GPU risk "
+        f"({t11.loc[TREAT].peak_gpu_risk:.4f}) of all six.",
+        "It spreads work (four warm GPUs); FCFS concentrates it (two cold, two burning).",
+        "The average prefers 'two cold, two burning' - but that is what destroys hardware.",
     ], notes=(
         "This is the most interesting slide in the deck. The two results look contradictory "
         "and are not - they are the same behaviour seen from two angles. The honest "
@@ -238,10 +237,10 @@ def build():
 
     add_graph_slide(prs, layout, chrome, "V2 RESULT — THE SAFETY VALVE NEVER FIRES",
                     G2 / "v2_12_quarantine.png", [
-        f"The shipped quarantine threshold (0.85) triggered in {f['q85_w']} of {len(f['w']):,} workload "
-        f"episodes and {f['q85_o']} of {len(f['o']):,} overlay episodes.",
-        f"An exploratory 0.60 threshold fires in {f['q60_w']:.1f}% and {f['q60_o']:.1f}% of episodes.",
-        "Hypothesis H4 is therefore UNTESTABLE, not unsupported - the valve is unreachable by design.",
+        f"The shipped 0.85 threshold fired {f['q85_w']} times in {len(f['w']):,} workload episodes, "
+        f"{f['q85_o']} in {len(f['o']):,} overlay episodes.",
+        f"An exploratory 0.60 threshold fires in {f['q60_w']:.1f}% / {f['q60_o']:.1f}% of episodes.",
+        "H4 is therefore UNTESTABLE, not unsupported - the valve is unreachable.",
     ], notes=(
         "Zero out of 3,240, twice. Quarantine is a headline feature of the architecture and "
         "it is structurally dead in this simulator. We report the 0.60 numbers because the "
@@ -250,11 +249,11 @@ def build():
 
     # ───────────────────────────── 8. v1 vs v2
     add_graph_slide(prs, layout, chrome, "V2 — WHICH FIX ACTUALLY MATTERED?", G2 / "v2_11_v1_vs_v2.png", [
-        "v1's higher task count is NOT a better result - it was offered ~7x more work than intended.",
-        f"v1+load-fix and full v2 are nearly identical: mean risk "
-        f"{cond.loc['v1_corrected'].mean_risk_over_time:.3f} vs {cond.loc['v2'].mean_risk_over_time:.3f}; "
+        "v1's higher task count is NOT better - it was offered ~7x more work than intended.",
+        f"v1+load-fix vs full v2 are nearly identical: mean risk "
+        f"{cond.loc['v1_corrected'].mean_risk_over_time:.3f} vs {cond.loc['v2'].mean_risk_over_time:.3f}, "
         f"crashes {cond.loc['v1_corrected'].crash_count:.2f} vs {cond.loc['v2'].crash_count:.2f}.",
-        "Almost the entire v2 change comes from the load fix. The other improvements moved results under 1%.",
+        "Almost all of v2's change is the load fix; the rest moved results under 1%.",
     ], notes=(
         "An honest and slightly deflating slide. Our clever improvements - better risk "
         "buckets, much more training - did essentially nothing. The thing that mattered "
