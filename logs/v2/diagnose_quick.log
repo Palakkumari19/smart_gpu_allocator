@@ -1,0 +1,56 @@
+Loading empirical datasets ...
+Reproducing v1 training (80 steps, median_hour, seed 42) ...
+
+[D1] Decision divergence: risk-aware vs risk-blind on identical state
+   decisions with a real choice : 69
+   diverged                      : 34  (49.28%)
+   mean reward term (Q+perf)     : 0.23682
+   mean penalty term (risk+EFC)  : 0.04009
+
+[D2] Ablation: peak vs mean per-GPU risk
+                 mean_risk_over_time  peak_gpu_risk  mean_of_per_gpu_peaks  completed_tasks  crash_count
+variant                                                                                                 
+full_risk_aware               0.1455         0.3857                 0.2839            20.25         1.25
+no_efc_penalty                0.1455         0.3857                 0.2811            20.25         1.25
+no_risk_penalty               0.1458         0.3855                 0.2798            20.50         1.25
+risk_blind                    0.1435         0.3980                 0.2794            19.75         1.50
+
+[D3] Quarantine reachability across episode length and load
+   quarantine threshold = 0.85
+   steps=120   load=0.9  seed=42  max_risk=0.293  quarantined=no
+   steps=120   load=0.9  seed=43  max_risk=0.331  quarantined=no
+   steps=120   load=1.2  seed=42  max_risk=0.282  quarantined=no
+   steps=120   load=1.2  seed=43  max_risk=0.331  quarantined=no
+   steps=500   load=0.9  seed=42  max_risk=0.613  quarantined=no
+   steps=500   load=0.9  seed=43  max_risk=0.651  quarantined=no
+   steps=500   load=1.2  seed=42  max_risk=0.624  quarantined=no
+   steps=500   load=1.2  seed=43  max_risk=0.619  quarantined=no
+            episodes  pct_quarantine  max_risk  mean_max_risk
+steps load                                                   
+120   0.9          2             0.0    0.3306         0.3118
+      1.2          2             0.0    0.3306         0.3062
+500   0.9          2             0.0    0.6507         0.6320
+      1.2          2             0.0    0.6239         0.6216
+
+[D4] Starvation mechanism for single-agent RL
+                 tasks_offered  successful_assignments  completed_tasks  avg_temperature  avg_risk  crash_count
+scheduler                                                                                                      
+least_loaded           2154.25                   27.50            19.75           63.250     0.274         1.25
+marl                   2154.25                   27.25            19.75           61.781     0.274         1.50
+risk_aware_marl        2154.25                   27.75            20.25           62.969     0.278         1.25
+rl                     2154.25                    7.75             6.25           40.406     0.106         0.00
+
+[D5] Training adequacy
+{
+  "train_steps": 80,
+  "final_q_table_size": 49,
+  "q_table_size_at_half": 23,
+  "final_total_reward": 228.77448839419063,
+  "final_success_rate": 1.0,
+  "final_avg_epsilon": 0.8520072748321851,
+  "per_agent_q_sizes": [],
+  "q_growth_last_quarter": 14,
+  "train_window_request_count": 193
+}
+
+All diagnostic metrics written to /Users/palakkumari/Documents/projects/smart_gpu_allocator/results/metrics/v2

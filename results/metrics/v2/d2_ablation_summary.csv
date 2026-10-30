@@ -1,0 +1,5 @@
+variant,mean_risk_over_time,peak_gpu_risk,mean_of_per_gpu_peaks,completed_tasks,crash_count
+full_risk_aware,0.1455,0.3857,0.2839,20.25,1.25
+no_efc_penalty,0.1455,0.3857,0.2811,20.25,1.25
+no_risk_penalty,0.1458,0.3855,0.2798,20.5,1.25
+risk_blind,0.1435,0.398,0.2794,19.75,1.5

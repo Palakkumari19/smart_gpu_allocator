@@ -1,0 +1,11 @@
+{
+  "train_steps": 80,
+  "final_q_table_size": 49,
+  "q_table_size_at_half": 23,
+  "final_total_reward": 228.77448839419063,
+  "final_success_rate": 1.0,
+  "final_avg_epsilon": 0.8520072748321851,
+  "per_agent_q_sizes": [],
+  "q_growth_last_quarter": 14,
+  "train_window_request_count": 193
+}
