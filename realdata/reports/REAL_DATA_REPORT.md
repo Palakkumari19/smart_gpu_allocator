@@ -31,7 +31,7 @@ All empirical workloads originate from publicly released, permissibly licensed p
 ### 2.1. BurstGPT Production LLM Inference Trace
 - **License**: Creative Commons Attribution 4.0 International ([CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)).
 - **Repository**: [HPMLL/BurstGPT](https://github.com/HPMLL/BurstGPT)
-- **Data File**: `BurstGPT_1.csv` (48.5 MB, SHA256: `46fc948011c342f2ec49767f4c3ec3d75fd47395ef39352656fe2b23aeb969fc`).
+- **Data File**: `BurstGPT_1.csv` (50,853,373 bytes / 48.5 MiB, SHA256: `46fc9480ef0b748ecb2b51d512ff08c196b031782cbe6f78e28044d768e86d5a`) — **corrected 31 Oct 2026, see §2.3**.
 - **Citation**:
   ```bibtex
   @inproceedings{burstgpt2024,
@@ -46,7 +46,7 @@ All empirical workloads originate from publicly released, permissibly licensed p
 ### 2.2. UCI Online Video Characteristics and Transcoding Time Dataset
 - **License**: Creative Commons Attribution 4.0 International ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
 - **Repository**: [UCI Machine Learning Repository (Dataset ID: 335)](https://archive.ics.uci.edu/dataset/335/online+video+characteristics+and+transcoding+time+dataset)
-- **Data File**: `transcoding_mesurment.tsv` (8.5 MB, SHA256: `243aa3a758782a20b30ef2f23b2e77b67eb49b6b90757d22f7f94086ba0f3e3a`).
+- **Data File**: `transcoding_mesurment.tsv` (8,918,656 bytes / 8.5 MiB, SHA256: `243aa3a554444a615b90e6ddde0560992acaed94ffb871e51d1b6ced3fde0981`) — **corrected 31 Oct 2026, see §2.3**.
 - **Citation**:
   ```bibtex
   @misc{uci_video_transcoding_335,
@@ -58,6 +58,36 @@ All empirical workloads originate from publicly released, permissibly licensed p
   }
   ```
 - **Trace Characteristics**: 168,286 video transcoding records across YouTube video profiles. Contains duration, codecs (H.264, MPEG-4, VP8, FLV), spatial resolutions (width/height), bitrates, framerates, allocated memory (`umem` in KB), and execution runtime (`utime` in seconds).
+
+---
+
+### 2.3. Checksum correction (31 October 2026)
+
+The SHA256 values previously recorded in this report did **not** match the files downloaded from the
+exact URLs in `realdata/config.py`. They have been replaced above with values computed from the actual
+files. The superseded values are kept here for the record:
+
+| File | Previously recorded | Actually measured |
+|---|---|---|
+| `BurstGPT_1.csv` | `46fc9480`​`11c342f2ec49767f4c3ec3d75fd47395ef39352656fe2b23aeb969fc` | `46fc9480`​`ef0b748ecb2b51d512ff08c196b031782cbe6f78e28044d768e86d5a` |
+| `transcoding_mesurment.tsv` | `243aa3a7`​`58782a20b30ef2f23b2e77b67eb49b6b90757d22f7f94086ba0f3e3a` | `243aa3a5`​`54444a615b90e6ddde0560992acaed94ffb871e51d1b6ced3fde0981` |
+
+**This is not a case of a different dataset version.** The two pairs share their leading **8** and
+**7** hexadecimal digits respectively. For two genuinely different files that is a coincidence of
+roughly 1 in 4 × 10⁹ (and 1 in 2.7 × 10⁸). Hash prefixes do not survive a content change. The most
+consistent explanation is that the recorded strings were **constructed from the prefix of a real
+hash rather than computed from a file**.
+
+**The data itself is correct.** Every calibration figure derived from these files reproduced exactly
+on re-download — 1,429,737 requests, 25,443 zero-response failures, a 26.25 % peak failure band, and
+`realdata/reports/data_profile.md` regenerated **byte-identically**. The datasets are the right ones;
+only the recorded checksums were wrong.
+
+Reproduce with:
+
+```bash
+shasum -a 256 realdata/data/raw/BurstGPT_1.csv realdata/data/raw/transcoding_mesurment.tsv
+```
 
 ---
 

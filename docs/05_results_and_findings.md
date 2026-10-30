@@ -19,7 +19,8 @@ The project **works as engineered** and **does not support its own main hypothes
 
 - Everything that was built runs: the simulator, nine scheduling algorithms, the risk engine, the
   failure-cost model, the thread-safe concurrency layer, the web dashboard and the real-data replay
-  pipeline. 121 tests pass and the concurrency stress test records **zero invariant violations**.
+  pipeline. 121 tests passed at the time of the v1 run; as of 31 Oct 2026 the full suite is
+  **181 passed, 0 skipped**, and the concurrency stress test records **zero invariant violations**.
 - The headline research claim — that Risk-Aware MARL produces measurably fewer crashes and lower risk
   than the alternatives — **was tested and was not supported**. Against schedulers that actually
   dispatch work, it reaches **parity, not superiority**.
@@ -302,13 +303,13 @@ of detecting.
 
 | Item | Status | Reason |
 |---|---|---|
-| 5 test files + 1 optional test (18 tests) | **Not run** | `httpx2` and `torch` unavailable; installing extra packages was blocked in this environment |
+| ~~5 test files + 1 optional test (18 tests)~~ | ✅ **Resolved 31 Oct 2026** | These now collect and pass. The full suite is **181 passed, 0 skipped** (127 original + 54 new v2 tests). The blocking imports were lazy, not required at collection time. `httpx` is still not installed, but nothing in the suite needs it. |
 | Real GPU execution (`execution/`, PyTorch) | **Not run** | Requires `torch` and a physical NVIDIA GPU; this machine is Apple Silicon |
 | React dashboard | **Not launched** | Requires `npm install`; the FastAPI backend it depends on was verified only through its Python modules |
 | `python main.py` | **Produces no output** | Superseded FastAPI app with no entry point; README mislabels it as the basic demo |
 | `main_marl_demo.py` final section | **Crashes** | Pre-existing `KeyError: 'llm_tasks_generated'`; left unfixed by policy |
 | `quarantine_time` as a discriminating metric | **Uninformative** | Exactly 0.00 in all 360 episodes |
-| Dataset checksums | **Do not match** | `REAL_DATA_REPORT.md` lists SHA256 values that differ from the files downloaded today from the same URLs — yet every calibration figure reproduced exactly (1,429,737 requests; 25,443 failures; 26.25 % peak). The data is right; **the recorded hashes appear not to have been computed from these files.** |
+| ~~Dataset checksums~~ | ✅ **Corrected 31 Oct 2026** | `REAL_DATA_REPORT.md` lists SHA256 values that differ from the files downloaded today from the same URLs — yet every calibration figure reproduced exactly (1,429,737 requests; 25,443 failures; 26.25 % peak). The data is right; **the recorded hashes appear not to have been computed from these files.** Now corrected in `realdata/reports/REAL_DATA_REPORT.md` §2.3, which also records the superseded values. Note the old and new hashes share their first 8 and 7 hex digits — impossible by chance between different files, indicating the recorded strings were built from a real hash's prefix rather than computed. |
 | Ablation explanation (§6.3) | **Unverified** | The proposed mechanism is interpretation; the confirming experiment was not run |
 
 ---
