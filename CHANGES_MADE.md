@@ -97,6 +97,57 @@ The user explicitly asked for the README to be updated and finalised after the m
 
 ---
 
+## Change 3 — v2 evaluation fix: corrected offered-load calibration (NEW FILES ONLY)
+
+### What was wrong
+
+`realdata/trace_builder.py` computes the arrival scale over the **window** duration
+(`window_duration_seconds / seconds_per_step` = 3600 steps, line 77) but
+`build_real_trace()` emits those arrivals into the **episode** length (`total_steps` = 120,
+line 187). Arrivals are therefore delivered **exactly 30x too fast**. It also uses hardcoded
+constants (`DEFAULT_AVG_MEMORY_GB = 4.54`, `DEFAULT_AVG_DURATION_STEPS = 10.61`) that do not
+match the per-window calibrated task mappings.
+
+Measured effect: the "rho = 0.6 / 0.9 / 1.2" presets actually delivered **11.3x to 64.5x**
+cluster capacity. Evidence: `docs/07_diagnosis.md` Finding 2.
+
+### What was changed
+
+**No existing file was edited.** `realdata/trace_builder.py` is byte-for-byte unchanged, so the
+v1 results remain exactly reproducible. The correction lives in a new module:
+
+- `v2/load_model.py` — `calibrate_load_scale()` / `build_calibrated_trace()` compute the scale
+  against the **same step count the trace is built with**, and measure the mean task footprint
+  empirically from a probe trace instead of assuming constants. A short fixed-point refinement
+  (`scale *= target / delivered`) corrects the residual sampling drift.
+  `build_legacy_trace()` reproduces the v1 behaviour deliberately, so the v1 condition can be
+  re-run unchanged on the new test seeds.
+
+### Why this is an evaluation fix, not a scheduler change
+
+It alters the offered workload **identically for all six schedulers**. No scheduler, reward,
+risk, EFC or physics code is touched. Verification used offered-load numbers only
+(delivered rho vs target); no scheduler comparison was inspected while verifying.
+
+### Verification
+
+New regression test `tests/v2/test_load_scale_v2.py` (11 tests, all passing) asserts that
+delivered/intended is ~1.0 for every window and preset, that the legacy path still reproduces
+the ~30x defect, and that delivered load increases monotonically with the target.
+
+Measured after the fix (mean of seeds 100-102):
+
+| Window | rho | v1 delivered | v2 delivered | v2 ratio |
+|---|---|---|---|---|
+| median_hour | 0.6 | 32.51 | 0.599 | 1.00x |
+| median_hour | 0.9 | 48.56 | 0.902 | 1.00x |
+| median_hour | 1.2 | 64.42 | 1.211 | 1.01x |
+| burstiest_window | 0.6 | 11.34 | 0.619 | 1.03x |
+| burstiest_window | 0.9 | 17.08 | 0.917 | 1.02x |
+| burstiest_window | 1.2 | 22.86 | 1.196 | 1.00x |
+
+---
+
 ## Things that were deliberately NOT changed
 
 These are genuine problems that were found, but each was **recorded instead of fixed**, because none of
