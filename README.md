@@ -143,8 +143,9 @@ python3 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/pip install -r requirements.txt pytest
 
-# 2. Optional, but needed for the full test suite
-.venv/bin/pip install httpx2 torch
+# 2. Needed for the full test suite (pytest + httpx2) and to rebuild the deck
+.venv/bin/pip install -r requirements-dev.txt
+# (torch is only needed for the real-GPU execution path, which this project does not run)
 
 # 3. Verify
 PYTHONPATH=. .venv/bin/python -m pytest tests/ -q

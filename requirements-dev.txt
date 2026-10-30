@@ -1,0 +1,14 @@
+# Development / test dependencies.
+# requirements.txt covers running the project; this file is needed to run the
+# test suite and rebuild the presentation.
+#
+#   pip install -r requirements.txt -r requirements-dev.txt
+#
+# Verified 31 Oct 2026: without these, a fresh clone collects only 121 of the
+# 181 tests - starlette's TestClient raises
+#   "The starlette.testclient module requires the httpx2 package to be installed."
+
+pytest
+httpx2          # required by starlette.testclient (note: httpx2, not httpx)
+python-pptx     # only needed to rebuild the slide deck (results/build_ppt*.py)
+Pillow          # image sizing in the deck builders

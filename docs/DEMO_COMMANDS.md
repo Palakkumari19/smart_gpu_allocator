@@ -34,6 +34,10 @@ cd /Users/palakkumari/Documents/projects/smart_gpu_allocator
 ```
 **Panel sees:** `181 passed in 8.96s`, zero skipped. This is the headline quality number.
 
+> **Clean-clone note (verified 31 Oct):** this machine is already set up. On a *fresh* clone you
+> must also run `pip install -r requirements-dev.txt` — without `pytest` and `httpx2` only 121 of
+> the 181 tests collect. Nothing else in this sheet is affected.
+
 > You do not need to "activate" anything — calling `.venv/bin/python` directly uses the virtual
 > environment. If you prefer activating: `source .venv/bin/activate`, then `python` works plainly.
 

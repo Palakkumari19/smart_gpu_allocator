@@ -303,7 +303,7 @@ of detecting.
 
 | Item | Status | Reason |
 |---|---|---|
-| ~~5 test files + 1 optional test (18 tests)~~ | ✅ **Resolved 31 Oct 2026** | These now collect and pass. The full suite is **181 passed, 0 skipped** (127 original + 54 new v2 tests). The blocking imports were lazy, not required at collection time. `httpx` is still not installed, but nothing in the suite needs it. |
+| ~~5 test files + 1 optional test (18 tests)~~ | ✅ **Resolved 31 Oct 2026** | These now collect and pass. The full suite is **181 passed, 0 skipped** (127 original + 54 new v2 tests). **Correction (31 Oct, from a clean-clone test):** the blocker was never resolved by lazy imports - the package `httpx2` is simply installed in this machine's virtualenv, and `starlette.testclient` requires it. A fresh clone with only `requirements.txt` collects **121 of 181** tests. `requirements-dev.txt` now pins `pytest` and `httpx2` so a clean checkout can reach 181. |
 | Real GPU execution (`execution/`, PyTorch) | **Not run** | Requires `torch` and a physical NVIDIA GPU; this machine is Apple Silicon |
 | React dashboard | **Not launched** | Requires `npm install`; the FastAPI backend it depends on was verified only through its Python modules |
 | `python main.py` | **Produces no output** | Superseded FastAPI app with no entry point; README mislabels it as the basic demo |
