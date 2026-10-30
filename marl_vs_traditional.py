@@ -217,28 +217,30 @@ def generate_marl_superiority_report():
     
     # Final verdict
     print("\n" + "=" * 60)
-    print("MARL SUPERIORITY VERDICT")
+    print("MARL vs TRADITIONAL — MEASURED VERDICT")
     print("=" * 60)
     
+    # Bands are stated relative to a coin flip. The middle band used to start at
+    # 0.4, which labelled a losing record as "shows advantages".
     if marl_win_rate > 0.6:
-        verdict = "MARL DEMONSTRATES CLEAR SUPERIORITY"
-        confidence = "HIGH"
-        evidence = "Strong evidence across multiple test scenarios"
-    elif marl_win_rate > 0.4:
-        verdict = "MARL SHOWS ADVANTAGES"
-        confidence = "MEDIUM"
-        evidence = "Moderate evidence with learning improvement"
+        verdict = "MARL WON THE MAJORITY OF COMPETITIONS"
+        confidence = "see caveat below"
+        evidence = f"MARL won {marl_win_rate:.1%} of {total_competitions} competitions"
+    elif marl_win_rate >= 0.5:
+        verdict = "MARL AND TRADITIONAL ARE NEAR PARITY"
+        confidence = "see caveat below"
+        evidence = f"MARL won {marl_win_rate:.1%} of {total_competitions} competitions"
     else:
-        verdict = "MARL NEEDS OPTIMIZATION"
-        confidence = "LOW"
-        evidence = "Limited evidence of superiority"
+        verdict = "MARL LOST THE MAJORITY OF COMPETITIONS"
+        confidence = "see caveat below"
+        evidence = f"MARL won only {marl_win_rate:.1%} of {total_competitions} competitions"
     
     print(f"Verdict: {verdict}")
     print(f"Confidence: {confidence}")
     print(f"Evidence: {evidence}")
     
     # Key advantages demonstrated
-    print(f"\nMARL Advantages Demonstrated:")
+    print(f"\nObserved in this run:")
     if learning_improves:
         print("  * Learning and adaptation over time")
     if total_marl_wins > total_traditional_wins:
@@ -250,35 +252,38 @@ def generate_marl_superiority_report():
     print("  * Distributed decision making")
     print("  * Adaptive resource allocation")
     
-    return marl_win_rate > 0.4
+    # A win rate below 0.5 means MARL lost the majority of competitions, so it
+    # cannot be reported as superior. The threshold used to be 0.4.
+    return marl_win_rate, total_marl_wins, total_traditional_wins, total_competitions
 
 def main():
-    """Main function to demonstrate MARL superiority"""
-    print("AETHERGRID - MARL SUPERIORITY DEMONSTRATION")
-    print("Objective: Prove MARL Outperforms Traditional Methods")
+    """Compare MARL against traditional scheduling and report what was measured."""
+    print("AETHERGRID - MARL vs TRADITIONAL SCHEDULING")
+    print("Objective: Measure whether MARL outperforms traditional methods")
     print("=" * 60)
     
-    # Generate comprehensive superiority report
-    marl_superior = generate_marl_superiority_report()
+    # Generate comprehensive comparison report
+    win_rate, marl_wins, trad_wins, competitions = generate_marl_superiority_report()
     
     print("\n" + "=" * 60)
     print("CONCLUSION")
     print("=" * 60)
     
-    if marl_superior:
-        print("SUCCESS: MARL has demonstrated superiority over traditional scheduling methods!")
-        print("The multi-agent reinforcement learning approach provides:")
-        print("  - Better adaptation to changing conditions")
-        print("  - Superior load balancing across GPU cluster")
-        print("  - Learning and improvement over time")
-        print("  - Enhanced robustness under stress conditions")
-        print("  - Optimized resource allocation through coordination")
+    # The conclusion is computed from the measurements above, not hardcoded.
+    print(f"Measured: MARL won {marl_wins} of {competitions} competitions "
+          f"({win_rate:.1%}); traditional schedulers won {trad_wins}.")
+    if win_rate > 0.6:
+        print("RESULT: MARL outperformed traditional scheduling in this run.")
+    elif win_rate >= 0.5:
+        print("RESULT: MARL and traditional scheduling are close to parity in this run.")
     else:
-        print("MARL shows promise but needs further optimization.")
-        print("Recommendations:")
-        print("  - Adjust reward function for better learning")
-        print("  - Increase exploration in early training")
-        print("  - Fine-tune learning parameters")
+        print("RESULT: MARL did NOT outperform traditional scheduling in this run; "
+              "it lost the majority of competitions.")
+    print()
+    print("Caveat: this script uses a small number of seeds and reports no confidence")
+    print("intervals, so it is a smoke test, not evidence. For any claim about")
+    print("performance use the pre-registered real-data benchmark instead:")
+    print("  docs/05_results_and_findings.md  (v1: section 3, v2: section 14)")
     
     print("=" * 60)
 

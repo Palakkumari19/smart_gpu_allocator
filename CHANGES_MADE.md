@@ -162,6 +162,76 @@ them blocked the project from running:
 
 ---
 
+## Change 4 — `v2/final_test.py` overlay construction (v2 file, fixed before the final run)
+
+### What was wrong
+
+Three defects in how I constructed `RiskHazardOverlay` in the v2 final-test runner. All were caught
+in pre-flight verification, **before** the single pre-registered final run:
+
+1. `RiskHazardOverlay.enabled` defaults to **`False`**. I had not passed `enabled=True`, so the entire
+   "hazard overlay" regime would have run with the overlay **inert** — silently producing a duplicate
+   of the workload-only regime while being reported as a different failure condition.
+2. `operating_metric_value` was left at its default `1.0` instead of the window's measured dispersion
+   index, which selects the empirical hazard band. The burstiest window has dispersion **25.32**, so
+   the wrong (~1 %) band would have been used instead of the correct **26.25 %** one.
+3. A single stateful overlay instance was shared across every episode and scheduler, leaking RNG state
+   between runs so that schedulers did not face identical hazard draws.
+
+### What was changed
+
+`v2/final_test.py` now builds a **fresh** overlay per `(window, seed)` with `enabled=True`, the
+window's own `dispersion_index`, and a `deepcopy` per scheduler — matching v1's protocol in
+`realdata/run_realdata_benchmark.py:353` exactly.
+
+### Verification
+
+On `burstiest_window` (dispersion 25.3173), enabling the overlay changed crashes **9 → 21** and mean
+risk **0.1874 → 0.3041**, confirming it now has effect. Committed as `713e0d5` before the final run;
+the pre-registration commit hash was unchanged at `3a0bcc3`.
+
+### Why this is disclosed
+
+Had it gone unnoticed, half the final results would have been meaningless while appearing valid, and
+fixing it afterwards would have required a re-run that the pre-registration forbids.
+
+---
+
+## Change 5 — `marl_vs_traditional.py` hardcoded conclusion
+
+### What was wrong
+
+The script printed **`"SUCCESS: MARL has demonstrated superiority over traditional scheduling
+methods!"`** whenever `marl_win_rate > 0.4`. Two problems:
+
+1. The threshold is **below a coin flip** — MARL could lose the majority of competitions and still be
+   declared superior. The same 0.4 band labelled a losing record `"MARL SHOWS ADVANTAGES"`.
+2. The conclusion text did not depend on the measurements printed above it, so it read as evidence
+   when it was a constant.
+
+In the v1 run it printed *"SUCCESS"* alongside its own measured 3 wins / 2 losses.
+
+### What was changed
+
+`generate_marl_superiority_report()` now returns the measured `(win_rate, marl_wins, trad_wins,
+competitions)` instead of a bool, and `main()` computes its conclusion from those numbers:
+
+- `> 0.6` → "MARL outperformed traditional scheduling in this run"
+- `>= 0.5` → "close to parity in this run"
+- `< 0.5` → "did NOT outperform; it lost the majority of competitions"
+
+The verdict bands were rebased on 0.5 for the same reason. Every branch now prints the actual counts,
+and all branches print a caveat that this script uses few seeds and no confidence intervals, pointing
+readers to the pre-registered real-data benchmark instead.
+
+### Verification
+
+Re-run output: `"Measured: MARL won 3 of 5 competitions (60.0%); traditional schedulers won 2."` →
+`"RESULT: MARL and traditional scheduling are close to parity in this run."` The wording now follows
+the measurement.
+
+---
+
 ## Files added (nothing overwritten)
 
 These are new and do not affect how the project runs:
