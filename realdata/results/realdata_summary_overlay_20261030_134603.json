@@ -1,0 +1,110 @@
+{
+  "timestamp_utc": "20261030_134603",
+  "smoke_test": false,
+  "hazard_overlay_enabled": true,
+  "hazard_curve_name": "burstgpt_dispersion",
+  "elapsed_seconds": 391.58,
+  "total_episodes": 180,
+  "windows_evaluated": [
+    "median_hour",
+    "burstiest_window"
+  ],
+  "load_presets": [
+    0.6,
+    0.9,
+    1.2
+  ],
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "eval_steps_per_episode": 120,
+  "schedulers_evaluated": [
+    "fcfs",
+    "round_robin",
+    "least_loaded",
+    "rl",
+    "marl",
+    "risk_aware_marl"
+  ],
+  "comparisons_vs_strongest_baseline": {
+    "avg_risk_exposure": {
+      "mean_diff": -0.2652218592021678,
+      "ci_low": -0.2986836808554307,
+      "ci_high": -0.2332417667878498,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 0,
+      "losses": 30,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "rl",
+      "treatment_mean": 0.38540026755651774,
+      "baseline_mean": 0.12017840835434981
+    },
+    "terminal_efc": {
+      "mean_diff": -5.840801964670421,
+      "ci_low": -8.30706743900978,
+      "ci_high": -3.5605782769561385,
+      "win_rate": 0.3333333333333333,
+      "wins": 10,
+      "ties": 0,
+      "losses": 20,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "rl",
+      "treatment_mean": 9.867890898340713,
+      "baseline_mean": 4.027088933670291
+    },
+    "crash_count": {
+      "mean_diff": -0.8,
+      "ci_low": -1.2666666666666666,
+      "ci_high": -0.4,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 18,
+      "losses": 12,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "rl",
+      "treatment_mean": 1.0666666666666667,
+      "baseline_mean": 0.26666666666666666
+    },
+    "quarantine_time": {
+      "mean_diff": -0.0,
+      "ci_low": -0.0,
+      "ci_high": -0.0,
+      "win_rate": 0.0,
+      "wins": 0,
+      "ties": 30,
+      "losses": 0,
+      "significant_better": false,
+      "significant_worse": false,
+      "ci_excludes_zero": false,
+      "strongest_baseline": "fcfs",
+      "treatment_mean": 0.0,
+      "baseline_mean": 0.0
+    },
+    "completed_tasks": {
+      "mean_diff": -0.43333333333333335,
+      "ci_low": -0.8666666666666667,
+      "ci_high": -0.06666666666666667,
+      "win_rate": 0.13333333333333333,
+      "wins": 4,
+      "ties": 17,
+      "losses": 9,
+      "significant_better": false,
+      "significant_worse": true,
+      "ci_excludes_zero": true,
+      "strongest_baseline": "marl",
+      "treatment_mean": 18.166666666666668,
+      "baseline_mean": 18.6
+    }
+  }
+}

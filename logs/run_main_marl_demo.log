@@ -1,0 +1,136 @@
+AETHERGRID : MARL SCHEDULER
+============================================================
+=== MARL SCHEDULER DEMO ===
+Multi-Agent RL with separate agents for each GPU
+============================================================
+Step | Comp | Crash | Mem% | Frag% | Preempt | MARL_Reward | MARL_Success
+---------------------------------------------------------------------------
+   1  |     0 |     0 |  94.4% |   0.0% |       0 |       91.05 |     100.00%
+   6  |    25 |     0 |  75.9% |   3.0% |       2 |      -62.01 |      71.74%
+  11  |    48 |     0 |  63.8% |  11.2% |       2 |    -1187.57 |      41.98%
+  16  |    61 |     0 |  50.9% |  44.7% |       2 |    -4402.79 |      21.50%
+  21  |    66 |     0 |  24.4% |  75.0% |       2 |    -8056.42 |      13.65%
+  26  |    66 |     0 |  24.4% |  75.0% |       2 |   -13736.42 |       8.65%
+  31  |    66 |     0 |  24.4% |  75.0% |       2 |   -24156.42 |       5.17%
+  36  |    66 |     0 |  24.4% |  75.0% |       2 |   -38796.42 |       3.30%
+
+=== MARL VS OTHER SCHEDULERS ===
+============================================================
+
+Testing RANDOM scheduler...
+  Completed: 67
+  Crashes: 0
+  Avg Memory: 24.4%
+  Latency: 316.0
+  MARL Reward: 0.00
+  MARL Success: 0.00%
+
+Testing LEAST_LOADED scheduler...
+  Completed: 36
+  Crashes: 0
+  Avg Memory: 23.1%
+  Latency: 115.5
+  MARL Reward: 0.00
+  MARL Success: 0.00%
+
+Testing RL scheduler...
+  Completed: 65
+  Crashes: 0
+  Avg Memory: 0.0%
+  Latency: 335.5
+  MARL Reward: 0.00
+  MARL Success: 0.00%
+
+Testing MARL scheduler...
+  Completed: 84
+  Crashes: 0
+  Avg Memory: 13.1%
+  Latency: 301.0
+  MARL Reward: -19459.51
+  MARL Success: 7.86%
+
+============================================================
+COMPARISON SUMMARY
+============================================================
+Scheduler       Completed  Crashes  Memory%  Latency 
+------------------------------------------------------------
+random          67         0        24.4     316.0   
+least_loaded    36         0        23.1     115.5   
+rl              65         0        0.0      335.5   
+marl            84         0        13.1     301.0   
+
+Best Performer: MARL (84 tasks)
+
+=== DETAILED MARL AGENT ANALYSIS ===
+============================================================
+Global Statistics:
+  Global Step: 0
+  Total Reward: -11078.62
+  Global Success Rate: 7.21%
+  Average Epsilon: 0.961
+  Total Q-Table Size: 89
+
+Individual Agent Performance:
+----------------------------------------
+GPU 0 Agent:
+  Total Reward: -9689.19
+  Tasks Assigned: 505
+  Success Rate: 3.17%
+  Current Epsilon: 0.961
+  Q-Table Entries: 45
+  GPU Memory: 0.0%
+  GPU Temp: 35.0°C
+  Queue Length: 0
+  Running Tasks: 0
+
+GPU 1 Agent:
+  Total Reward: 12.61
+  Tasks Assigned: 2
+  Success Rate: 100.00%
+  Current Epsilon: 0.961
+  Q-Table Entries: 4
+  GPU Memory: 93.8%
+  GPU Temp: 43.0°C
+  Queue Length: 0
+  Running Tasks: 1
+
+GPU 2 Agent:
+  Total Reward: -1415.52
+  Tasks Assigned: 101
+  Success Rate: 23.76%
+  Current Epsilon: 0.961
+  Q-Table Entries: 37
+  GPU Memory: 43.8%
+  GPU Temp: 43.0°C
+  Queue Length: 0
+  Running Tasks: 1
+
+GPU 3 Agent:
+  Total Reward: 13.48
+  Tasks Assigned: 2
+  Success Rate: 100.00%
+  Current Epsilon: 0.961
+  Q-Table Entries: 3
+  GPU Memory: 93.8%
+  GPU Temp: 44.0°C
+  Queue Length: 0
+  Running Tasks: 1
+
+=== FEATURE VERIFICATION ===
+Ensuring all previous steps work with MARL scheduler
+============================================================
+
+Testing light traffic pattern...
+  Pattern: peak
+  Requests/Step: 9.0
+Traceback (most recent call last):
+  File "/Users/palakkumari/Documents/projects/smart_gpu_allocator/main_marl_demo.py", line 181, in <module>
+    main()
+    ~~~~^^
+  File "/Users/palakkumari/Documents/projects/smart_gpu_allocator/main_marl_demo.py", line 166, in main
+    verify_all_features()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/palakkumari/Documents/projects/smart_gpu_allocator/main_marl_demo.py", line 140, in verify_all_features
+    print(f"  Task Types: LLM={metrics['llm_tasks_generated']}, "
+                               ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'llm_tasks_generated'

@@ -1,0 +1,319 @@
+======================================================================
+        AETHERGRID — PHASE 4 EXECUTION DEMO
+======================================================================
+
+WORKLOAD
+----------------------------------------------------------------------
+Videos generated           : 23
+Light videos               : 11
+Medium videos              : 6
+Heavy videos               : 4
+Extreme videos             : 2
+
+VIDEO RESOURCE DEMAND
+----------------------------------------------------------------------
+Total memory requested     : 52.90 GB
+Average memory / video     : 2.30 GB
+Average execution time     : 2.78 steps
+
+EXECUTION TIMELINE
+======================================================================
+
+STEP 1
+----------------------------------------------------------------------
+  • video_0001 assigned to GPU 1
+  • video_0002 assigned to GPU 1
+  • video_0003 assigned to GPU 2
+  • video_0004 assigned to GPU 1
+  • video_0005 assigned to GPU 3
+  • video_0006 assigned to GPU 3
+  • video_0007 assigned to GPU 3
+  • video_0008 assigned to GPU 4
+  • video_0009 assigned to GPU 4
+  • video_0011 assigned to GPU 4
+
+  Pending / unassigned : 13
+  GPU queued           : 10
+  Running              : 0
+  Completed            : 0
+  Total outstanding    : 23
+
+  GPU state:
+    GPU 1: queued=3, running=0, completed=0, memory=6.30 GB, temp=39.0°C
+    GPU 2: queued=1, running=0, completed=0, memory=7.40 GB, temp=33.0°C
+    GPU 3: queued=3, running=0, completed=0, memory=6.40 GB, temp=41.0°C
+    GPU 4: queued=3, running=0, completed=0, memory=5.40 GB, temp=41.0°C
+
+STEP 2
+----------------------------------------------------------------------
+  • video_0001 started running on GPU 1
+  • video_0003 started running on GPU 2
+  • video_0005 started running on GPU 3
+  • video_0006 started running on GPU 3
+  • video_0007 started running on GPU 3
+  • video_0009 started running on GPU 4
+
+  Pending / unassigned : 13
+  GPU queued           : 0
+  Running              : 6
+  Completed            : 4
+  Total outstanding    : 19
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=2, memory=3.30 GB, temp=30.5°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=33.5°C
+    GPU 3: queued=0, running=3, completed=0, memory=6.40 GB, temp=42.5°C
+    GPU 4: queued=0, running=1, completed=2, memory=3.30 GB, temp=32.5°C
+
+STEP 3
+----------------------------------------------------------------------
+  • video_0012 assigned to GPU 1
+  • video_0013 assigned to GPU 1
+  • video_0014 assigned to GPU 4
+  • video_0015 assigned to GPU 4
+  • video_0012 started running on GPU 1
+  • video_0013 started running on GPU 1
+  • video_0001 completed on GPU 1
+  • video_0006 completed on GPU 3
+  • video_0015 started running on GPU 4
+
+  Pending / unassigned : 9
+  GPU queued           : 0
+  Running              : 7
+  Completed            : 7
+  Total outstanding    : 16
+
+  GPU state:
+    GPU 1: queued=0, running=2, completed=3, memory=3.20 GB, temp=32.5°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=34.0°C
+    GPU 3: queued=0, running=2, completed=1, memory=4.00 GB, temp=33.5°C
+    GPU 4: queued=0, running=2, completed=3, memory=5.60 GB, temp=36.5°C
+
+STEP 4
+----------------------------------------------------------------------
+  • video_0016 assigned to GPU 1
+  • video_0017 assigned to GPU 3
+  • video_0018 assigned to GPU 4
+  • video_0016 started running on GPU 1
+  • video_0017 started running on GPU 3
+  • video_0007 completed on GPU 3
+  • video_0015 completed on GPU 4
+
+  Pending / unassigned : 6
+  GPU queued           : 0
+  Running              : 7
+  Completed            : 10
+  Total outstanding    : 13
+
+  GPU state:
+    GPU 1: queued=0, running=3, completed=3, memory=4.40 GB, temp=37.0°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=34.5°C
+    GPU 3: queued=0, running=2, completed=2, memory=6.60 GB, temp=35.5°C
+    GPU 4: queued=0, running=1, completed=5, memory=3.30 GB, temp=35.0°C
+
+STEP 5
+----------------------------------------------------------------------
+  • video_0019 assigned to GPU 3
+  • video_0020 assigned to GPU 4
+  • video_0021 assigned to GPU 4
+  • video_0016 completed on GPU 1
+  • video_0013 completed on GPU 1
+  • video_0012 completed on GPU 1
+  • video_0019 started running on GPU 3
+  • video_0017 completed on GPU 3
+
+  Pending / unassigned : 3
+  GPU queued           : 0
+  Running              : 4
+  Completed            : 16
+  Total outstanding    : 7
+
+  GPU state:
+    GPU 1: queued=0, running=0, completed=6, memory=0.00 GB, temp=31.0°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=35.0°C
+    GPU 3: queued=0, running=2, completed=3, memory=3.90 GB, temp=35.5°C
+    GPU 4: queued=0, running=1, completed=7, memory=3.30 GB, temp=32.5°C
+
+STEP 6
+----------------------------------------------------------------------
+  • video_0010 assigned to GPU 1
+  • video_0022 assigned to GPU 3
+  • video_0023 assigned to GPU 4
+  • video_0010 started running on GPU 1
+  • video_0022 started running on GPU 3
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 6
+  Completed            : 17
+  Total outstanding    : 6
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=33.5°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=35.5°C
+    GPU 3: queued=0, running=3, completed=3, memory=4.90 GB, temp=41.0°C
+    GPU 4: queued=0, running=1, completed=8, memory=3.30 GB, temp=31.0°C
+
+STEP 7
+----------------------------------------------------------------------
+  • video_0019 completed on GPU 3
+  • video_0005 completed on GPU 3
+  • video_0009 completed on GPU 4
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 3
+  Completed            : 20
+  Total outstanding    : 3
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=34.0°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=36.0°C
+    GPU 3: queued=0, running=1, completed=5, memory=1.00 GB, temp=34.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 8
+----------------------------------------------------------------------
+  • video_0022 completed on GPU 3
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 2
+  Completed            : 21
+  Total outstanding    : 2
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=34.5°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=36.5°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 9
+----------------------------------------------------------------------
+  • No task lifecycle events
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 2
+  Completed            : 21
+  Total outstanding    : 2
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=35.0°C
+    GPU 2: queued=0, running=1, completed=0, memory=7.40 GB, temp=37.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 10
+----------------------------------------------------------------------
+  • video_0003 completed on GPU 2
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 1
+  Completed            : 22
+  Total outstanding    : 1
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=35.5°C
+    GPU 2: queued=0, running=0, completed=1, memory=0.00 GB, temp=34.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 11
+----------------------------------------------------------------------
+  • No task lifecycle events
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 1
+  Completed            : 22
+  Total outstanding    : 1
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=36.0°C
+    GPU 2: queued=0, running=0, completed=1, memory=0.00 GB, temp=34.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 12
+----------------------------------------------------------------------
+  • No task lifecycle events
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 1
+  Completed            : 22
+  Total outstanding    : 1
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=36.5°C
+    GPU 2: queued=0, running=0, completed=1, memory=0.00 GB, temp=34.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 13
+----------------------------------------------------------------------
+  • No task lifecycle events
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 1
+  Completed            : 22
+  Total outstanding    : 1
+
+  GPU state:
+    GPU 1: queued=0, running=1, completed=6, memory=7.80 GB, temp=37.0°C
+    GPU 2: queued=0, running=0, completed=1, memory=0.00 GB, temp=34.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+STEP 14
+----------------------------------------------------------------------
+  • video_0010 completed on GPU 1
+
+  Pending / unassigned : 0
+  GPU queued           : 0
+  Running              : 0
+  Completed            : 23
+  Total outstanding    : 0
+
+  GPU state:
+    GPU 1: queued=0, running=0, completed=7, memory=0.00 GB, temp=34.0°C
+    GPU 2: queued=0, running=0, completed=1, memory=0.00 GB, temp=34.0°C
+    GPU 3: queued=0, running=0, completed=6, memory=0.00 GB, temp=32.5°C
+    GPU 4: queued=0, running=0, completed=9, memory=0.00 GB, temp=30.0°C
+
+EXECUTION SUMMARY
+----------------------------------------------------------------------
+Successfully assigned      : 23
+Completed                  : 23
+Preemptions                : 1
+Simulation steps           : 14
+
+QUEUE / PARALLELISM
+----------------------------------------------------------------------
+Peak queued tasks          : 23
+Peak running tasks         : 7
+Peak parallelism           : 7
+Average queued tasks       : 3.86
+Average running tasks      : 2.93
+
+FINAL STATE
+----------------------------------------------------------------------
+Pending / unassigned       : 0
+GPU queued                 : 0
+Running                    : 0
+Completed                  : 23
+Unfinished                 : 0
+
+GPU FINAL STATE
+----------------------------------------------------------------------
+GPU 1: completed=7, queued=0, running=0, memory=0.00/8.00 GB, temperature=34.0°C, preemptions=0
+GPU 2: completed=1, queued=0, running=0, memory=0.00/8.00 GB, temperature=34.0°C, preemptions=0
+GPU 3: completed=6, queued=0, running=0, memory=0.00/8.00 GB, temperature=32.5°C, preemptions=1
+GPU 4: completed=9, queued=0, running=0, memory=0.00/8.00 GB, temperature=30.0°C, preemptions=0
+
+======================================================================
+RESULT: ALL VIDEO WORKLOADS COMPLETED
+======================================================================

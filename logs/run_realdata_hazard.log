@@ -1,0 +1,23 @@
+Estimating empirical hazard curves from BurstGPT data...
+Hazard curves successfully persisted to /Users/palakkumari/Documents/projects/smart_gpu_allocator/realdata/calibration/hazard_curves.json
+
+=== Curve: burstgpt_dispersion (dispersion_index [var/mean]) ===
+Global sample size: 1,429,737 | Failures: 25,443 (1.78%)
+Bin Range          | Samples    | Failures   | Rate (%)   | 95% CI                   | Too Little Data
+----------------------------------------------------------------------------------------
+[0.0, 1.0)         | 491,806    | 4,924      | 1.00       | [0.97%, 1.03%]           | False
+[1.0, 2.0)         | 541,820    | 5,086      | 0.94       | [0.91%, 0.96%]           | False
+[2.0, 5.0)         | 238,484    | 2,945      | 1.23       | [1.19%, 1.28%]           | False
+[5.0, 10.0)        | 117,432    | 1,936      | 1.65       | [1.58%, 1.72%]           | False
+[10.0, 50.0)       | 40,195     | 10,552     | 26.25      | [25.82%, 26.68%]         | False
+
+=== Curve: burstgpt_offered_load (requests_per_hour [req/hour]) ===
+Global sample size: 1,429,737 | Failures: 25,443 (1.78%)
+Bin Range          | Samples    | Failures   | Rate (%)   | 95% CI                   | Too Little Data
+----------------------------------------------------------------------------------------
+[0, 500)           | 117,175    | 5,406      | 4.61       | [4.50%, 4.74%]           | False
+[500, 1000)        | 107,403    | 2,235      | 2.08       | [2.00%, 2.17%]           | False
+[1000, 2000)       | 197,652    | 3,087      | 1.56       | [1.51%, 1.62%]           | False
+[2000, 5000)       | 518,068    | 3,143      | 0.61       | [0.59%, 0.63%]           | False
+[5000, 30000)      | 456,095    | 11,533     | 2.53       | [2.48%, 2.57%]           | False
+

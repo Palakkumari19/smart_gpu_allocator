@@ -19,7 +19,12 @@ from realdata.config import (
 FIGURES_DIR = REPORTS_DIR / "figures"
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 ARTIFACT_DIR = Path("/home/bmsit/.gemini/antigravity/brain/3e352e17-fa78-444c-b888-445471b73dc2")
-ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    # Original absolute path exists only on the author's Linux machine.
+    # Fall back to the in-repo figures directory so the script is portable.
+    ARTIFACT_DIR = FIGURES_DIR
 
 # Colors and styling
 SCHEDULER_COLORS = {

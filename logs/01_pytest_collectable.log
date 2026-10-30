@@ -1,0 +1,113 @@
+........................................................................ [ 58%]
+........................FF.........................                      [100%]
+=================================== FAILURES ===================================
+________ test_14_phase_1_to_8_dashboard_and_api_backward_compatibility _________
+
+    def test_14_phase_1_to_8_dashboard_and_api_backward_compatibility():
+        """Verify all previous Phase 1-8 endpoints remain functional."""
+        from backend.server import app
+>       from starlette.testclient import TestClient
+
+tests/test_bit9_benchmarking.py:338: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from __future__ import annotations
+    
+    import contextlib
+    import inspect
+    import json
+    import math
+    import warnings
+    from collections.abc import Awaitable, Callable, Generator, Iterable, Mapping, Sequence
+    from concurrent.futures import Future, wait as wait_futures
+    from contextlib import AbstractContextManager
+    from types import GeneratorType
+    from typing import TYPE_CHECKING, Any, Literal, Self, TypedDict, TypeGuard, cast
+    from urllib.parse import unquote, urljoin
+    
+    import anyio
+    import anyio.abc
+    import anyio.from_thread
+    from anyio.streams.stapled import StapledObjectStream
+    
+    from starlette._utils import is_async_callable
+    from starlette.exceptions import StarletteDeprecationWarning
+    from starlette.types import ASGIApp, Message, Receive, Scope, Send
+    from starlette.websockets import WebSocketDisconnect
+    
+    if TYPE_CHECKING:
+        import httpx2 as httpx
+    else:
+        try:
+            import httpx2 as httpx
+        except ModuleNotFoundError:  # pragma: no cover
+            try:
+                import httpx
+            except ModuleNotFoundError:
+>               raise RuntimeError(
+                    "The starlette.testclient module requires the httpx2 package to be installed.\n"
+                    "You can install this with:\n"
+                    "    $ pip install httpx2\n"
+                ) from None
+E               RuntimeError: The starlette.testclient module requires the httpx2 package to be installed.
+E               You can install this with:
+E                   $ pip install httpx2
+
+.venv/lib/python3.14/site-packages/starlette/testclient.py:34: RuntimeError
+__________________ test_15_bit9_benchmark_endpoints_contract ___________________
+
+    def test_15_bit9_benchmark_endpoints_contract():
+        """Verify dedicated Bit 9 research benchmark endpoints."""
+        from backend.server import app
+>       from starlette.testclient import TestClient
+
+tests/test_bit9_benchmarking.py:368: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from __future__ import annotations
+    
+    import contextlib
+    import inspect
+    import json
+    import math
+    import warnings
+    from collections.abc import Awaitable, Callable, Generator, Iterable, Mapping, Sequence
+    from concurrent.futures import Future, wait as wait_futures
+    from contextlib import AbstractContextManager
+    from types import GeneratorType
+    from typing import TYPE_CHECKING, Any, Literal, Self, TypedDict, TypeGuard, cast
+    from urllib.parse import unquote, urljoin
+    
+    import anyio
+    import anyio.abc
+    import anyio.from_thread
+    from anyio.streams.stapled import StapledObjectStream
+    
+    from starlette._utils import is_async_callable
+    from starlette.exceptions import StarletteDeprecationWarning
+    from starlette.types import ASGIApp, Message, Receive, Scope, Send
+    from starlette.websockets import WebSocketDisconnect
+    
+    if TYPE_CHECKING:
+        import httpx2 as httpx
+    else:
+        try:
+            import httpx2 as httpx
+        except ModuleNotFoundError:  # pragma: no cover
+            try:
+                import httpx
+            except ModuleNotFoundError:
+>               raise RuntimeError(
+                    "The starlette.testclient module requires the httpx2 package to be installed.\n"
+                    "You can install this with:\n"
+                    "    $ pip install httpx2\n"
+                ) from None
+E               RuntimeError: The starlette.testclient module requires the httpx2 package to be installed.
+E               You can install this with:
+E                   $ pip install httpx2
+
+.venv/lib/python3.14/site-packages/starlette/testclient.py:34: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/test_bit9_benchmarking.py::test_14_phase_1_to_8_dashboard_and_api_backward_compatibility
+FAILED tests/test_bit9_benchmarking.py::test_15_bit9_benchmark_endpoints_contract
+2 failed, 121 passed in 1.50s

@@ -52,5 +52,32 @@
     "num_repetitions": 3,
     "total_runs": 12,
     "summary_file": "experiment_ablation_1792753672_a8fdc7_summary.json"
+  },
+  {
+    "experiment_id": "bench_1793366834_72b892",
+    "timestamp": "2026-10-30T13:27:14.535208+00:00",
+    "name": "Six-Algorithm Scientific Benchmark",
+    "schedulers": [
+      "fcfs",
+      "round_robin",
+      "least_loaded",
+      "rl",
+      "marl",
+      "risk_aware_marl"
+    ],
+    "num_tasks": 35,
+    "num_repetitions": 3,
+    "total_runs": 18,
+    "summary_file": "experiment_bench_1793366834_72b892_summary.json"
+  },
+  {
+    "experiment_id": "ablation_1793366834_4df04e",
+    "timestamp": "2026-10-30T13:27:14.627620+00:00",
+    "name": "Risk & EFC Penalty Ablation Study",
+    "schedulers": [],
+    "num_tasks": 35,
+    "num_repetitions": 3,
+    "total_runs": 12,
+    "summary_file": "experiment_ablation_1793366834_4df04e_summary.json"
   }
 ]

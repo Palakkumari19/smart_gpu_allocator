@@ -1,0 +1,118 @@
+AETHERGRID - SCHEDULER BENCHMARKING
+============================================================
+AETHERGRID SCHEDULER BENCHMARK
+============================================================
+Methodology: 10 runs, fixed seeds, identical task stream per run
+
+=== Benchmarking RANDOM Scheduler over 10 runs ===
+  Mean Completed: 80.00 ± 21.37
+  Mean Latency: 353.70 ± 147.57
+  Mean Throughput: 979.32 ± 292.44
+  Mean Crashes: 0.00 ± 0.00
+
+=== Benchmarking ROUND_ROBIN Scheduler over 10 runs ===
+  Mean Completed: 60.70 ± 16.54
+  Mean Latency: 252.45 ± 83.44
+  Mean Throughput: 584.32 ± 220.07
+  Mean Crashes: 0.00 ± 0.00
+
+=== Benchmarking FCFS Scheduler over 10 runs ===
+  Mean Completed: 57.80 ± 19.28
+  Mean Latency: 240.80 ± 82.51
+  Mean Throughput: 538.32 ± 254.93
+  Mean Crashes: 0.00 ± 0.00
+
+=== Benchmarking LEAST_LOADED Scheduler over 10 runs ===
+  Mean Completed: 47.70 ± 16.11
+  Mean Latency: 155.35 ± 53.26
+  Mean Throughput: 425.74 ± 184.12
+  Mean Crashes: 0.00 ± 0.00
+
+=== Benchmarking RL Scheduler over 10 runs ===
+  Mean Completed: 80.30 ± 22.35
+  Mean Latency: 337.45 ± 100.80
+  Mean Throughput: 814.77 ± 359.87
+  Mean Crashes: 0.00 ± 0.00
+
+=== Benchmarking MARL Scheduler over 10 runs ===
+  Mean Completed: 68.20 ± 19.83
+  Mean Latency: 289.65 ± 96.37
+  Mean Throughput: 135.23 ± 59.56
+  Mean Crashes: 0.00 ± 0.00
+
+====================================================================================================
+AVERAGED SCHEDULER COMPARISON TABLE
+====================================================================================================
+   Scheduler  Runs  Mean_Completed  Completed_Std  Mean_Crashes  Crashes_Std  Mean_Latency  Latency_Std  Mean_Throughput  Throughput_Std  Mean_Memory_Usage  Mean_Temperature  Mean_Preemptions  Mean_Fragmentation  Mean_Execution_Time  MARL_Global_Reward  MARL_Success_Rate  MARL_Avg_Epsilon  MARL_Q_Table_Size
+      random    10           80.00          21.37          0.00         0.00        353.70       147.57           979.32          292.44               4.69             40.69              0.80               95.09                 0.08                 NaN                NaN               NaN                NaN
+ round_robin    10           60.70          16.54          0.00         0.00        252.45        83.44           584.32          220.07               6.94             37.21              1.30               92.84                 0.11                 NaN                NaN               NaN                NaN
+        fcfs    10           57.80          19.28          0.00         0.00        240.80        82.51           538.32          254.93               4.53             37.73              1.30               92.50                 0.11                 NaN                NaN               NaN                NaN
+least_loaded    10           47.70          16.11          0.00         0.00        155.35        53.26           425.74          184.12               8.00             37.06              0.50               41.81                 0.12                 NaN                NaN               NaN                NaN
+          rl    10           80.30          22.35          0.00         0.00        337.45       100.80           814.77          359.87               0.00             38.16              1.40               96.81                 0.10                 NaN                NaN               NaN                NaN
+        marl    10           68.20          19.83          0.00         0.00        289.65        96.37           135.23           59.56               2.16             39.58              1.60               97.84                 0.54           -78917.39               0.02              0.90             222.00
+
+================================================================================
+PERFORMANCE ANALYSIS
+================================================================================
+Best Mean Throughput: random (979.32 tasks/sec)
+Best Mean Memory Usage: rl (0.0%)
+Least Mean Crashes: random (0.00)
+Lowest Mean Latency: least_loaded (155.35)
+
+MARL Performance:
+  Mean Reward: -78917.39
+  Mean Success Rate: 1.88%
+  Mean Epsilon: 0.905
+  Mean Q-Table Size: 222
+
+============================================================
+INDIVIDUAL MARL AGENT ANALYSIS
+============================================================
+Global Step: 0
+Total Reward: -38739.42
+Global Success Rate: 1.42%
+Average Epsilon: 0.942
+Total Q-Table Size: 90
+
+Individual Agent Performance:
+----------------------------------------
+GPU 0:
+  Reward: 20.22
+  Tasks Assigned: 3
+  Success Rate: 100.00%
+  Epsilon: 0.942
+  Q-Table Size: 3
+GPU 1:
+  Reward: -17675.64
+  Tasks Assigned: 896
+  Success Rate: 1.00%
+  Epsilon: 0.942
+  Q-Table Size: 40
+GPU 2:
+  Reward: 45.88
+  Tasks Assigned: 7
+  Success Rate: 100.00%
+  Epsilon: 0.942
+  Q-Table Size: 14
+GPU 3:
+  Reward: -21129.88
+  Tasks Assigned: 1068
+  Success Rate: 0.84%
+  Epsilon: 0.942
+  Q-Table Size: 33
+
+============================================================
+
+BENCHMARK COMPLETE
+============================================================
+All features verified:
+* Phase 1: GPU Simulator (8GB, parallel execution, crash conditions)
+* Phase 2 Step 2: Advanced Features (fragmentation, preemption, cooldown)
+* Phase 2 Step 3: Task Generator (LLM, Image, Video)
+* Phase 2 Step 4: Traffic Patterns (light, heavy, burst, peak/off-peak)
+* MARL System: Multi-Agent RL with separate GPU agents
+* Enhanced State: Memory, temp, queue, crash status, fragmentation
+* Improved Rewards: Better crash/load/queue handling
+* Smart GPU Selection: Q-values + queue awareness
+* Model Tuning: Benchmarked against all schedulers
+============================================================

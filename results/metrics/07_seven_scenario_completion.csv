@@ -1,0 +1,29 @@
+scenario,scheduler,ep_completion_pct,ep_completion_sd
+1. Normal Workload (Low Risk),marl,53.0,3.9
+1. Normal Workload (Low Risk),least_loaded,55.3,3.4
+1. Normal Workload (Low Risk),round_robin,52.2,3.2
+1. Normal Workload (Low Risk),fcfs,54.8,2.5
+2. Elevated Risk on Single GPU,marl,46.9,2.3
+2. Elevated Risk on Single GPU,least_loaded,50.0,0.0
+2. Elevated Risk on Single GPU,round_robin,48.8,1.7
+2. Elevated Risk on Single GPU,fcfs,52.1,5.7
+3. High Recovery Cost on Single GPU,marl,49.2,1.9
+3. High Recovery Cost on Single GPU,least_loaded,52.6,0.7
+3. High Recovery Cost on Single GPU,round_robin,51.5,2.4
+3. High Recovery Cost on Single GPU,fcfs,52.8,4.0
+4. Dynamic Fault & Quarantine,marl,46.5,2.3
+4. Dynamic Fault & Quarantine,least_loaded,46.8,3.8
+4. Dynamic Fault & Quarantine,round_robin,47.4,4.8
+4. Dynamic Fault & Quarantine,fcfs,51.2,2.6
+5. Mixed Task Sizes & Priorities,marl,22.4,2.7
+5. Mixed Task Sizes & Priorities,least_loaded,23.7,4.2
+5. Mixed Task Sizes & Priorities,round_robin,22.8,3.4
+5. Mixed Task Sizes & Priorities,fcfs,23.5,3.1
+6. Heavy Burst Workload,marl,35.1,3.8
+6. Heavy Burst Workload,least_loaded,33.6,5.8
+6. Heavy Burst Workload,round_robin,34.3,7.8
+6. Heavy Burst Workload,fcfs,36.2,6.1
+7. Concurrent Scheduling Workload,marl,96.7,1.2
+7. Concurrent Scheduling Workload,least_loaded,92.5,2.0
+7. Concurrent Scheduling Workload,round_robin,90.0,2.0
+7. Concurrent Scheduling Workload,fcfs,91.7,5.1

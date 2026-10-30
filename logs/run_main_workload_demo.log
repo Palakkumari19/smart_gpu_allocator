@@ -1,0 +1,86 @@
+AETHERGRID : TASK GENERATOR
+============================================================
+=== TASK GENERATOR DEMO ===
+==================================================
+
+1. GENERATING DIFFERENT TASK TYPES:
+  VideoTask(video_1137.mp4): 1080p 44FPS - 1.6GB, 2 steps
+    Description: Medium Video (1080p)
+    Priority: medium
+    Resource Intensity: 0.30
+
+  VideoTask(video_7513.mp4): 1080p 33FPS - 1.6GB, 3 steps
+    Description: Medium Video (1080p)
+    Priority: medium
+    Resource Intensity: 0.35
+
+  VideoTask(video_4546.mp4): 1080p 44FPS - 1.9GB, 1 steps
+    Description: Medium Video (1080p)
+    Priority: medium
+    Resource Intensity: 0.29
+
+2. GENERATING RANDOM TASKS:
+  VideoTask(video_4848.mp4): 1080p 56FPS - 1.9GB, 2 steps
+  VideoTask(video_8302.mp4): 720p 30FPS - 1.0GB, 3 steps
+  VideoTask(video_8917.mp4): 1080p 44FPS - 1.8GB, 1 steps
+  VideoTask(video_6380.mp4): 720p 29FPS - 1.0GB, 1 steps
+  VideoTask(video_1763.mp4): 1440p 60FPS - 3.0GB, 2 steps
+
+3. BURST WORKLOAD GENERATION:
+Generated 6 tasks in burst
+  VideoTask(video_8391.mp4): 720p 24FPS - 1.0GB, 3 steps
+  VideoTask(video_6124.mp4): 1080p 46FPS - 2.4GB, 2 steps
+  VideoTask(video_2251.mp4): 1080p 30FPS - 2.3GB, 1 steps
+
+4. WORKLOAD STATISTICS:
+Total Generated: 14
+Task Distribution:
+  Light: 4 (28.6%)
+  Medium: 8 (57.1%)
+  Heavy: 1 (7.1%)
+  Extreme: 1 (7.1%)
+
+=== WORKLOAD SIMULATION DEMO ===
+==================================================
+
+--- MIXED WORKLOAD MODE ---
+Completed Tasks: 33
+Task Distribution:
+  Light: 28 (28.6%)
+  Medium: 30 (30.6%)
+  Heavy: 14 (14.3%)
+  Extreme: 26 (26.5%)
+
+--- LLM_HEAVY WORKLOAD MODE ---
+Completed Tasks: 41
+Task Distribution:
+  Light: 46 (41.4%)
+  Medium: 21 (18.9%)
+  Heavy: 19 (17.1%)
+  Extreme: 25 (22.5%)
+
+--- IMAGE_HEAVY WORKLOAD MODE ---
+Completed Tasks: 48
+Task Distribution:
+  Light: 43 (39.4%)
+  Medium: 30 (27.5%)
+  Heavy: 24 (22.0%)
+  Extreme: 12 (11.0%)
+
+--- VIDEO_HEAVY WORKLOAD MODE ---
+Completed Tasks: 32
+Task Distribution:
+  Light: 30 (34.5%)
+  Medium: 24 (27.6%)
+  Heavy: 15 (17.2%)
+  Extreme: 18 (20.7%)
+
+============================================================
+PHASE 2 STEP 3 FEATURES VERIFIED:
+* Task Types: LLM (High/Slow), Image (Low/Fast), Video (Medium/Medium)
+* Random Task Generation: random.choice(['LLM', 'Image', 'Video'])
+* Workload Profiles: Memory and time ranges for each task type
+* Burst Workload: Variable intensity task generation
+* Workload Statistics: Real-time task distribution tracking
+* Enhanced Task Properties: Priority, description, resource intensity
+============================================================

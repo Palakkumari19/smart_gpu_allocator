@@ -1,0 +1,22 @@
+=== Starting AETHERGRID Concurrency Stress Test ===
+Workers: 8 | Duration: 2.5s | Scheduler: marl
+
+============================================================
+          CONCURRENCY STRESS TEST RESULTS
+============================================================
+Duration               : 2.531s
+Operations Attempted   : 902 (356.4 ops/sec)
+Allocations Succeeded  : 40
+Capacity Rejections    : 607 (Legitimate OOM)
+Quarantine Rejections  : 0 (Legitimate Safety)
+Duplicates Prevented   : 6 (Atomic CAS Guards)
+Invariant Violations   : 0
+
+[OK] ALL CONCURRENCY INVARIANTS SATISFIED (Zero Violations)
+
+Final Cluster GPU State:
+  GPU 1: 0.00/8 GB VRAM | Running: 0 | Queued: 0 | Status: HEALTHY
+  GPU 2: 0.00/8 GB VRAM | Running: 0 | Queued: 0 | Status: HEALTHY
+  GPU 3: 0.00/8 GB VRAM | Running: 0 | Queued: 0 | Status: HEALTHY
+  GPU 4: 7.20/8 GB VRAM | Running: 1 | Queued: 0 | Status: HEALTHY
+============================================================

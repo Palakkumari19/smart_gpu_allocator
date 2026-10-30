@@ -1,0 +1,9 @@
+[Windows] Saved windows summary to /Users/palakkumari/Documents/projects/smart_gpu_allocator/realdata/calibration/burstgpt_windows.json
+  TRAIN range: hours 0 - 732
+    - median_hour: 21 (193 reqs)
+    - busiest_hour: 235 (33344 reqs)
+    - burstiest_window: 531 (dispersion: 14.3346)
+  EVAL range: hours 733 - 1463
+    - median_hour: 904 (263 reqs)
+    - busiest_hour: 1236 (16902 reqs)
+    - burstiest_window: 1236 (dispersion: 25.3173, fail_rate: 62.08%)

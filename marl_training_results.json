@@ -1,0 +1,55 @@
+{
+  "timestamp": 1793366784.667881,
+  "scenarios": [
+    {
+      "name": "Basic Training",
+      "traffic_pattern": "mixed",
+      "duration": 30,
+      "target_success_rate": 0.5,
+      "description": "Standard mixed workload training"
+    },
+    {
+      "name": "Advanced Training",
+      "traffic_pattern": "heavy",
+      "duration": 30,
+      "target_success_rate": 0.4,
+      "description": "Heavy load training with enhanced learning"
+    },
+    {
+      "name": "Optimization Training",
+      "traffic_pattern": "burst",
+      "duration": 40,
+      "target_success_rate": 0.6,
+      "description": "Burst load with adaptive exploration"
+    }
+  ],
+  "results": [
+    {
+      "scenario": "Basic Training",
+      "target_rate": 0.5,
+      "final_rate": 0.3280197361129463,
+      "target_met": false,
+      "improvement": -0.0719802638870537
+    },
+    {
+      "scenario": "Advanced Training",
+      "target_rate": 0.4,
+      "final_rate": 0.3931199567270305,
+      "target_met": false,
+      "improvement": -0.006880043272969538
+    },
+    {
+      "scenario": "Optimization Training",
+      "target_rate": 0.6,
+      "final_rate": 0.2370118468381088,
+      "target_met": false,
+      "improvement": -0.16298815316189122
+    }
+  ],
+  "analysis": {
+    "avg_improvement": -0.08061615344063815,
+    "targets_hit": 0,
+    "best_scenario": "Advanced Training",
+    "best_success_rate": 0.3931199567270305
+  }
+}
