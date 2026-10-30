@@ -1,0 +1,18 @@
+VITE dev server startup (frontend, port 3000):
+
+> frontend@1.0.0 dev
+> vite
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.js:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+  VITE v8.3.5  ready in 638 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://192.168.0.100:3000/  en0
+(node:92019) Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+HTTP check:
+HTTP 200 - index.html served

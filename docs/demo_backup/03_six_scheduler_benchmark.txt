@@ -1,0 +1,43 @@
+======================================================================
+AETHERGRID BIT 9: RESEARCH METRICS & BENCHMARKING EXPERIMENTS
+======================================================================
+
+[Step 1/2] Executing 6-Algorithm Fair Comparison Benchmark...
+Schedulers: ['fcfs', 'round_robin', 'least_loaded', 'rl', 'marl', 'risk_aware_marl']
+Benchmark completed successfully! Experiment ID: bench_1793390774_703626
+Saved artifacts:
+  - summary_json: /Users/palakkumari/Documents/projects/smart_gpu_allocator/benchmarking/results/experiment_bench_1793390774_703626_summary.json
+  - runs_csv: /Users/palakkumari/Documents/projects/smart_gpu_allocator/benchmarking/results/experiment_bench_1793390774_703626_runs.csv
+  - tasks_csv: /Users/palakkumari/Documents/projects/smart_gpu_allocator/benchmarking/results/experiment_bench_1793390774_703626_tasks.csv
+
+----------------------------------------------------------------------
+BENCHMARK RESULTS SUMMARY (Across 3 seeds)
+----------------------------------------------------------------------
+Scheduler                 | Throughput   | Success Rate | Avg Turnaround  | Avg Risk   | Avg EFC   
+-----------------------------------------------------------------------------------------------
+First-Come, First-Served (FCFS) | 7396.61 t/s  | 100.0%       | 0.00s           | 0.0538     | 0.0205    
+Round Robin               | 7230.61 t/s  | 100.0%       | 0.00s           | 0.0470     | 0.0180    
+Least Loaded              | 7335.55 t/s  | 100.0%       | 0.00s           | 0.0886     | 0.0339    
+Single-Agent RL           | 4338.26 t/s  | 81.9%        | 0.00s           | 0.0363     | 0.0139    
+Standard MARL (Risk-Blind) | 3601.38 t/s  | 100.0%       | 0.00s           | 0.0805     | 0.0308    
+Risk-Aware MARL           | 4255.75 t/s  | 100.0%       | 0.00s           | 0.0721     | 0.0276    
+
+[Step 2/2] Executing Risk-Aware MARL Ablation Study...
+Ablation study completed successfully! Study ID: ablation_1793390774_cf4df6
+Saved artifacts:
+  - summary_json: /Users/palakkumari/Documents/projects/smart_gpu_allocator/benchmarking/results/experiment_ablation_1793390774_cf4df6_summary.json
+  - runs_csv: /Users/palakkumari/Documents/projects/smart_gpu_allocator/benchmarking/results/experiment_ablation_1793390774_cf4df6_runs.csv
+
+----------------------------------------------------------------------
+ABLATION STUDY SUMMARY (Across 3 seeds)
+----------------------------------------------------------------------
+Ablation Mode                  | Throughput   | Success Rate | Avg Risk   | Avg EFC   
+-------------------------------------------------------------------------------------
+Full Risk-Aware MARL           | 4990.05 t/s  | 100.0%       | 0.0720     | 0.0275    
+MARL (No Risk Penalty)         | 4913.40 t/s  | 100.0%       | 0.0723     | 0.0276    
+MARL (No EFC Penalty)          | 4650.90 t/s  | 100.0%       | 0.0762     | 0.0291    
+Standard MARL (Risk-Blind)     | 4932.85 t/s  | 100.0%       | 0.0473     | 0.0181    
+
+======================================================================
+ALL EXPERIMENTS COMPLETED WITH REAL MEASUREMENTS PERSISTED!
+======================================================================

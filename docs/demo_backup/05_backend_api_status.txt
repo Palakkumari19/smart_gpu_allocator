@@ -1,0 +1,18 @@
+{
+    "total_gpus": 4,
+    "healthy_gpus": 4,
+    "busy_gpus": 0,
+    "idle_gpus": 4,
+    "cooling_down_gpus": 0,
+    "crashed_gpus": 0,
+    "quarantined_gpus": 0,
+    "total_submitted_tasks": 0,
+    "queued_tasks": 0,
+    "running_tasks": 0,
+    "completed_tasks": 0,
+    "failed_tasks": 0,
+    "cancelled_tasks": 0,
+    "scheduler_mode": "marl",
+    "operational_status": "PAUSED",
+    "timestamp": "2026-10-30T20:07:43.481257+00:00"
+}
