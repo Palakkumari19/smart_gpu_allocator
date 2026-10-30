@@ -76,7 +76,7 @@ def g2_bid_magnitudes():
     names = ["Q-value\n(learned)", "Performance\n(hand-written)", "Risk penalty", "EFC penalty"]
     cols = ["#3182CE", "#38A169", "#C53030", "#DD6B20"]
     data = [df[t].to_numpy() for t in terms]
-    bp = axes[0].boxplot(data, labels=names, patch_artist=True, showfliers=False, widths=0.6)
+    bp = axes[0].boxplot(data, tick_labels=names, patch_artist=True, showfliers=False, widths=0.6)
     for patch, c in zip(bp["boxes"], cols):
         patch.set_facecolor(c); patch.set_alpha(0.65)
     for i, t in enumerate(terms):
@@ -180,10 +180,12 @@ def g5_starvation():
     style(axes[1], "Cluster temperature over one episode", "Simulation step", "Mean GPU temperature (°C)")
 
     r = [g["avg_risk"].mean()[s] for s in order]
-    bars = axes[2].bar([L[s] for s in order], r, color=[C[s] for s in order], alpha=0.9)
+    xs = np.arange(len(order))
+    bars = axes[2].bar(xs, r, color=[C[s] for s in order], alpha=0.9)
     for b, v in zip(bars, r):
         axes[2].text(b.get_x()+b.get_width()/2, b.get_height(), f"{v:.3f}",
                      ha="center", va="bottom", fontsize=9)
+    axes[2].set_xticks(xs)
     axes[2].set_xticklabels([L[s] for s in order], rotation=20, ha="right", fontsize=8.5)
     style(axes[2], "Resulting average risk", "", "Risk score")
     fig.suptitle("Diagnosis 4 — single-agent RL stays cool and low-risk by admitting almost nothing",

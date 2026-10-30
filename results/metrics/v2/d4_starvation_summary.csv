@@ -1,5 +1,5 @@
 scheduler,tasks_offered,successful_assignments,completed_tasks,avg_temperature,avg_risk,crash_count
-least_loaded,2154.25,27.5,19.75,63.25,0.274,1.25
-marl,2154.25,27.25,19.75,61.781,0.274,1.5
-risk_aware_marl,2154.25,27.75,20.25,62.969,0.278,1.25
-rl,2154.25,7.75,6.25,40.406,0.106,0.0
+least_loaded,2153.833,25.611,18.722,60.924,0.272,0.889
+marl,2153.833,25.556,19.0,60.722,0.273,1.0
+risk_aware_marl,2153.833,25.722,19.0,61.0,0.28,0.889
+rl,2153.833,7.722,6.0,39.556,0.104,0.167
