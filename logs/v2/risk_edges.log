@@ -1,0 +1,17 @@
+{
+  "edges": [
+    0.0,
+    0.0614,
+    0.1165
+  ],
+  "n_samples": 3600,
+  "observed_mean": 0.0862,
+  "observed_p50": 0.0614,
+  "observed_p95": 0.3047,
+  "observed_max": 0.4724,
+  "v1_edges": [
+    0.25,
+    0.5,
+    0.75
+  ]
+}

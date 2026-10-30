@@ -1,0 +1,4 @@
+Tuning budget: 12 configurations (cap 20)
+VALIDATION: windows=['median_hour', 'burstiest_window'] seeds=[200, 201, 202] loads=[0.3, 1.1, 1.4] steps=600
+
+[cfg01] decay=0.999 episodes=10 edges=v1
