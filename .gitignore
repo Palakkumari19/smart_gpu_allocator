@@ -28,3 +28,27 @@ frontend/dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Stray logs at the repository root (temporary). The logs/ directory is tracked
+# on purpose: its files are cited as evidence in docs/05 and CHANGES_MADE.md.
+/*.log
+!logs/**
+
+# Large raw datasets - downloaded by realdata/fetch_data.py, never committed.
+# (realdata/.gitignore already excludes data/raw/*; repeated here for clarity.)
+realdata/data/raw/*
+!realdata/data/raw/.gitkeep
+
+# Secrets and keys
+*.pem
+*.key
+id_rsa*
+credentials.json
+secrets.json
+
+# Build / tooling
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+*.egg-info/
