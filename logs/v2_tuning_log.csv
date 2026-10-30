@@ -1,0 +1,4 @@
+config_id,timestamp,epsilon_decay,train_episodes,risk_edges,episodes_run_rl,episodes_run_marl,episodes_run_ram,final_q_rl,final_q_marl,final_q_ram,final_eps_marl,val_completed,val_mean_risk,val_peak_risk,val_crashes,val_contested_pct,val_risk_per_task,val_crashes_per_task,validation_score,seconds,note
+cfg01,2026-10-30 20:36:51,0.999,10,v1,6,6,6,584,484,440,0.05,34.8889,0.19289,0.44738,5.1111,16.113,0.006357,0.102805,180.8787,51.7,
+cfg02,2026-10-30 20:37:43,0.999,10,train_derived,6,6,6,584,410,389,0.05,35.0,0.19334,0.44471,5.0,16.282,0.006335,0.099856,181.0244,52.6,
+cfg03,2026-10-30 20:38:37,0.999,20,v1,6,6,6,584,484,440,0.05,34.8889,0.19289,0.44738,5.1111,16.113,0.006357,0.102805,180.8787,53.9,

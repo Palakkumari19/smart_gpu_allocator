@@ -2,3 +2,9 @@ Tuning budget: 12 configurations (cap 20)
 VALIDATION: windows=['median_hour', 'burstiest_window'] seeds=[200, 201, 202] loads=[0.3, 1.1, 1.4] steps=600
 
 [cfg01] decay=0.999 episodes=10 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (51.7s)
+[cfg02] decay=0.999 episodes=10 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (52.6s)
+[cfg03] decay=0.999 episodes=20 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (53.9s)
+[cfg04] decay=0.999 episodes=20 edges=train_derived
