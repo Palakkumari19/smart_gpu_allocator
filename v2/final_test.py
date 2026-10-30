@@ -28,6 +28,8 @@ from typing import Any, Dict, List
 import numpy as np
 import pandas as pd
 
+from copy import deepcopy
+
 from realdata import config_v2 as C
 from realdata.config import BURSTGPT_WINDOWS_PATH, HAZARD_CURVES_PATH, RESULTS_DIR
 from realdata.hazard import load_hazard_curves
@@ -112,7 +114,7 @@ def v1_training_config() -> TrainingConfig:
 
 
 def run_regime(regime: str, conditions: List[str], df_burst, df_video, ws,
-               snapshots_by_condition, overlay, verbose=True) -> pd.DataFrame:
+               snapshots_by_condition, hazard_curve, verbose=True) -> pd.DataFrame:
     test_windows = {k: ws.eval_windows[k] for k in C.TEST_WINDOWS}
     rows: List[Dict[str, Any]] = []
     total = len(conditions) * len(test_windows) * len(C.LOAD_LEVELS) * len(C.TEST_SEEDS)
@@ -129,9 +131,21 @@ def run_regime(regime: str, conditions: List[str], df_burst, df_video, ws,
                     trace, meta = build_trace_for_condition(
                         cond, window, steps, rho, df_burst, df_video, seed,
                         partition="eval")
+                    # Build a fresh overlay per (window, seed), exactly as v1 did:
+                    # enabled=True, seeded, and driven by THIS window's measured
+                    # dispersion index so the empirical hazard band is correct.
+                    base_overlay = None
+                    if hazard_curve is not None:
+                        base_overlay = RiskHazardOverlay(
+                            hazard_curve=hazard_curve, enabled=True, seed=seed,
+                            operating_metric_value=window.dispersion_index,
+                        )
                     for sid in SCHEDULERS:
+                        # deep copy per scheduler so every scheduler sees an
+                        # identical, independent hazard draw sequence
+                        ov = deepcopy(base_overlay) if base_overlay is not None else None
                         m = run_episode(
-                            sid, trace, q_snapshots=snaps, seed=seed, overlay=overlay,
+                            sid, trace, q_snapshots=snaps, seed=seed, overlay=ov,
                             risk_edges=edges,
                             quarantine_thresholds=C.QUARANTINE_THRESHOLDS_REPORTED)
                         rows.append({
@@ -191,10 +205,11 @@ def main():
 
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     for regime in args.regimes:
-        overlay = RiskHazardOverlay(hazard_curve) if regime == "overlay" else None
-        print(f"\n=== REGIME: {regime} ===", flush=True)
+        curve = hazard_curve if regime == "overlay" else None
+        print(f"\n=== REGIME: {regime} "
+              f"({'hazard overlay ENABLED' if curve else 'workload only'}) ===", flush=True)
         df = run_regime(regime, args.conditions, df_burst, df_video, ws,
-                        snapshots_by_condition, overlay)
+                        snapshots_by_condition, curve)
         out = RESULTS_DIR / f"realdata_v2_runs_{regime}_{ts}.csv"
         df.to_csv(out, index=False)
         print(f"saved {out}  ({len(df)} rows)")
