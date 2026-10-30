@@ -1,6 +1,12 @@
 # 05 — Results and Findings
 
-Everything in this document was produced by running the project on **30 October 2026** on macOS 14
+> **This document has two parts.** **Part I (§1–§10)** is the original v1 result and is **unchanged**.
+> **Part II (§11–§16)** is the v2 investigation: why v1 came out the way it did, what was fixed, and a
+> re-test under a pre-registration committed before the run. v2 is reported *alongside* v1, never
+> instead of it. If you only read one thing, read **§11** — it explains why the v1 experiment could
+> not answer its own question.
+
+Everything in this document was produced by running the project on **30–31 October 2026** on macOS 14
 (Apple Silicon, CPU only) with Python 3.14.6. Every number can be traced to a file in `logs/`,
 `results/metrics/`, `benchmarking/results/` or `realdata/results/`. Nothing is estimated or carried
 over from the repository's older write-ups.
@@ -15,8 +21,13 @@ The project **works as engineered** and **does not support its own main hypothes
   failure-cost model, the thread-safe concurrency layer, the web dashboard and the real-data replay
   pipeline. 121 tests pass and the concurrency stress test records **zero invariant violations**.
 - The headline research claim — that Risk-Aware MARL produces measurably fewer crashes and lower risk
-  than the alternatives — **was tested properly and was not supported**. Against schedulers that
-  actually dispatch work, it reaches **parity, not superiority**.
+  than the alternatives — **was tested and was not supported**. Against schedulers that actually
+  dispatch work, it reaches **parity, not superiority**.
+  **(v2 correction — see §11: this v1 experiment could not have detected a difference either way,
+  because 99.28 % of its scheduling decisions had no eligible GPU to choose from. The properly
+  calibrated re-test in §14 rejects the hypothesis more sharply: Risk-Aware MARL is *significantly
+  worse* on the pre-registered primary metric, while being the best of all six schedulers on *peak*
+  GPU risk and terminal failure cost.)**
 - The project's most valuable results turned out to be two things it did not originally set out to
   prove: a **measured real-world failure curve** (failures jump from ~1 % to **26.25 %** under bursty
   traffic), and a clear demonstration of the **"starvation trap"** — a safety metric with no throughput
@@ -269,13 +280,21 @@ falling. This is exactly why the serious experiment trains on 30 days of real tr
 | Integrate risk-aware scheduling | ✅ Yes | Risk engine + EFC wired into bidding |
 | Concurrency control / no race conditions | ✅ Yes | 0 violations under stress |
 | Evaluate against benchmarks | ✅ Yes | 360 real-data episodes + 3 benchmark suites |
-| **Show risk-aware MARL is safer** | ❌ **No** | H1–H3 rejected; parity with baselines |
+| **Show risk-aware MARL is safer** | ❌ **No** | v1: H1–H3 rejected, parity. v2: primary hypothesis rejected, *significantly worse* on risk per completed task (§14.1) |
+| *(v2)* Show the v1 experiment was valid | ❌ **No** | The 30× load defect meant v1 tested nothing (§11) |
+| *(v2)* Re-test the hypothesis properly | ✅ Yes | 6,480 episodes, pre-registered at `3a0bcc3`, run once (§14) |
 | Validate on real production data | ✅ Yes | BurstGPT + UCI replayed, pre-registered |
 
-The **engineering objective was met in full**. The **scientific hypothesis was tested properly and not
+The **engineering objective was met in full**. The **scientific hypothesis was tested and not
 confirmed**. A correctly executed experiment that returns a negative result is a legitimate outcome —
 and because the hypotheses were registered in advance, this project can say so credibly rather than
 quietly reframing the claim.
+
+**v2 addendum.** The v1 experiment above was *not* correctly executed: §11 shows it delivered 30× the
+intended load, so almost none of its decisions were real choices. The v2 re-test (§14) is the one that
+earns this paragraph. Its verdict is the same in direction and sharper in degree, and it also finds a
+genuine exploratory advantage for the risk machinery on *peak* risk that v1 was structurally incapable
+of detecting.
 
 ---
 
@@ -291,3 +310,260 @@ quietly reframing the claim.
 | `quarantine_time` as a discriminating metric | **Uninformative** | Exactly 0.00 in all 360 episodes |
 | Dataset checksums | **Do not match** | `REAL_DATA_REPORT.md` lists SHA256 values that differ from the files downloaded today from the same URLs — yet every calibration figure reproduced exactly (1,429,737 requests; 25,443 failures; 26.25 % peak). The data is right; **the recorded hashes appear not to have been computed from these files.** |
 | Ablation explanation (§6.3) | **Unverified** | The proposed mechanism is interpretation; the confirming experiment was not run |
+
+---
+
+# Part II — v2: diagnosis, fixes and re-test
+
+> **Everything above this line is the original v1 result and is unchanged.** The v2 work does not
+> replace it. It asks *why* v1 came out the way it did, fixes what was genuinely broken, and re-runs
+> the test under a pre-registration written before the run. Where v2 disagrees with v1, both are shown.
+
+The v2 work was done on branch `v2-improvements` and run on **30–31 October 2026**, same machine and
+Python version as v1. The pre-registration is `realdata/PREREGISTRATION_V2.md`, committed at
+**`3a0bcc355d06b75618f8a958ee3eeb53fe2438d7`** *before* the final test was started; the final-test
+script refuses to run if that file or the frozen config has uncommitted changes.
+
+---
+
+## 11. The diagnosis: v1 did not test the question it asked
+
+The single most important v2 finding is not about scheduling at all. It is about the **experiment**.
+
+`compute_target_load_scale()` in `realdata/trace_builder.py:77` normalises task arrivals over
+`window_duration_seconds / seconds_per_step` = **3,600 steps**, but `build_real_trace()` at line 187
+emits those arrivals into an episode of **120 steps**. The arrival rate is therefore multiplied by
+exactly **30.0×** in every window × preset combination.
+
+| intended tasks | delivered tasks | ratio |
+|---|---|---|
+| 47.8 | 1,435 | 30.0× |
+| 71.7 | 2,153 | 30.0× |
+| 95.7 | 2,870 | 30.0× |
+
+The consequence, measured in `results/metrics/v2/d6_offered_load_pressure.csv`:
+
+- Real utilisation was **11.5× to 64.5×** cluster capacity, not the 0.6–1.2 the experiment intended.
+- Only **1.19 %** of offered tasks were ever admitted.
+- **99.28 %** of 65,271 scheduling decisions had **zero eligible GPUs**.
+
+When almost every decision has no choice available, every dispatching scheduler is forced into
+identical behaviour. v1's "parity" was not a finding about Risk-Aware MARL. **It was the experiment
+reporting that it had nothing to measure.**
+
+This is confirmed directly in the final test (`v2_07_load_fix_validity.png`):
+
+| intended ρ | delivered ρ, v1 | delivered ρ, v2 | contested decisions, v1 | contested decisions, v2 |
+|---|---|---|---|---|
+| 0.3 | 2.18 | **0.299** | 13.79 % | **32.78 %** |
+| 1.1 | 7.98 | **1.101** | 0.11 % | **21.96 %** |
+| 1.4 | 10.18 | **1.399** | 0.07 % | **16.15 %** |
+
+In v1 at the near-capacity load, roughly **1 decision in 900** was a real choice. In v2 it is about
+**1 in 5**. The v2 experiment can answer the question. v1's could not.
+
+### Other diagnosis findings
+
+| Finding | Evidence |
+|---|---|
+| The risk penalties **do work** — bids diverge on 37.74 % of decisions; penalty SD is 0.85× reward SD | `d1_divergence_summary.json` |
+| The agents were **essentially untrained** — ε still 0.852, 49 of 57,395,628 states visited (0.00009 %) | `d5_training_adequacy.json` |
+| Quarantine was **unreachable** — max risk 0.72 vs a 0.85 threshold | `d3_quarantine_summary.csv` |
+| Risk buckets **collapsed** — 84 % of readings in bucket 0; buckets 2 and 3 never used | `risk_bucket_edges.json` |
+| v1's "ablation reversal" (§6.3) **does not replicate** — effects are 1–6 % of one SD | `d2_ablation_peak_mean.csv` |
+| `avg_risk_exposure` is a **terminal snapshot**, not a mean (0.2758 vs true mean 0.1451) — but r = 0.996, so v1's rankings still hold | `d1_bid_components.csv` |
+
+---
+
+## 12. What was changed, and what was deliberately not
+
+| # | Change | Why | Kind |
+|---|---|---|---|
+| A | ~~Strengthen risk penalties~~ | **Rejected on evidence.** The penalties already move bids on 37.74 % of decisions. The problem was never penalty strength. | not made |
+| B | Risk buckets from TRAIN data (percentiles 50/75/95 → `[0.0614, 0.1165, 0.3047]`) | v1's fixed `[0.25, 0.50, 0.75]` put 84 % of observations in one bucket, so the agent could not tell risk levels apart | scheduler input |
+| C | **Load calibration fix** | The 30× defect above. This is an **evaluation fix**, not a scheduler change — it corrects how the workload is generated, identically for all nine schedulers | evaluation |
+| D | Equal, larger training budget (9 × 600 steps vs v1's 1 × 80) given to **all three learners** | Fairness: Single-Agent RL and Risk-Blind MARL get exactly the same budget as Risk-Aware MARL | all learners |
+| E | ~~Lower the quarantine threshold~~ | **Deferred.** 0.85 is the shipped value; changing it would be tuning the system to pass its own test. Reported at 0.85 *and* at an exploratory 0.60. | not made |
+| F | Fault-injection / hazard intensity | **Explicitly not touched.** The hazard curves are calibrated to real BurstGPT data. | not made |
+
+**The baseline schedulers' logic was not modified.** They received only the same training budget and
+the same evaluation conditions.
+
+### Three conditions, reported side by side
+
+So that the load fix can be separated from everything else, every result is reported three ways:
+
+- **v1** — exactly as shipped, including the 30× defect
+- **v1_corrected** — v1 plus the load fix only
+- **v2** — all fixes (load fix + TRAIN-derived risk buckets + equal larger training)
+
+---
+
+## 13. Tuning: an honest negative
+
+20 of a permitted 20 configurations were tried; **all 20 are logged in `logs/v2_tuning_log.csv`,
+including failures.** Tuning used VALIDATION windows and seeds only — never test data.
+
+| What was varied | Effect on the validation score |
+|---|---|
+| ε-decay (0.997 / 0.999 / 0.9995) | **none** |
+| Episode count (3 / 6 / 9 / 20) | **none** — the Q-table converges and the stopping rule fires at episode 9 |
+| Steps per episode (300 → 600) | **+1.09 %** — the only setting that mattered (Q-table 484 → 787 entries) |
+
+20 configurations produced only **4 distinct scores**. The bootstrap standard error of the validation
+score is **7.61 = 4.19 % of the score**, 95 % CI **[164.99, 195.72]** — wider than the 1 % tie band
+*and wider than the entire 1.09 % spread between configurations*.
+
+**The configuration choice is within noise.** It is a deterministic tie-break (cheapest configuration
+among those within 1 % of the best), not a demonstrated optimum. This is stated in the
+pre-registration, not discovered afterwards.
+
+---
+
+## 14. The v2 final test
+
+Run **once**, on fresh TEST seeds 100–129 never used in v1 or in tuning.
+**6,480 episodes** = 3 conditions × 2 regimes × 2 windows × 3 loads × 30 seeds × 6 schedulers.
+
+### 14.1 The PRIMARY hypothesis — the only confirmatory test
+
+> **V2-H1 (PRIMARY):** Risk-Aware MARL achieves lower `risk_per_completed_task` than the strongest
+> eligible baseline, at ρ = 1.1, workload-only, v2 condition.
+
+| | value |
+|---|---|
+| Risk-Aware MARL | 0.003095 |
+| Least Loaded (strongest eligible baseline) | 0.002666 |
+| Paired win rate | **6 / 60 = 10.0 %** (threshold: ≥ 60 %) |
+| 95 % CI on the difference | [−0.00055, −0.00032] — excludes zero |
+
+### ❌ **REJECTED.** Not merely unsupported — Risk-Aware MARL is *significantly worse* on this metric.
+
+Single-Agent RL scores a nominally better 0.0022, but it is **INFEASIBLE**: it completes 108.5 tasks
+against the best scheduler's 151.3, below the pre-registered 80 % throughput floor. It is excluded
+from baseline selection and shown hatched in the figures. This is the starvation trap from §4,
+caught this time by a guard that was fixed in advance.
+
+### 14.2 Full v2 results, ρ = 1.1, workload-only
+
+| scheduler | completed | mean risk | **peak GPU risk** | crashes | terminal EFC | risk / task |
+|---|---|---|---|---|---|---|
+| FCFS | 150.7 | 0.1736 | 0.5842 | 8.23 | 38.94 | 0.0027 |
+| Round Robin | 151.2 | 0.1863 | 0.5440 | **5.95** | 33.38 | 0.0030 |
+| Least Loaded | 151.2 | 0.1737 | 0.5744 | 7.32 | 36.94 | 0.0027 |
+| Single-Agent RL *(infeasible)* | 108.5 | 0.1095 | 0.6356 | 6.50 | 32.34 | 0.0022 |
+| Risk-Blind MARL | **151.3** | 0.1879 | 0.5492 | 6.68 | 33.72 | 0.0030 |
+| **Risk-Aware MARL** | 151.3 | 0.1916 | **0.5217** | 6.58 | **32.70** | 0.0031 |
+
+### 14.3 Why it loses — and what it actually wins
+
+Risk-Aware MARL has the **lowest peak GPU risk and the lowest terminal EFC of all six schedulers**,
+at the **highest throughput**, with **20 % fewer crashes than FCFS** — and still loses the primary
+test, because the primary metric is built on *mean* risk across GPUs.
+
+The mechanism (`v2_09_mean_vs_peak.png`): the risk-aware bidder **spreads** work so that no single
+GPU gets dangerously hot, which leaves all four GPUs moderately warm. FCFS and Least Loaded
+**concentrate** work, leaving some GPUs cold and others overheating. Averaged across GPUs and time,
+*"four warm"* scores worse than *"two cold, two burning"* — even though the second arrangement is
+what actually destroys hardware.
+
+**The pre-registered primary metric rewards the failure mode the system was built to prevent.**
+
+This is reported as a finding, **not as grounds to change the metric**. The metric was fixed in
+advance; the test stands as rejected.
+
+### 14.4 Exploratory results — reported as exploratory
+
+The pre-registration commits to roughly **72 secondary tests, uncorrected for multiple comparisons**,
+all exploratory. At a 5 % level roughly 3–4 false positives are expected by chance, so no single
+result below is confirmatory. They are listed because the pre-registration requires reporting all of
+them, and because the pattern is consistent.
+
+Risk-Aware MARL vs each eligible baseline, v2 / workload / ρ = 1.1, 60 paired episodes:
+
+| metric | vs FCFS | vs Least Loaded | vs Round Robin | vs Risk-Blind MARL |
+|---|---|---|---|---|
+| **peak GPU risk** | ✅ win 0.97 | ✅ win 0.87 | ✅ win 0.78 | ✅ win 0.80 |
+| **terminal EFC** | ✅ win 0.97 | ✅ win 0.77 | ✅ win 0.68 | ✅ win 0.67 |
+| crashes | ✅ win 0.85 | ✅ win 0.53 | ❌ **worse** (0.13) | – win 0.32 |
+| completed tasks | – win 0.47 | – win 0.33 | – win 0.43 | – win 0.35 |
+
+Two observations worth carrying forward:
+
+1. **The risk machinery does something measurable.** Risk-Aware MARL beats Risk-Blind MARL — its own
+   ablation, same training budget, same auction, differing only in the risk and EFC bid terms — on
+   peak risk (0.80) and terminal EFC (0.67). v1 could not detect this because v1 had no real choices.
+2. **Round Robin beats it on crashes** (5.95 vs 6.58). Round Robin spreads load perfectly for free,
+   with no risk model, no learning and no state. Most of the crash benefit is explained by
+   *spreading*, not by *risk awareness*.
+
+### 14.5 Hazard-overlay regime
+
+With the real-data hazard overlay enabled (dispersion-calibrated, 26.25 % band on the burstiest
+window), every scheduler gets worse and the ordering is unchanged (`v2_13_overlay_effect.png`).
+Risk-Aware MARL still has the lowest peak risk (0.6135) among feasible schedulers, and the primary
+metric still rejects.
+
+### 14.6 All hypothesis verdicts
+
+| ID | Hypothesis | Verdict |
+|---|---|---|
+| **V2-H1** | Lower risk per completed task than strongest eligible baseline | ❌ **REJECTED** (significantly worse) |
+| V2-H2 | Fewer crashes per completed task | ❌ REJECTED (Round Robin better) |
+| V2-H3 | On the throughput/risk Pareto frontier | ❌ REJECTED at ρ = 1.1 and 1.4 (✅ supported in `v1_corrected`/workload only) |
+| V2-H4 | Quarantine reduces crashes | ⚠️ **UNTESTABLE** — the shipped 0.85 threshold fired in **0 of 3,240 episodes** in both regimes |
+| V2-H4′ | Same, at exploratory threshold 0.60 | ⚠️ exploratory only; fires in 47.3 % (workload) / 68.3 % (overlay) of episodes |
+| V2-H5 | Throughput within 5 % of the best dispatcher | ✅ **SUPPORTED** (151.27 vs 151.30 = 99.98 %) |
+
+### 14.7 v1 vs v2 for Risk-Aware MARL
+
+| | v1 (as shipped) | v1 + load fix | v2 (all fixes) |
+|---|---|---|---|
+| completed tasks | 302 | 128 | 128 |
+| mean risk | 0.354 | 0.164 | 0.163 |
+| peak GPU risk | 0.666 | 0.471 | 0.469 |
+| crashes | 27.7 | 5.90 | 5.81 |
+
+Two things to read carefully here:
+
+- v1's higher task count is **not a better result**. It reflects ~7× more work being offered than
+  intended by the broken load scale.
+- **`v1_corrected` and `v2` are nearly identical.** Almost the entire change comes from the load fix.
+  The risk-bucket change and the larger training budget moved the numbers by well under 1 % —
+  consistent with §13, where tuning showed no detectable effect either.
+
+---
+
+## 15. What v2 changes about the conclusion
+
+**It does not rescue the hypothesis. It makes the negative result trustworthy.**
+
+v1's conclusion was *"Risk-Aware MARL reaches parity with baselines."* That conclusion was not
+earned — the experiment that produced it had no real decisions in it. The correct v1 statement is:
+
+> **v1 did not test its own hypothesis.**
+
+v2 does test it, on an experiment that demonstrably contains real choices, with the primary
+comparison fixed in advance and a single run on untouched seeds. The answer is:
+
+> **Risk-Aware MARL does not reduce risk per completed task relative to simple baselines. On the
+> pre-registered primary metric it is significantly worse. Its genuine, exploratory advantage is in
+> *peak* risk and terminal failure cost rather than *mean* risk — and a large part of even that is
+> explained by load spreading, which Round Robin achieves with no risk model at all.**
+
+That is a more useful finding than the one the project set out to produce, and it is defensible
+because the test could have come out the other way and was not permitted to be re-run.
+
+---
+
+## 16. v2 limitations and what was not done
+
+| Item | Status |
+|---|---|
+| The final test was run **exactly once** | Pre-registered; no re-running or re-tuning after seeing results |
+| ~72 secondary tests, **uncorrected** | All exploratory by pre-registration; ~3–4 false positives expected by chance |
+| Configuration selection is **within noise** | SE 4.19 % vs a 1 % tie band; tie-break is deterministic, not optimal |
+| V2-H4 (quarantine) | Structurally untestable — the shipped threshold is unreachable in this simulator |
+| v2 ablation | Reported from **validation** data (`d2_ablation_peak_mean.csv`) plus the Risk-Aware vs Risk-Blind test-set comparison in §14.4. No new post-hoc run was performed, because the pre-registration forbids it |
+| Hazard curves / fault injection | **Untouched** by instruction |
+| `PREREGISTRATION_V2.md` committed early | It was inadvertently included in commit `eadf79c` via `git add -A` before being finalised. Disclosed in the file's own revision log rather than silently amended. The frozen content used for the run is commit `3a0bcc3`. |

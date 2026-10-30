@@ -308,3 +308,216 @@ claims credible.
 | Do the safety penalties help? | **No** — removing them lowered measured risk (fig 06) |
 | Does MARL learn from scratch? | **No** — reward diverges to −188,000 (fig 08) |
 | Are the conclusions robust? | **Yes** — hold across load levels and both regimes (figs 04, 10) |
+
+---
+
+# Part II — v2 figures (`results/graphs/v2/`)
+
+These thirteen figures belong to the v2 investigation. The six `v2_01`–`v2_06` figures come from the
+Phase 1 diagnosis; `v2_07`–`v2_13` come from the final test. **The v1 figures above are unchanged.**
+
+---
+
+## v2_01_choice_availability.png — The binding constraint
+
+**What it shows.** How many GPUs were actually eligible to receive a task at each scheduling decision
+in v1.
+
+**What to look for.** The histogram is almost entirely at **zero eligible GPUs** — 99.28 % of 65,271
+decisions. The right panel shows the same thing as a share of offered tasks admitted: **1.19 %**.
+
+**Why it matters.** A scheduler can only differ from another scheduler when it has a choice. With no
+eligible GPU, FCFS, Round Robin and Risk-Aware MARL all do exactly the same thing: nothing. This one
+figure explains v1's "parity" result.
+
+---
+
+## v2_02_bid_term_magnitudes.png — The risk penalties were never the problem
+
+**What it shows.** The size of each term in the MARL bid, and how often the risk terms change which
+GPU wins.
+
+**What to look for.** The risk and EFC penalties move the bid outcome on **37.74 %** of decisions, and
+the penalty spread is **0.85×** the reward spread — comparable, not negligible.
+
+**Why it matters.** This is the evidence that killed candidate improvement A ("make the penalties
+stronger"). The penalties already had real influence. Strengthening them would have been tuning a
+part that was not broken.
+
+---
+
+## v2_03_ablation_peak_vs_mean.png — v1's ablation surprise was noise
+
+**What it shows.** The v1 ablation (full / no-EFC / no-risk / risk-blind) re-run with more seeds, and
+measured on both mean and peak risk.
+
+**What to look for.** The four variants sit within **1–6 % of a single standard deviation** of one
+another. The dramatic "removing the penalties made it safer" reversal in v1 §6.3 does not reappear.
+
+**Why it matters.** v1's ablation used 3 seeds. This figure shows that result was a sampling artefact,
+not a finding — and corrects it in the honest direction (there was no real reversal to explain).
+
+---
+
+## v2_04_quarantine_reachability.png — The safety valve cannot be reached
+
+**What it shows.** The maximum GPU risk score ever observed, against the quarantine threshold of 0.85.
+
+**What to look for.** Even at 1,000 steps and ρ = 2.0, risk peaks at **0.72**. The threshold line is
+never crossed.
+
+**Why it matters.** Quarantine is a headline feature of the design, and it is **structurally dead** in
+this simulator. Hypothesis H4 is not "unsupported" — it is **untestable**, and this figure is why.
+
+---
+
+## v2_05_starvation_mechanism.png — How a safety metric can be gamed
+
+**What it shows.** Temperature traces and completion counts for a scheduler that simply refuses work.
+
+**What to look for.** Idle GPUs stay cool, so the "risk" score looks excellent while almost nothing is
+accomplished.
+
+**Why it matters.** This is the starvation trap made visible, and it is the justification for the
+pre-registered **throughput floor** used in v2 — a guard v1 did not have.
+
+---
+
+## v2_06_training_adequacy.png — The agents were barely trained
+
+**What it shows.** Exploration rate and Q-table coverage after v1's training budget.
+
+**What to look for.** ε is still **0.852** (i.e. ~85 % of actions are random), and the agent has
+visited **49 of 57,395,628** possible states — **0.00009 %**.
+
+**Why it matters.** v1 was, in effect, comparing a random dispatcher against FCFS and calling it
+"MARL". The v2 training budget is larger — and, critically, **identical for all three learners**.
+
+---
+
+## v2_07_load_fix_validity.png — Why v1 could not answer the question, and v2 can
+
+**What it shows.** *Left:* intended vs delivered utilisation (log scale) under each condition.
+*Right:* the percentage of scheduling decisions that were genuinely contested.
+
+**What to look for.** The red v1 bars sit far above the dashed "intended" line — **7.98** delivered
+where **1.1** was asked for. The teal and purple bars land on the line. On the right, v1's contested
+rate collapses to **0.11 %** at ρ = 1.1 while v2 holds at **21.96 %**.
+
+**Why it matters.** This is the figure that licenses everything else in v2. It demonstrates that the
+re-test contains real decisions, which v1's did not. Without this, no v2 result would mean anything.
+
+---
+
+## v2_08_primary_hypothesis.png — The formal v2 verdict
+
+**What it shows.** *Left:* the pre-registered primary metric (risk per completed task) for all six
+schedulers at ρ = 1.1. *Right:* the paired per-episode difference between Risk-Aware MARL and the
+strongest eligible baseline, sorted.
+
+**What to look for.** Risk-Aware MARL's bar is the **tallest** (worst) among feasible schedulers. On
+the right, the bars are overwhelmingly **red and above zero** — Risk-Aware MARL is worse in
+**54 of 60** paired episodes. The pre-registered threshold was 36 of 60.
+
+Single-Agent RL's bar is **hatched**: it scores best but completes only 108.5 tasks against 151.3,
+below the 80 % throughput floor, so it is **INFEASIBLE** and excluded from baseline selection.
+
+**Why it matters.** This is the single confirmatory test in the whole v2 programme, fixed in advance.
+It is **rejected**, and not narrowly — the 95 % CI excludes zero in the *wrong* direction.
+
+---
+
+## v2_09_mean_vs_peak.png — The most important figure in v2
+
+**What it shows.** The same six schedulers measured three ways: mean risk across GPUs, peak risk on
+the hottest GPU, and crashes.
+
+**What to look for.** Risk-Aware MARL is **worst on mean risk** (0.1916) and simultaneously **best on
+peak risk** (0.5217). Those are not contradictory — they are the same behaviour seen from two angles.
+
+**Why it matters.** It explains the rejection mechanically. The risk-aware bidder **spreads** work, so
+all four GPUs run moderately warm. FCFS **concentrates** work, so some GPUs are cold and others
+overheat. The *average* prefers "two cold, two burning"; the *peak* prefers "four warm". Only one of
+those two arrangements actually destroys hardware.
+
+The honest reading: **the pre-registered primary metric rewards the failure mode the system was
+designed to prevent.** That is reported as a finding, not used as grounds to change the metric after
+the fact.
+
+---
+
+## v2_10_pareto.png — Throughput against risk, all three loads
+
+**What it shows.** Each scheduler as a point: completed tasks (right = better) against mean risk
+(down = better), at ρ = 0.3, 1.1 and 1.4.
+
+**What to look for.** The five dispatchers cluster tightly on the right at every load — they complete
+near-identical work. Single-Agent RL sits far to the **left**: low risk bought by doing less. Risk-Aware
+MARL sits at the **top** of the dispatcher cluster.
+
+**Why it matters.** It shows the trade-off is real but small among schedulers that actually work, and
+it shows visually why the throughput floor is necessary: without it, the point furthest down-left
+"wins" by refusing to schedule.
+
+---
+
+## v2_11_v1_vs_v2.png — Risk-Aware MARL under each condition
+
+**What it shows.** Four metrics for Risk-Aware MARL only, under v1, v1+load-fix, and v2.
+
+**What to look for.** Two things, both easy to misread:
+
+1. v1 completes **302** tasks vs 128. This is **not** a better result — v1 was offered ~7× more work
+   than intended. Crashes fell from 27.7 to 5.81 for the same reason.
+2. **v1+load-fix and v2 are nearly identical** (0.164 vs 0.163 mean risk; 5.90 vs 5.81 crashes).
+
+**Why it matters.** Point 2 is the honest headline: **almost the entire v2 change comes from the load
+fix alone.** The TRAIN-derived risk buckets and the larger training budget moved the numbers by well
+under 1 % — matching the tuning result, where 20 configurations produced only 4 distinct scores.
+
+---
+
+## v2_12_quarantine.png — The shipped safety valve never fires
+
+**What it shows.** How often quarantine triggered, at the shipped threshold (0.85) and an exploratory
+one (0.60), in both regimes.
+
+**What to look for.** Every 0.85 bar is labelled **0**. The shipped threshold fired in **0 of 3,240
+episodes** in the workload regime and **0 of 3,240** under the hazard overlay. The 0.60 threshold
+fires often — 47.3 % and 68.3 % of episodes respectively.
+
+**Why it matters.** It confirms the diagnosis on test data: H4 is **untestable**, not unsupported. The
+0.60 results are shown because the pre-registration requires reporting them, but they are exploratory
+— lowering a shipped threshold until it passes its own test would not be evidence.
+
+---
+
+## v2_13_overlay_effect.png — The hazard overlay raises risk for everyone
+
+**What it shows.** Crashes and mean risk with the workload only, versus with the real-data hazard
+overlay applied, at ρ = 1.1.
+
+**What to look for.** Every orange bar is higher than its teal partner — FCFS crashes rise from 8.2 to
+14.0. The **ordering between schedulers barely changes**.
+
+**Why it matters.** It confirms the overlay is doing real work (this is also the bug that was caught
+pre-flight — see `CHANGES_MADE.md`, where a defaulted `enabled=False` would have silently made this
+entire regime a duplicate of the workload-only one). And it shows the v2 conclusions are not an
+artefact of one failure regime.
+
+---
+
+## Summary: what the v2 figures collectively say
+
+| Question | Answer from the v2 figures |
+|---|---|
+| Did v1 test its own hypothesis? | **No** — fig v2_01, 99.28 % of decisions had no choice |
+| Were the risk penalties too weak? | **No** — fig v2_02, they move 37.74 % of decisions |
+| Was v1's ablation reversal real? | **No** — fig v2_03, it was a 3-seed artefact |
+| Can quarantine ever trigger? | **No** — figs v2_04 and v2_12, 0 of 3,240 episodes |
+| Is the v2 experiment valid? | **Yes** — fig v2_07, ~22 % of decisions are contested |
+| Is Risk-Aware MARL safer on the primary metric? | **No — significantly worse** (fig v2_08) |
+| Is it safer on *peak* risk? | **Yes**, and best of all six (fig v2_09, exploratory) |
+| Does it cost throughput? | **No** — 99.98 % of the best scheduler (figs v2_09, v2_10) |
+| Which fix actually mattered? | **The load fix, almost entirely** (fig v2_11) |
+| Do the conclusions hold under real hazards? | **Yes** — fig v2_13 |
