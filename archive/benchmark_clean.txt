@@ -1,3 +1,10 @@
+*** SUPERSEDED - DO NOT CITE ***
+This saved benchmark output predates the pre-registered experiments and its framing
+is superseded. For measured results see docs/05_results_and_findings.md.
+Archived 31 October 2026.
+
+----------------------------------------------------------------------
+
 ﻿
 ===================================================================================================================
     AETHERGRID BIT 6: RISK-AWARE MARL vs TRADITIONAL BASELINES BENCHMARK

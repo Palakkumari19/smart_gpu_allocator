@@ -637,9 +637,12 @@ Source changes made during the documentation pass are listed in [`CHANGES_MADE.m
 | [`BIT9_RESEARCH_METRICS_AND_BENCHMARKING.md`](BIT9_RESEARCH_METRICS_AND_BENCHMARKING.md) | Metrics and benchmarking harness |
 | [`MARL_TRAINING_GUIDE.md`](MARL_TRAINING_GUIDE.md) | Training system guide |
 
-> ⚠️ `MARL_SUPERIORITY_REPORT.md`, `MARL_IMPROVEMENTS_IMPLEMENTED.md` and
-> `AETHERGRID_IMPLEMENTATION_REPORT.md` contain performance claims that today's runs do **not**
-> reproduce. Treat them as development history, not as results.
+> ⚠️ [`archive/MARL_SUPERIORITY_REPORT.md`](archive/MARL_SUPERIORITY_REPORT.md),
+> [`archive/MARL_IMPROVEMENTS_IMPLEMENTED.md`](archive/MARL_IMPROVEMENTS_IMPLEMENTED.md) and
+> [`archive/AETHERGRID_IMPLEMENTATION_REPORT.md`](archive/AETHERGRID_IMPLEMENTATION_REPORT.md)
+> contain performance claims that today's runs do **not**
+> reproduce. Treat them as development history, not as results. They were moved to `archive/` on
+> 31 October 2026 and each carries a SUPERSEDED banner.
 
 ---
 

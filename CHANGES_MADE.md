@@ -90,8 +90,10 @@ The user explicitly asked for the README to be updated and finalised after the m
 - Fixes all broken links to repository-relative paths.
 - Adds a "Known issues and limitations" section listing the items above.
 - Adds a documentation index pointing at `docs/01`-`07`.
-- Flags that `MARL_SUPERIORITY_REPORT.md`, `MARL_IMPROVEMENTS_IMPLEMENTED.md` and
-  `AETHERGRID_IMPLEMENTATION_REPORT.md` contain unreproduced claims.
+- Flags that `archive/MARL_SUPERIORITY_REPORT.md`, `archive/MARL_IMPROVEMENTS_IMPLEMENTED.md` and
+  `archive/AETHERGRID_IMPLEMENTATION_REPORT.md` contain unreproduced claims.
+  (These three were moved from the repository root to `archive/` on 31 October 2026 and each
+  carries a SUPERSEDED banner; see `docs/CLEANUP_PLAN.md`.)
 
 **No code behaviour is affected by this change** — `README.md` is documentation only.
 

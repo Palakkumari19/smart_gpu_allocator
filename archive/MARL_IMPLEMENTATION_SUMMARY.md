@@ -1,3 +1,11 @@
+> ⚠️ **SUPERSEDED — DO NOT CITE.**
+> This document contains performance claims that the project's own later runs do **not** reproduce.
+> It is kept only for historical record. For the measured results see **`docs/05_results_and_findings.md`**
+> (Part I = v1, Part II = v2) and **`realdata/PREREGISTRATION_V2.md`**.
+> Archived 31 October 2026.
+
+---
+
 # AETHERGRID - MARL Implementation Summary
 
 ## **MULTI-AGENT REINFORCEMENT LEARNING SYSTEM**
