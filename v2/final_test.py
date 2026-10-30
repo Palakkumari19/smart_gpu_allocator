@@ -49,16 +49,33 @@ def _git(*args) -> str:
         return ""
 
 
+GUARDED_FILES = [
+    ROOT / "realdata" / "PREREGISTRATION_V2.md",
+    ROOT / "realdata" / "config_v2.py",
+    ROOT / "results" / "metrics" / "v2" / "frozen_training.json",
+]
+
+
 def guard_preregistration(allow_dirty: bool = False) -> str:
-    if not PREREG.exists():
-        raise SystemExit("PREREGISTRATION_V2.md is missing. Write and commit it first.")
-    tracked = _git("ls-files", "--error-unmatch", str(PREREG.relative_to(ROOT)))
-    if not tracked:
-        raise SystemExit("PREREGISTRATION_V2.md is not committed. Commit it first.")
+    """
+    Refuse to run unless the pre-registration AND the frozen configuration are
+    committed and clean. Returns the pre-registration's commit hash, which is
+    recorded in every output file.
+    """
+    for f in GUARDED_FILES:
+        rel = str(f.relative_to(ROOT))
+        if not f.exists():
+            raise SystemExit(f"{rel} is missing. Create and commit it before the final test.")
+        if not _git("ls-files", "--error-unmatch", rel):
+            raise SystemExit(f"{rel} is not committed. Commit it before the final test.")
+        if _git("status", "--porcelain", rel) and not allow_dirty:
+            raise SystemExit(
+                f"{rel} has uncommitted changes. Commit before the final test "
+                "(the pre-registration must describe exactly what is run).")
     commit = _git("log", "-1", "--format=%H", "--", str(PREREG.relative_to(ROOT)))
-    dirty = _git("status", "--porcelain", str(PREREG.relative_to(ROOT)))
-    if dirty and not allow_dirty:
-        raise SystemExit("PREREGISTRATION_V2.md has uncommitted changes. Commit before testing.")
+    print("Guard passed. Committed and clean:")
+    for f in GUARDED_FILES:
+        print(f"   {f.relative_to(ROOT)}")
     return commit
 
 

@@ -1,0 +1,72 @@
+{
+  "selection": {
+    "n_configs_logged": 20,
+    "throughput_floor_config": 0.95,
+    "best_val_completed": 35.0,
+    "completed_cutoff": 33.25,
+    "n_ineligible_by_floor": 0,
+    "best_score": 182.8544,
+    "tie_band_lower_bound": 181.025856,
+    "n_ties": 4,
+    "tie_config_ids": [
+      "cfg15",
+      "cfg16",
+      "cfg19",
+      "cfg20"
+    ],
+    "chosen_config_id": "cfg15",
+    "chosen": {
+      "config_id": "cfg15",
+      "timestamp": "2026-10-30 20:51:44",
+      "epsilon_decay": 0.999,
+      "train_episodes": "20",
+      "risk_edges": "v1",
+      "episodes_run_rl": "9",
+      "episodes_run_marl": "9",
+      "episodes_run_ram": "9",
+      "final_q_rl": "2031",
+      "final_q_marl": "787",
+      "final_q_ram": "773",
+      "final_eps_marl": 0.05,
+      "val_completed": 34.8889,
+      "val_mean_risk": 0.1908,
+      "val_peak_risk": 0.45892,
+      "val_crashes": 5.0556,
+      "val_contested_pct": 16.266,
+      "val_risk_per_task": 0.006177,
+      "val_crashes_per_task": 0.101524,
+      "validation_score": 182.8544,
+      "seconds": 101.9,
+      "note": "stage2 stop_growth=1 patience=6 steps=600",
+      "eligible": "True",
+      "total_train_steps": "5400",
+      "steps_per_episode": "600"
+    }
+  },
+  "score_uncertainty": {
+    "n_validation_episodes": 18,
+    "validation_score_point": 181.74302468140343,
+    "validation_score_se": 7.60878563298858,
+    "se_pct_of_score": 4.186562673492876,
+    "ci95": [
+      164.98677714154869,
+      195.71838685541107
+    ],
+    "n_boot": 400
+  },
+  "selection_within_noise": true,
+  "epsilon_decay_per_step": 0.999,
+  "episodes": 9,
+  "steps_per_episode": 600,
+  "risk_edges": [
+    0.0614,
+    0.1165,
+    0.3047
+  ],
+  "risk_edges_rationale": "TRAIN-derived edges kept on a pre-stated principle (84% of risk readings fell in one v1 bucket). Validation scores did NOT favour them (181.74 vs 182.85 for v1 edges at 600-step training), but the difference lies inside the 1% tie band.",
+  "applies_to_all_learners": [
+    "rl",
+    "marl",
+    "risk_aware_marl"
+  ]
+}

@@ -97,14 +97,17 @@ RISK_BUCKET_EDGES = [float(x) for x in _load(_EDGES_PATH, "edges", [0.0614, 0.11
 # Identical budget for every learner (rl, marl, risk_aware_marl).
 # Stopping rule: fixed episode count, or early stop if Q-table growth per
 # episode stays below PLATEAU_GROWTH for PLATEAU_PATIENCE consecutive episodes.
-TRAIN_EPISODES = 20
-TRAIN_STEPS_PER_EPISODE = 300
+# FROZEN by validation tuning (20/20 configs logged). See PREREGISTRATION_V2.md
+# section 8: the selection is WITHIN NOISE (SE 4.19% vs a 1% tie band), so these
+# values are a deterministic tie-break, not a demonstrated optimum.
+TRAIN_EPISODES = 20              # cap; the stopping rule fires at episode 9
+TRAIN_STEPS_PER_EPISODE = 600
 TRAIN_TARGET_RHO = 0.9
-EPSILON_DECAY_PER_STEP = 0.995
+EPSILON_DECAY_PER_STEP = 0.999
 EPSILON_MIN = 0.05
 LEARNING_RATE = 0.01
-PLATEAU_GROWTH = 5
-PLATEAU_PATIENCE = 3
+PLATEAU_GROWTH = 1               # revised after stage-1 evidence (see revision log)
+PLATEAU_PATIENCE = 6
 
 # ───────────────────────────────────────────── tuning budget
 MAX_TUNING_CONFIGS = 20     # hard cap; every configuration tried is logged
