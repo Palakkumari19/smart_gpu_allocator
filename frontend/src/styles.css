@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  @apply min-h-screen bg-[radial-gradient(circle_at_top,_rgba(45,255,182,0.14),_transparent_35%),linear-gradient(135deg,_#020617,_#030712_60%,_#020617)] text-slate-100;
+}
+
+* {
+  @apply box-border;
+}
+
+.glass-panel {
+  @apply rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_40px_rgba(2,132,199,0.12)];
+}
+
+.metric-card {
+  @apply glass-panel p-4;
+}

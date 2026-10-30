@@ -1,0 +1,1028 @@
+{
+  "experiment_id": "ablation_1792753672_a8fdc7",
+  "timestamp": "2026-10-23T11:07:52.679588+00:00",
+  "config": {
+    "name": "Risk & EFC Penalty Ablation Study",
+    "modes": [
+      "full_risk_aware",
+      "no_risk_penalty",
+      "no_efc_penalty",
+      "risk_blind"
+    ],
+    "num_tasks": 35,
+    "num_repetitions": 3,
+    "seeds": [
+      101,
+      102,
+      103
+    ],
+    "workload_type": "mixed"
+  },
+  "summaries": {
+    "full_risk_aware": {
+      "scheduler_id": "full_risk_aware",
+      "scheduler_name": "Full Risk-Aware MARL",
+      "repetitions": 3,
+      "seeds": [
+        101,
+        102,
+        103
+      ],
+      "total_tasks_evaluated": 105,
+      "metrics": {
+        "success_rate_pct": {
+          "mean": 100.0,
+          "std": 0.0,
+          "ci_95_lower": 100.0,
+          "ci_95_upper": 100.0,
+          "min_val": 100.0,
+          "max_val": 100.0,
+          "sample_size": 3
+        },
+        "failure_rate_pct": {
+          "mean": 6.6667,
+          "std": 11.547,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 19.7333,
+          "min_val": 0.0,
+          "max_val": 20.0,
+          "sample_size": 3
+        },
+        "rejection_rate_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "throughput_tasks_per_sec": {
+          "mean": 1171.16,
+          "std": 283.1266,
+          "ci_95_lower": 850.7721,
+          "ci_95_upper": 1491.5479,
+          "min_val": 845.51,
+          "max_val": 1358.98,
+          "sample_size": 3
+        },
+        "avg_turnaround_time_sec": {
+          "mean": 0.004,
+          "std": 0.0,
+          "ci_95_lower": 0.004,
+          "ci_95_upper": 0.004,
+          "min_val": 0.004,
+          "max_val": 0.004,
+          "sample_size": 3
+        },
+        "avg_waiting_time_sec": {
+          "mean": 0.0043,
+          "std": 0.0006,
+          "ci_95_lower": 0.0037,
+          "ci_95_upper": 0.005,
+          "min_val": 0.004,
+          "max_val": 0.005,
+          "sample_size": 3
+        },
+        "avg_completion_time_sec": {
+          "mean": 0.001,
+          "std": 0.0,
+          "ci_95_lower": 0.001,
+          "ci_95_upper": 0.001,
+          "min_val": 0.001,
+          "max_val": 0.001,
+          "sample_size": 3
+        },
+        "avg_gpu_utilization_pct": {
+          "mean": 27.5833,
+          "std": 0.3819,
+          "ci_95_lower": 27.1512,
+          "ci_95_upper": 28.0155,
+          "min_val": 27.25,
+          "max_val": 28.0,
+          "sample_size": 3
+        },
+        "avg_gpu_memory_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "load_balance_std": {
+          "mean": 4.0967,
+          "std": 0.5972,
+          "ci_95_lower": 3.4209,
+          "ci_95_upper": 4.7724,
+          "min_val": 3.42,
+          "max_val": 4.55,
+          "sample_size": 3
+        },
+        "jains_fairness_index": {
+          "mean": 0.8196,
+          "std": 0.0424,
+          "ci_95_lower": 0.7716,
+          "ci_95_upper": 0.8676,
+          "min_val": 0.7873,
+          "max_val": 0.8676,
+          "sample_size": 3
+        },
+        "capacity_violations": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "cooldown_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "quarantine_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "avg_risk_exposure": {
+          "mean": 0.1055,
+          "std": 0.0146,
+          "ci_95_lower": 0.0889,
+          "ci_95_upper": 0.122,
+          "min_val": 0.0886,
+          "max_val": 0.114,
+          "sample_size": 3
+        },
+        "max_risk_exposure": {
+          "mean": 0.1825,
+          "std": 0.055,
+          "ci_95_lower": 0.1203,
+          "ci_95_upper": 0.2447,
+          "min_val": 0.119,
+          "max_val": 0.2155,
+          "sample_size": 3
+        },
+        "avg_efc": {
+          "mean": 0.0403,
+          "std": 0.0056,
+          "ci_95_lower": 0.034,
+          "ci_95_upper": 0.0466,
+          "min_val": 0.0339,
+          "max_val": 0.0436,
+          "sample_size": 3
+        },
+        "total_efc": {
+          "mean": 0.1612,
+          "std": 0.0223,
+          "ci_95_lower": 0.136,
+          "ci_95_upper": 0.1865,
+          "min_val": 0.1355,
+          "max_val": 0.1743,
+          "sample_size": 3
+        }
+      },
+      "improvements_vs_baselines": {}
+    },
+    "no_risk_penalty": {
+      "scheduler_id": "no_risk_penalty",
+      "scheduler_name": "MARL (No Risk Penalty)",
+      "repetitions": 3,
+      "seeds": [
+        101,
+        102,
+        103
+      ],
+      "total_tasks_evaluated": 105,
+      "metrics": {
+        "success_rate_pct": {
+          "mean": 100.0,
+          "std": 0.0,
+          "ci_95_lower": 100.0,
+          "ci_95_upper": 100.0,
+          "min_val": 100.0,
+          "max_val": 100.0,
+          "sample_size": 3
+        },
+        "failure_rate_pct": {
+          "mean": 6.6667,
+          "std": 11.547,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 19.7333,
+          "min_val": 0.0,
+          "max_val": 20.0,
+          "sample_size": 3
+        },
+        "rejection_rate_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "throughput_tasks_per_sec": {
+          "mean": 1253.7833,
+          "std": 216.5496,
+          "ci_95_lower": 1008.7344,
+          "ci_95_upper": 1498.8322,
+          "min_val": 1004.71,
+          "max_val": 1397.44,
+          "sample_size": 3
+        },
+        "avg_turnaround_time_sec": {
+          "mean": 0.0037,
+          "std": 0.0006,
+          "ci_95_lower": 0.003,
+          "ci_95_upper": 0.0043,
+          "min_val": 0.003,
+          "max_val": 0.004,
+          "sample_size": 3
+        },
+        "avg_waiting_time_sec": {
+          "mean": 0.0043,
+          "std": 0.0015,
+          "ci_95_lower": 0.0026,
+          "ci_95_upper": 0.0061,
+          "min_val": 0.003,
+          "max_val": 0.006,
+          "sample_size": 3
+        },
+        "avg_completion_time_sec": {
+          "mean": 0.001,
+          "std": 0.0,
+          "ci_95_lower": 0.001,
+          "ci_95_upper": 0.001,
+          "min_val": 0.001,
+          "max_val": 0.001,
+          "sample_size": 3
+        },
+        "avg_gpu_utilization_pct": {
+          "mean": 27.8333,
+          "std": 0.5774,
+          "ci_95_lower": 27.18,
+          "ci_95_upper": 28.4867,
+          "min_val": 27.5,
+          "max_val": 28.5,
+          "sample_size": 3
+        },
+        "avg_gpu_memory_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "load_balance_std": {
+          "mean": 4.3233,
+          "std": 0.9979,
+          "ci_95_lower": 3.1941,
+          "ci_95_upper": 5.4525,
+          "min_val": 3.19,
+          "max_val": 5.07,
+          "sample_size": 3
+        },
+        "jains_fairness_index": {
+          "mean": 0.8022,
+          "std": 0.0708,
+          "ci_95_lower": 0.7221,
+          "ci_95_upper": 0.8824,
+          "min_val": 0.7488,
+          "max_val": 0.8826,
+          "sample_size": 3
+        },
+        "capacity_violations": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "cooldown_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "quarantine_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "avg_risk_exposure": {
+          "mean": 0.0931,
+          "std": 0.0257,
+          "ci_95_lower": 0.064,
+          "ci_95_upper": 0.1223,
+          "min_val": 0.0643,
+          "max_val": 0.1138,
+          "sample_size": 3
+        },
+        "max_risk_exposure": {
+          "mean": 0.201,
+          "std": 0.0755,
+          "ci_95_lower": 0.1156,
+          "ci_95_upper": 0.2864,
+          "min_val": 0.121,
+          "max_val": 0.271,
+          "sample_size": 3
+        },
+        "avg_efc": {
+          "mean": 0.0356,
+          "std": 0.0098,
+          "ci_95_lower": 0.0245,
+          "ci_95_upper": 0.0467,
+          "min_val": 0.0246,
+          "max_val": 0.0435,
+          "sample_size": 3
+        },
+        "total_efc": {
+          "mean": 0.1423,
+          "std": 0.0394,
+          "ci_95_lower": 0.0978,
+          "ci_95_upper": 0.1868,
+          "min_val": 0.0982,
+          "max_val": 0.1739,
+          "sample_size": 3
+        }
+      },
+      "improvements_vs_baselines": {}
+    },
+    "no_efc_penalty": {
+      "scheduler_id": "no_efc_penalty",
+      "scheduler_name": "MARL (No EFC Penalty)",
+      "repetitions": 3,
+      "seeds": [
+        101,
+        102,
+        103
+      ],
+      "total_tasks_evaluated": 105,
+      "metrics": {
+        "success_rate_pct": {
+          "mean": 100.0,
+          "std": 0.0,
+          "ci_95_lower": 100.0,
+          "ci_95_upper": 100.0,
+          "min_val": 100.0,
+          "max_val": 100.0,
+          "sample_size": 3
+        },
+        "failure_rate_pct": {
+          "mean": 6.6667,
+          "std": 11.547,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 19.7333,
+          "min_val": 0.0,
+          "max_val": 20.0,
+          "sample_size": 3
+        },
+        "rejection_rate_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "throughput_tasks_per_sec": {
+          "mean": 1308.8267,
+          "std": 361.1198,
+          "ci_95_lower": 900.1811,
+          "ci_95_upper": 1717.4722,
+          "min_val": 1051.97,
+          "max_val": 1721.73,
+          "sample_size": 3
+        },
+        "avg_turnaround_time_sec": {
+          "mean": 0.0037,
+          "std": 0.0006,
+          "ci_95_lower": 0.003,
+          "ci_95_upper": 0.0043,
+          "min_val": 0.003,
+          "max_val": 0.004,
+          "sample_size": 3
+        },
+        "avg_waiting_time_sec": {
+          "mean": 0.004,
+          "std": 0.001,
+          "ci_95_lower": 0.0029,
+          "ci_95_upper": 0.0051,
+          "min_val": 0.003,
+          "max_val": 0.005,
+          "sample_size": 3
+        },
+        "avg_completion_time_sec": {
+          "mean": 0.001,
+          "std": 0.0,
+          "ci_95_lower": 0.001,
+          "ci_95_upper": 0.001,
+          "min_val": 0.001,
+          "max_val": 0.001,
+          "sample_size": 3
+        },
+        "avg_gpu_utilization_pct": {
+          "mean": 27.8333,
+          "std": 0.5774,
+          "ci_95_lower": 27.18,
+          "ci_95_upper": 28.4867,
+          "min_val": 27.5,
+          "max_val": 28.5,
+          "sample_size": 3
+        },
+        "avg_gpu_memory_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "load_balance_std": {
+          "mean": 4.1167,
+          "std": 1.2662,
+          "ci_95_lower": 2.6838,
+          "ci_95_upper": 5.5495,
+          "min_val": 2.68,
+          "max_val": 5.07,
+          "sample_size": 3
+        },
+        "jains_fairness_index": {
+          "mean": 0.8154,
+          "std": 0.0873,
+          "ci_95_lower": 0.7166,
+          "ci_95_upper": 0.9142,
+          "min_val": 0.7488,
+          "max_val": 0.9142,
+          "sample_size": 3
+        },
+        "capacity_violations": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "cooldown_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "quarantine_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "avg_risk_exposure": {
+          "mean": 0.0723,
+          "std": 0.0286,
+          "ci_95_lower": 0.04,
+          "ci_95_upper": 0.1046,
+          "min_val": 0.0393,
+          "max_val": 0.0888,
+          "sample_size": 3
+        },
+        "max_risk_exposure": {
+          "mean": 0.1445,
+          "std": 0.0584,
+          "ci_95_lower": 0.0784,
+          "ci_95_upper": 0.2106,
+          "min_val": 0.1015,
+          "max_val": 0.211,
+          "sample_size": 3
+        },
+        "avg_efc": {
+          "mean": 0.0276,
+          "std": 0.0109,
+          "ci_95_lower": 0.0153,
+          "ci_95_upper": 0.0399,
+          "min_val": 0.015,
+          "max_val": 0.0339,
+          "sample_size": 3
+        },
+        "total_efc": {
+          "mean": 0.1105,
+          "std": 0.0437,
+          "ci_95_lower": 0.061,
+          "ci_95_upper": 0.1599,
+          "min_val": 0.06,
+          "max_val": 0.1357,
+          "sample_size": 3
+        }
+      },
+      "improvements_vs_baselines": {}
+    },
+    "risk_blind": {
+      "scheduler_id": "risk_blind",
+      "scheduler_name": "Standard MARL (Risk-Blind)",
+      "repetitions": 3,
+      "seeds": [
+        101,
+        102,
+        103
+      ],
+      "total_tasks_evaluated": 105,
+      "metrics": {
+        "success_rate_pct": {
+          "mean": 100.0,
+          "std": 0.0,
+          "ci_95_lower": 100.0,
+          "ci_95_upper": 100.0,
+          "min_val": 100.0,
+          "max_val": 100.0,
+          "sample_size": 3
+        },
+        "failure_rate_pct": {
+          "mean": 6.6667,
+          "std": 11.547,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 19.7333,
+          "min_val": 0.0,
+          "max_val": 20.0,
+          "sample_size": 3
+        },
+        "rejection_rate_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "throughput_tasks_per_sec": {
+          "mean": 1141.3667,
+          "std": 77.6421,
+          "ci_95_lower": 1053.5063,
+          "ci_95_upper": 1229.227,
+          "min_val": 1055.34,
+          "max_val": 1206.24,
+          "sample_size": 3
+        },
+        "avg_turnaround_time_sec": {
+          "mean": 0.004,
+          "std": 0.0,
+          "ci_95_lower": 0.004,
+          "ci_95_upper": 0.004,
+          "min_val": 0.004,
+          "max_val": 0.004,
+          "sample_size": 3
+        },
+        "avg_waiting_time_sec": {
+          "mean": 0.005,
+          "std": 0.001,
+          "ci_95_lower": 0.0039,
+          "ci_95_upper": 0.0061,
+          "min_val": 0.004,
+          "max_val": 0.006,
+          "sample_size": 3
+        },
+        "avg_completion_time_sec": {
+          "mean": 0.0013,
+          "std": 0.0006,
+          "ci_95_lower": 0.0007,
+          "ci_95_upper": 0.002,
+          "min_val": 0.001,
+          "max_val": 0.002,
+          "sample_size": 3
+        },
+        "avg_gpu_utilization_pct": {
+          "mean": 27.8333,
+          "std": 0.5774,
+          "ci_95_lower": 27.18,
+          "ci_95_upper": 28.4867,
+          "min_val": 27.5,
+          "max_val": 28.5,
+          "sample_size": 3
+        },
+        "avg_gpu_memory_pct": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "load_balance_std": {
+          "mean": 4.35,
+          "std": 0.9525,
+          "ci_95_lower": 3.2722,
+          "ci_95_upper": 5.4278,
+          "min_val": 3.27,
+          "max_val": 5.07,
+          "sample_size": 3
+        },
+        "jains_fairness_index": {
+          "mean": 0.8005,
+          "std": 0.068,
+          "ci_95_lower": 0.7236,
+          "ci_95_upper": 0.8774,
+          "min_val": 0.7488,
+          "max_val": 0.8775,
+          "sample_size": 3
+        },
+        "capacity_violations": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "cooldown_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "quarantine_events": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0,
+          "min_val": 0.0,
+          "max_val": 0.0,
+          "sample_size": 3
+        },
+        "avg_risk_exposure": {
+          "mean": 0.0639,
+          "std": 0.0436,
+          "ci_95_lower": 0.0146,
+          "ci_95_upper": 0.1133,
+          "min_val": 0.0387,
+          "max_val": 0.1143,
+          "sample_size": 3
+        },
+        "max_risk_exposure": {
+          "mean": 0.14,
+          "std": 0.0533,
+          "ci_95_lower": 0.0797,
+          "ci_95_upper": 0.2003,
+          "min_val": 0.1075,
+          "max_val": 0.2015,
+          "sample_size": 3
+        },
+        "avg_efc": {
+          "mean": 0.0244,
+          "std": 0.0167,
+          "ci_95_lower": 0.0056,
+          "ci_95_upper": 0.0433,
+          "min_val": 0.0148,
+          "max_val": 0.0437,
+          "sample_size": 3
+        },
+        "total_efc": {
+          "mean": 0.0977,
+          "std": 0.0667,
+          "ci_95_lower": 0.0222,
+          "ci_95_upper": 0.1732,
+          "min_val": 0.0592,
+          "max_val": 0.1747,
+          "sample_size": 3
+        }
+      },
+      "improvements_vs_baselines": {}
+    }
+  },
+  "ablations": {
+    "deltas_vs_full": {
+      "full_risk_aware": {
+        "success_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "failure_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "rejection_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "throughput_tasks_per_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_turnaround_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_waiting_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_completion_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_gpu_utilization_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_gpu_memory_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "load_balance_std": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "jains_fairness_index": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "capacity_violations": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "cooldown_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "quarantine_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_risk_exposure": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "max_risk_exposure": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_efc": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "total_efc": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        }
+      },
+      "no_risk_penalty": {
+        "success_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "failure_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "rejection_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "throughput_tasks_per_sec": {
+          "difference": 82.6233,
+          "pct_change": 7.05
+        },
+        "avg_turnaround_time_sec": {
+          "difference": -0.0003,
+          "pct_change": -7.5
+        },
+        "avg_waiting_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_completion_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_gpu_utilization_pct": {
+          "difference": 0.25,
+          "pct_change": 0.91
+        },
+        "avg_gpu_memory_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "load_balance_std": {
+          "difference": 0.2266,
+          "pct_change": 5.53
+        },
+        "jains_fairness_index": {
+          "difference": -0.0174,
+          "pct_change": -2.12
+        },
+        "capacity_violations": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "cooldown_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "quarantine_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_risk_exposure": {
+          "difference": -0.0124,
+          "pct_change": -11.75
+        },
+        "max_risk_exposure": {
+          "difference": 0.0185,
+          "pct_change": 10.14
+        },
+        "avg_efc": {
+          "difference": -0.0047,
+          "pct_change": -11.66
+        },
+        "total_efc": {
+          "difference": -0.0189,
+          "pct_change": -11.72
+        }
+      },
+      "no_efc_penalty": {
+        "success_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "failure_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "rejection_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "throughput_tasks_per_sec": {
+          "difference": 137.6667,
+          "pct_change": 11.75
+        },
+        "avg_turnaround_time_sec": {
+          "difference": -0.0003,
+          "pct_change": -7.5
+        },
+        "avg_waiting_time_sec": {
+          "difference": -0.0003,
+          "pct_change": -6.98
+        },
+        "avg_completion_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_gpu_utilization_pct": {
+          "difference": 0.25,
+          "pct_change": 0.91
+        },
+        "avg_gpu_memory_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "load_balance_std": {
+          "difference": 0.02,
+          "pct_change": 0.49
+        },
+        "jains_fairness_index": {
+          "difference": -0.0042,
+          "pct_change": -0.51
+        },
+        "capacity_violations": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "cooldown_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "quarantine_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_risk_exposure": {
+          "difference": -0.0332,
+          "pct_change": -31.47
+        },
+        "max_risk_exposure": {
+          "difference": -0.038,
+          "pct_change": -20.82
+        },
+        "avg_efc": {
+          "difference": -0.0127,
+          "pct_change": -31.51
+        },
+        "total_efc": {
+          "difference": -0.0507,
+          "pct_change": -31.45
+        }
+      },
+      "risk_blind": {
+        "success_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "failure_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "rejection_rate_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "throughput_tasks_per_sec": {
+          "difference": -29.7933,
+          "pct_change": -2.54
+        },
+        "avg_turnaround_time_sec": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_waiting_time_sec": {
+          "difference": 0.0007,
+          "pct_change": 16.28
+        },
+        "avg_completion_time_sec": {
+          "difference": 0.0003,
+          "pct_change": 30.0
+        },
+        "avg_gpu_utilization_pct": {
+          "difference": 0.25,
+          "pct_change": 0.91
+        },
+        "avg_gpu_memory_pct": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "load_balance_std": {
+          "difference": 0.2533,
+          "pct_change": 6.18
+        },
+        "jains_fairness_index": {
+          "difference": -0.0191,
+          "pct_change": -2.33
+        },
+        "capacity_violations": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "cooldown_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "quarantine_events": {
+          "difference": 0.0,
+          "pct_change": 0.0
+        },
+        "avg_risk_exposure": {
+          "difference": -0.0416,
+          "pct_change": -39.43
+        },
+        "max_risk_exposure": {
+          "difference": -0.0425,
+          "pct_change": -23.29
+        },
+        "avg_efc": {
+          "difference": -0.0159,
+          "pct_change": -39.45
+        },
+        "total_efc": {
+          "difference": -0.0635,
+          "pct_change": -39.39
+        }
+      }
+    }
+  },
+  "total_runs": 12
+}

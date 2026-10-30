@@ -1,0 +1,7 @@
+numpy
+matplotlib
+pandas
+fastapi
+uvicorn[standard]
+python-multipart
+opencv-python-headless
