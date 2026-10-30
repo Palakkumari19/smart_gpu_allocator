@@ -8,3 +8,23 @@ VALIDATION: windows=['median_hour', 'burstiest_window'] seeds=[200, 201, 202] lo
 [cfg03] decay=0.999 episodes=20 edges=v1
    completed=34.8889 risk=0.19289 score=180.8787  (53.9s)
 [cfg04] decay=0.999 episodes=20 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (51.9s)
+[cfg05] decay=0.995 episodes=10 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (51.8s)
+[cfg06] decay=0.995 episodes=10 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (51.8s)
+[cfg07] decay=0.995 episodes=20 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (51.8s)
+[cfg08] decay=0.995 episodes=20 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (52.0s)
+[cfg09] decay=0.99 episodes=10 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (51.8s)
+[cfg10] decay=0.99 episodes=10 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (52.3s)
+[cfg11] decay=0.99 episodes=20 edges=v1
+   completed=34.8889 risk=0.19289 score=180.8787  (52.7s)
+[cfg12] decay=0.99 episodes=20 edges=train_derived
+   completed=35.0 risk=0.19334 score=181.0244  (52.3s)
+
+BEST: cfg02 decay=0.999 episodes=10 edges=train_derived score=181.0244
+Log: /Users/palakkumari/Documents/projects/smart_gpu_allocator/logs/v2_tuning_log.csv

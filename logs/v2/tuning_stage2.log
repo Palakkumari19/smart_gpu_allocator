@@ -1,0 +1,10 @@
+Stage 2: 8 configurations (12 already used; cap 20)
+[cfg13] stop=g<1 x6 steps=300 edges=v1
+   episodes_run=9 q=484 completed=34.8889 risk=0.19289 score=180.8787  (75.0s)
+[cfg14] stop=g<1 x6 steps=300 edges=train_derived
+   episodes_run=9 q=410 completed=35.0 risk=0.19334 score=181.0244  (76.7s)
+[cfg15] stop=g<1 x6 steps=600 edges=v1
+   episodes_run=9 q=787 completed=34.8889 risk=0.1908 score=182.8544  (101.9s)
+[cfg16] stop=g<1 x6 steps=600 edges=train_derived
+   episodes_run=9 q=660 completed=34.9444 risk=0.19227 score=181.743  (103.2s)
+[cfg17] stop=none steps=300 edges=v1
